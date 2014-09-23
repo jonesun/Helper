@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Helper</string>
+    <string name="app_name">帮手</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="title_section1">常用工具</string>
+    <string name="title_section2">应用列表</string>
+    <string name="title_section3">设备信息</string>
 </resources>

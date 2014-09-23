@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Helper.iml" filepath="$PROJECT_DIR$/Helper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JoneLib/JoneLib.iml" filepath="$PROJECT_DIR$/JoneLib/JoneLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZxingScan/ZxingScan.iml" filepath="$PROJECT_DIR$/ZxingScan/ZxingScan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

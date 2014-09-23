@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ZxingScan</string>
+    <string name="scan">条码扫描</string>
+</resources>

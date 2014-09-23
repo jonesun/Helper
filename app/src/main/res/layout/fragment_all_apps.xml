@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingLeft="8dp"
+    android:paddingTop="16dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="16dp">
+    <GridView
+        android:id="@+id/gridView_appList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:horizontalSpacing="8dp"
+        android:verticalSpacing="16dp"
+        android:columnWidth="70dp"
+        android:stretchMode="columnWidth"/>
+
+    <ProgressBar android:id="@+id/apps_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
