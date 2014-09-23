@@ -7,6 +7,7 @@
     android:background="@drawable/bg_jone_main_center_bg"
     android:padding="6dp">
     <LinearLayout
+        android:id="@+id/layoutDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -29,6 +30,38 @@
             android:shadowRadius="5"
             android:shadowColor="#000000"/>
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:layout_centerInParent="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtLocation"
+            android:text="当前城市: 未知"
+            android:textColor="@android:color/holo_blue_dark"
+            android:shadowRadius="5"
+            android:shadowColor="@android:color/holo_blue_light"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtWeather"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_below="@+id/txtLocation"
+            android:shadowRadius="5"
+            android:shadowColor="@android:color/holo_blue_light"/>
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:id="@+id/imWeatherIcon"
+            android:src="@drawable/weather_sunny"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
 
     <TextSwitcher
         android:id="@+id/textSwitcherNews"

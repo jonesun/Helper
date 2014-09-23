@@ -2,10 +2,17 @@ package jone.helper.ui.actionBarTabs;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
+import android.os.Message;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +20,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,9 +34,12 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
+import jone.helper.bean.WeatherInfo;
 import jone.helper.callbacks.CommonListener;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
 import jone.helper.util.FestivalUtil;
+import jone.helper.util.WeatherUtil;
 
 public class JoneMainFragment extends Fragment {
     private static final String TAG = JoneMainFragment.class.getSimpleName();
@@ -38,6 +51,9 @@ public class JoneMainFragment extends Fragment {
     private ToolsLogic toolsLogic;
     private LoaderManager loaderManager;
 
+    private TextView txtLocation, txtWeather;
+    private ImageView imWeatherIcon;
+
     private Runnable showNewsRunnable;
     private int currentNewsIndex = 0;
     private String news[] = new String[]{
@@ -48,9 +64,21 @@ public class JoneMainFragment extends Fragment {
             "祝新的一年里马到成功！",
     };
 
+    private BroadcastReceiver networkChangeBroadcastReceiver;
+
     private Calendar calendar;
     private FestivalUtil festivalUtil;
-    private Handler handler = new Handler();
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0://更新天气
+                    updateWeatherUI((WeatherInfo) msg.obj);
+                    break;
+            }
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +97,19 @@ public class JoneMainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
+        bindBroadcast();
     }
     private void initViews(final View rootView){
+        txtLocation = (TextView) rootView.findViewById(R.id.txtLocation);
+        txtWeather = (TextView) rootView.findViewById(R.id.txtWeather);
+        imWeatherIcon = (ImageView) rootView.findViewById(R.id.imWeatherIcon);
+        imWeatherIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setWeatherInfo();
+            }
+        });
+
         textSwitcherNews = (TextSwitcher) rootView.findViewById(R.id.textSwitcherNews);
         initTextSwitcherNews();
         gridViewCenter = (GridView) rootView.findViewById(R.id.gridViewCenter);
@@ -146,6 +185,61 @@ public class JoneMainFragment extends Fragment {
         }
     }
 
+    private void bindBroadcast(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); //网络状态变化
+        networkChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                System.out.println("网络状态变化");
+                setWeatherInfo();
+            }
+        };
+        getActivity().registerReceiver(networkChangeBroadcastReceiver, intentFilter);
+    }
+
+    private void unBindBroadcast(){
+        if(networkChangeBroadcastReceiver != null){
+            getActivity().unregisterReceiver(networkChangeBroadcastReceiver);
+        }
+    }
+
+    private void setWeatherInfo(){
+        if(SystemUtil.isNetworkAlive(getActivity())){
+            imWeatherIcon.setVisibility(View.INVISIBLE);
+            txtLocation.setText("loading...");
+            txtWeather.setText("");
+            WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
+                @Override
+                public void onResponse(WeatherInfo weatherInfo) {
+                    System.out.println("weatherInfo: " + weatherInfo.getCity());
+                    Message message = new Message();
+                    message.what = 0;
+                    message.obj = weatherInfo;
+                    handler.sendMessage(message);
+                }
+            });
+        }else {
+            txtLocation.setText("当前城市: 未知");
+            txtWeather.setText("天气获取失败");
+        }
+    }
+
+    private void updateWeatherUI(WeatherInfo weatherInfo){
+        imWeatherIcon.setVisibility(View.VISIBLE);
+        if(weatherInfo != null){
+            txtLocation.setText("当前城市: " + weatherInfo.getCity());
+            txtWeather.setText("温度: " + weatherInfo.getTemp1() + "-" + weatherInfo.getTemp2() + "\n"
+                    + "天气: " + weatherInfo.getWeather() + "\n"
+                    + "发布时间: " + weatherInfo.getPtime());
+            imWeatherIcon.setImageResource(WeatherUtil.getWeatherIconByWeather(weatherInfo.getWeather()));
+        }else {
+            txtLocation.setText("当前城市: 未知");
+            txtWeather.setText("天气获取失败");
+            imWeatherIcon.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private LoaderManager.LoaderCallbacks<List> callbacks = new LoaderManager.LoaderCallbacks<List>() {
         @Override
         public Loader<List> onCreateLoader(int i, Bundle bundle) {
@@ -177,5 +271,6 @@ public class JoneMainFragment extends Fragment {
         if(showNewsRunnable != null){
             handler.removeCallbacks(showNewsRunnable);
         }
+        unBindBroadcast();
     }
 }
