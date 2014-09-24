@@ -212,11 +212,17 @@ public class JoneMainFragment extends Fragment {
             WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
                 @Override
                 public void onResponse(WeatherInfo weatherInfo) {
-                    System.out.println("weatherInfo: " + weatherInfo.getCity());
-                    Message message = new Message();
-                    message.what = 0;
-                    message.obj = weatherInfo;
-                    handler.sendMessage(message);
+                    if(weatherInfo != null){
+                        System.out.println("weatherInfo: " + weatherInfo.getCity());
+                        Message message = new Message();
+                        message.what = 0;
+                        message.obj = weatherInfo;
+                        handler.sendMessage(message);
+                    }else {
+                        txtLocation.setText("天气获取失败");
+                        txtWeather.setText("");
+                    }
+
                 }
             });
         }else {

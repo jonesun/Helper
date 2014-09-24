@@ -87,4 +87,5 @@ dependencies {
     compile project(':ZxingScan')
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.google.code.gson:gson:2.3'
+    compile project(':Gallery3D')
 }
