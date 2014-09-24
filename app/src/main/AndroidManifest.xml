@@ -24,6 +24,10 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
+
+        <activity android:name=".app.Calculator.Calculator"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

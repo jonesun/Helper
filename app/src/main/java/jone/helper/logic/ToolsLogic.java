@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.R;
+import jone.helper.app.Calculator.Calculator;
 import jone.helper.bean.ToolBean;
 import jone.helper.flashlight.FlashlightActivity;
 import jone.helper.lib.util.SystemUtil;
@@ -41,6 +42,14 @@ public class ToolsLogic {
                         }
                     }));
         }
+        toolBeans.add(new ToolBean(3, "计算器", R.drawable.ic_menu_default, null,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        activity.startActivity(new Intent(activity, Calculator.class));
+                        activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
+                    }
+                }));
         toolBeans.add(new ToolBean(7, "条码扫描", R.drawable.ic_menu_scan, null,
                 new View.OnClickListener() {
                     @Override
