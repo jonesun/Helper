@@ -40,7 +40,7 @@ public abstract class CameraPreference {
         TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.CameraPreference, 0, 0);
 //        mTitle = a.getString(R.styleable.CameraPreference_title);
-        mTitle = "test";
+        mTitle = "GPS";
         a.recycle();
     }
 
