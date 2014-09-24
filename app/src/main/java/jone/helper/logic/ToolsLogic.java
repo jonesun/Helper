@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.camera.Camera;
 import com.cooliris.media.Gallery;
 
 import java.util.ArrayList;
@@ -44,7 +45,15 @@ public class ToolsLogic {
                         }
                     }));
         }
-        toolBeans.add(new ToolBean(3, "3D相册", R.drawable.ic_menu_gallery, null,
+        toolBeans.add(new ToolBean(3, "相机", R.drawable.ic_menu_camera, null,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        activity.startActivity(new Intent(activity, Camera.class));
+                        activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
+                    }
+                }));
+        toolBeans.add(new ToolBean(4, "3D相册", R.drawable.ic_menu_gallery, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -52,7 +61,7 @@ public class ToolsLogic {
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
                 }));
-        toolBeans.add(new ToolBean(4, "计算器", R.drawable.ic_menu_default, null,
+        toolBeans.add(new ToolBean(5, "计算器", R.drawable.ic_menu_default, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

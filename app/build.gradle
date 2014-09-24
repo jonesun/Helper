@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 20
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
     }
     //打包签名
     signingConfigs {
@@ -88,4 +88,5 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.google.code.gson:gson:2.3'
     compile project(':Gallery3D')
+    compile project(':Camera')
 }
