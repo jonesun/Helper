@@ -14,8 +14,8 @@ import jone.helper.callbacks.CommonListener;
  */
 public class CustomListAsyncTaskLoader extends AsyncTaskLoader<List> {
     private List list;
-    private CommonListener listener;
-    public CustomListAsyncTaskLoader(Context context, CommonListener listener) {
+    private LoadListener listener;
+    public CustomListAsyncTaskLoader(Context context, LoadListener listener) {
         super(context);
         this.listener = listener;
     }
@@ -23,12 +23,14 @@ public class CustomListAsyncTaskLoader extends AsyncTaskLoader<List> {
     @Override
     protected void onStartLoading() {
         // just make sure if we already have content to deliver
-        if (list != null)
+        if (list != null){
             deliverResult(list);
+        }
 
         // otherwise if something has been changed or first try
-        if (takeContentChanged() || list == null)
+        if(takeContentChanged() || list == null){
             forceLoad();
+        }
     }
 
     @Override
@@ -50,7 +52,12 @@ public class CustomListAsyncTaskLoader extends AsyncTaskLoader<List> {
     @Override
     public List loadInBackground() {
         // even if fail return empty list and print exception stack trace
-        List result = (List) listener.onExecute(null);
-        return Collections.unmodifiableList(result);
+        list = Collections.unmodifiableList((List) listener.loading());
+        return list;
+    }
+
+    public interface LoadListener {
+        List loading();
     }
 }
+
