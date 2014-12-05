@@ -7,11 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 
 import android.os.Message;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,22 +33,24 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
 import jone.helper.bean.WeatherInfo;
 import jone.helper.callbacks.CommonListener;
+import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
 
-public class JoneMainFragment extends Fragment {
+public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitListener{
     private static final String TAG = JoneMainFragment.class.getSimpleName();
     public static final int loaderId = 001001;
+    private TextToSpeech textToSpeech;
     private TextSwitcher textSwitcherNews;
-
     private GridView gridViewCenter;
     private ToolsAdapter adapter;
     private ToolsLogic toolsLogic;
@@ -53,6 +58,7 @@ public class JoneMainFragment extends Fragment {
 
     private TextView txtLocation, txtWeather;
     private ImageView imWeatherIcon;
+    private Bitmap weatherBitmap = null;
 
     private Runnable showNewsRunnable;
     private int currentNewsIndex = 0;
@@ -85,6 +91,7 @@ public class JoneMainFragment extends Fragment {
         toolsLogic = new ToolsLogic(getActivity());
         loaderManager = getLoaderManager();
         currentNewsIndex = (int)(Math.random()*news.length);
+        textToSpeech = new TextToSpeech(getActivity(), this);
     }
 
     @Override
@@ -106,7 +113,7 @@ public class JoneMainFragment extends Fragment {
         imWeatherIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setWeatherInfo();
+                sayMsg();
             }
         });
 
@@ -185,6 +192,23 @@ public class JoneMainFragment extends Fragment {
         }
     }
 
+    private void sayMsg(){
+        if(textToSpeech != null){
+            textToSpeech.speak("hello I'm Jone.",
+                    TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+                    null);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textToSpeech.speak("Today is " + WeatherUtil.getEnWeek(),
+                            TextToSpeech.QUEUE_FLUSH,  // Drop all pending entries in the playback queue.
+                            null);
+                }
+            }, 2 * 1000);
+
+        }
+    }
+
     private void bindBroadcast(){
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); //网络状态变化
@@ -238,7 +262,9 @@ public class JoneMainFragment extends Fragment {
             txtWeather.setText("温度: " + weatherInfo.getTemp1() + "-" + weatherInfo.getTemp2() + "\n"
                     + "天气: " + weatherInfo.getWeather() + "\n"
                     + "发布时间: " + weatherInfo.getPtime());
-            imWeatherIcon.setImageResource(WeatherUtil.getWeatherIconByWeather(weatherInfo.getWeather()));
+            Bitmap weatherBitmap = BitmapFactory.decodeResource(getResources(), WeatherUtil.getWeatherIconByWeather(weatherInfo.getWeather()));
+            weatherBitmap = BitmapUtil.createReflectedImage(weatherBitmap);
+            imWeatherIcon.setImageBitmap(weatherBitmap);
         }else {
             txtLocation.setText("当前城市: 未知");
             txtWeather.setText("天气获取失败");
@@ -277,6 +303,36 @@ public class JoneMainFragment extends Fragment {
         if(showNewsRunnable != null){
             handler.removeCallbacks(showNewsRunnable);
         }
+        BitmapUtil.recycleBitmap(weatherBitmap);
         unBindBroadcast();
+    }
+
+    @Override
+    public void onInit(int status) {
+// status can be either TextToSpeech.SUCCESS or TextToSpeech.ERROR.
+        if (status == TextToSpeech.SUCCESS) {
+            // Set preferred language to US english.
+            // Note that a language may not be available, and the result will indicate this.
+            int result = textToSpeech.setLanguage(Locale.US);
+            // Try this someday for some interesting results.
+            // int result mTts.setLanguage(Locale.FRANCE);
+            if (result == TextToSpeech.LANG_MISSING_DATA ||
+                    result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                // Lanuage data is missing or the language is not supported.
+                Log.e(TAG, "Language is not available.");
+            } else {
+                Log.d(TAG, "Language is available.");
+                // Check the documentation for other possible result codes.
+                // For example, the language may be available for the locale,
+                // but not for the specified country and variant.
+
+                // The TTS engine has been successfully initialized.
+                // Allow the user to press the button for the app to speak again.
+                // Greet the user.
+            }
+        } else {
+            // Initialization failed.
+            Log.e(TAG, "Could not initialize TextToSpeech.");
+        }
     }
 }
