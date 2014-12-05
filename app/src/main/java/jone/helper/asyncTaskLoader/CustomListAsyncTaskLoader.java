@@ -6,8 +6,6 @@ import android.content.Context;
 import java.util.Collections;
 import java.util.List;
 
-import jone.helper.callbacks.CommonListener;
-
 
 /**
  * Created by jone_admin on 13-12-11.

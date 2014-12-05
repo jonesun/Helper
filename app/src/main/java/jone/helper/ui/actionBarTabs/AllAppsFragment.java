@@ -161,9 +161,9 @@ public class AllAppsFragment extends Fragment {
 
         @Override
         public Loader<List> onCreateLoader(int i, final Bundle bundle) {
-            return new CustomListAsyncTaskLoader(getActivity(), new CommonListener() {
+            return new CustomListAsyncTaskLoader(getActivity(), new CustomListAsyncTaskLoader.LoadListener() {
                 @Override
-                public Object onExecute(Object o) {
+                public List loading() {
                     return getAppList();
                 }
             });

@@ -35,7 +35,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -68,7 +68,7 @@ android {
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
-    empty1 = [defaultSrcDirs]
+    ArrayList empty1 = [defaultSrcDirs]
     FileTree tree = fileTree(dir: customSrcDirsRoot)
     tree.visit { element ->
         if (element.isDirectory() && element.relativePath.toString().indexOf("/") == -1) {

@@ -249,9 +249,9 @@ public class JoneMainFragment extends Fragment {
     private LoaderManager.LoaderCallbacks<List> callbacks = new LoaderManager.LoaderCallbacks<List>() {
         @Override
         public Loader<List> onCreateLoader(int i, Bundle bundle) {
-            return new CustomListAsyncTaskLoader(getActivity(), new CommonListener() {
+            return new CustomListAsyncTaskLoader(getActivity(), new CustomListAsyncTaskLoader.LoadListener() {
                 @Override
-                public Object onExecute(Object o) {
+                public List loading() {
                     return toolsLogic.getToolBeans();
                 }
             });
