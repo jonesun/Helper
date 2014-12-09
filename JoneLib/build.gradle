@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "jone.helper.lib"
+//        applicationId "jone.helper.lib"
         minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
