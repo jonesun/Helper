@@ -28,6 +28,21 @@
         <activity android:name=".app.Calculator.Calculator"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
+
+        <receiver
+            android:name=".ui.weatherWidget.ui.WeatherWidget"
+            android:label="JoneWeather" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="jone.intent.action.update.weather" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_weather" />
+        </receiver>
+
+        <service android:name=".ui.weatherWidget.service.AppWidgetService" />
     </application>
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
