@@ -1,11 +1,15 @@
 package jone.helper;
 
 import android.app.Application;
+import android.os.Environment;
 import android.os.Handler;
+
+import java.io.File;
 
 import jone.helper.lib.VolleyCommon;
 import jone.helper.lib.view.CommonView;
 import jone.helper.util.JoneORMLiteHelper;
+import jone.helper.util.NDKFileUtil;
 
 /**
  * Created by Administrator on 2014/9/23.
@@ -32,6 +36,9 @@ public class App extends Application {
         handler = new Handler();
         volleyCommon = new VolleyCommon(getApplicationContext());
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
+        String root = Environment
+                .getExternalStorageDirectory().getPath() + File.separator;
+        NDKFileUtil.mkdirs(root + "jone/sddsff/fdfdf/");
     }
 
     public Handler getHandler() {

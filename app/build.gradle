@@ -10,6 +10,12 @@ android {
         targetSdkVersion 21
         versionCode 2
         versionName "2.0"
+        ndk {
+            moduleName "tp_file"
+            //stl "stlport_shared"    //对应APP_STL
+            ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
+            //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
+        }
     }
     //打包签名
     signingConfigs {
