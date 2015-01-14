@@ -36,9 +36,6 @@ public class App extends Application {
         handler = new Handler();
         volleyCommon = new VolleyCommon(getApplicationContext());
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
-        String root = Environment
-                .getExternalStorageDirectory().getPath() + File.separator;
-        NDKFileUtil.mkdirs(root + "jone/sddsff/fdfdf/");
     }
 
     public Handler getHandler() {
