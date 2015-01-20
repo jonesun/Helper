@@ -18,7 +18,6 @@ public class App extends Application {
     private static App instance;
     private Handler handler;
     private VolleyCommon volleyCommon;
-    private static JoneORMLiteHelper joneORMLiteHelper;
 
     public static App getInstance() {
         return instance;
@@ -31,7 +30,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        System.out.println("app start...");
         instance = this;
         handler = new Handler();
         volleyCommon = new VolleyCommon(getApplicationContext());

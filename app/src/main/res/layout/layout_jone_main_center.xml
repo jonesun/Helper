@@ -28,7 +28,7 @@
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:shadowRadius="5"
-            android:shadowColor="#000000"/>
+            android:shadowColor="@android:color/black"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -42,17 +42,17 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtLocation"
             android:text="当前城市: 未知"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             android:shadowRadius="5"
-            android:shadowColor="@android:color/holo_blue_light"/>
+            android:shadowColor="@android:color/black"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtWeather"
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@android:color/white"
             android:layout_below="@+id/txtLocation"
             android:shadowRadius="5"
-            android:shadowColor="@android:color/holo_blue_light"/>
+            android:shadowColor="@android:color/black"/>
         <ImageView
             android:layout_width="120dp"
             android:layout_height="80dp"

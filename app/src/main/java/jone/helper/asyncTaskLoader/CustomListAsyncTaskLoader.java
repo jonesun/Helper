@@ -6,10 +6,6 @@ import android.content.Context;
 import java.util.Collections;
 import java.util.List;
 
-
-/**
- * Created by jone_admin on 13-12-11.
- */
 public class CustomListAsyncTaskLoader extends AsyncTaskLoader<List> {
     private List list;
     private LoadListener listener;
@@ -50,7 +46,7 @@ public class CustomListAsyncTaskLoader extends AsyncTaskLoader<List> {
     @Override
     public List loadInBackground() {
         // even if fail return empty list and print exception stack trace
-        list = Collections.unmodifiableList((List) listener.loading());
+        list = Collections.unmodifiableList(listener.loading());
         return list;
     }
 

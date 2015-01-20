@@ -13,9 +13,6 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.bean.ToolBean;
 
-/**
- * Created by Administrator on 2014/9/18.
- */
 public class ToolsAdapter extends ArrayAdapter<ToolBean> {
     private LayoutInflater inflater;
     private int resource;
@@ -25,7 +22,7 @@ public class ToolsAdapter extends ArrayAdapter<ToolBean> {
         this.resource = R.layout.item_control_gridview;
     }
 
-    public void setData(List list){
+    public void setData(List<ToolBean> list){
         clear();
         addAll(list);
         notifyDataSetChanged();
@@ -51,15 +48,6 @@ public class ToolsAdapter extends ArrayAdapter<ToolBean> {
             holder.imBtnControl.setBackgroundResource(toolBean.getBackgroundResource());
         }
         holder.imBtnControl.setOnClickListener(toolBean.getOnClickListener());
-//            holder.imBtnControl.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    Intent intent = new Intent(activity, SelectPicPopupWindowActivity.class);
-//                    intent.putExtra("isCut", true);
-//                    activity.startActivityForResult(intent, PhotoUtils.GET_PHOTO_CODE);
-//                    return true;
-//                }
-//            });
         holder.txtControl.setText(toolBean.getName());
         return convertView;
     }

@@ -6,10 +6,6 @@ package jone.helper;
  */
 public class Constants {
 
-    public static final String key_is_first_in = "isFirstIn";
-
-    public static final String WEATHER_ICON_ASSETS_FOLDER_NAME = "weather_icon";
-
     public static final String GET_LOCATION_URL = "http://api.map.baidu.com/location/ip?ak=oRPA5xAE6pkjYghCDXDGGOiO";
     public static final String LOCATION_CONTENT = "content";
     public static final String LOCATION_ADDRESS = "address";

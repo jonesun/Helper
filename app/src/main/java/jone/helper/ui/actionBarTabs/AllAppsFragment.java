@@ -1,6 +1,6 @@
 package jone.helper.ui.actionBarTabs;
 
-import android.app.Activity;
+
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
@@ -38,25 +38,31 @@ import java.util.Map;
 
 import jone.helper.R;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
-import jone.helper.callbacks.CommonListener;
 
-
-/**
- * Created by jone_admin on 14-1-21.
- */
 public class AllAppsFragment extends Fragment {
     private static final String TAG = AllAppsFragment.class.getSimpleName();
-    private static final int APP_LIST_LOADER = 00001;
+    private static final int APP_LIST_LOADER = 10001;
     private View rootView;
     private PackageManager packageManager;
-    private GridView gridView_appList;
-    private List<Map<String, Object>> appItems = new ArrayList<Map<String, Object>>();
-    private List<ApplicationInfo> applicationInfoList = new ArrayList<ApplicationInfo>();
+    private List<Map<String, Object>> appItems = new ArrayList<>();
+    private List<ApplicationInfo> applicationInfoList = new ArrayList<>();
     private SimpleAdapter adapter;
     private LoaderManager loaderManager;
     private TextView txt_info;
     private ProgressBar apps_progressBar;
-    private BroadcastReceiver appChangeBroadcastReceiver;
+    private BroadcastReceiver appChangeBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "app列表变化");
+            if(loaderManager != null){
+                if(loaderManager.getLoader(APP_LIST_LOADER) == null){
+                    loaderManager.initLoader(APP_LIST_LOADER, null, appsCallbacks);
+                }else {
+                    loaderManager.restartLoader(APP_LIST_LOADER, null, appsCallbacks);
+                }
+            }
+        }
+    };
     public AllAppsFragment() {
     }
 
@@ -77,7 +83,7 @@ public class AllAppsFragment extends Fragment {
         packageManager = getActivity().getPackageManager();
         loaderManager = getLoaderManager();
         apps_progressBar = (ProgressBar) rootView.findViewById(R.id.apps_progressBar);
-        gridView_appList = (GridView) rootView.findViewById(R.id.gridView_appList);
+        GridView gridView_appList = (GridView) rootView.findViewById(R.id.gridView_appList);
         txt_info = setGridEmptyView(getActivity(), gridView_appList, "加载中...");
         adapter = new SimpleAdapter(getActivity(),
                 appItems,
@@ -146,12 +152,6 @@ public class AllAppsFragment extends Fragment {
         intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED); //一个新应用包已经安装在设备上，数据包括包名（最新安装的包程序不能接收到这个广播）
         intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED); //一个新版本的应用安装到设备，替换之前已经存在的版本
         intentFilter.addAction(Intent.ACTION_PACKAGE_REPLACED); //一个已存在的应用程序包已经从设备上移除，包括包名（正在被安装的包程序不能接收到这个广播）
-        appChangeBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d(TAG, "app列表变化");
-            }
-        };
         getActivity().registerReceiver(appChangeBroadcastReceiver, intentFilter);
     }
 
@@ -182,9 +182,8 @@ public class AllAppsFragment extends Fragment {
                 txt_info.setText("无应用");
             }
             appItems.clear();
-            List<ApplicationInfo> applicationInfoList = list;
-            for(ApplicationInfo applicationInfo : applicationInfoList){
-                Map<String, Object> item = new HashMap<String, Object>();
+            for(ApplicationInfo applicationInfo : (List<ApplicationInfo>) list){
+                Map<String, Object> item = new HashMap<>();
                 item.put("app_icon", applicationInfo.loadIcon(packageManager));
                 item.put("app_title", applicationInfo.loadLabel(packageManager));//按序号添加ItemText
                 item.put("applicationInfo", applicationInfo);
@@ -200,7 +199,7 @@ public class AllAppsFragment extends Fragment {
     };
 
     private List<ApplicationInfo> getAppList(){
-        applicationInfoList =  new ArrayList<ApplicationInfo>();
+        applicationInfoList =  new ArrayList<>();
         List<ApplicationInfo> tmpList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
         for(ApplicationInfo applicationInfo : tmpList){
             if(packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null){

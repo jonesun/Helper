@@ -1,6 +1,5 @@
 package jone.helper.bean;
 
-import android.graphics.Bitmap;
 import android.view.View;
 
 import java.io.Serializable;
