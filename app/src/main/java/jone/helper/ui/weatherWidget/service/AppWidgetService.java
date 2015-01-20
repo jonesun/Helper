@@ -1,15 +1,18 @@
 package jone.helper.ui.weatherWidget.service;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -66,8 +69,31 @@ public class AppWidgetService extends Service{
             if(WeatherUtil.isUpdateCalendar(calendar)){
                 updateCalendar(calendar);
             }
+//            showBox(AppWidgetService.this);
         }
     };
+
+    private void showBox(final Context context){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle("提示");
+        dialog.setIcon(android.R.drawable.ic_dialog_info);
+        dialog.setMessage("正文");
+        dialog.setPositiveButton(context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+//                // TODO Auto-generated method stub
+//                //点击后跳转到某个Activity
+//                Intent result = new Intent(context, xxx.class);
+//                result.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.startActivity(result);
+            }
+        });
+        AlertDialog mDialog=dialog.create();
+        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//设定为系统级警告，关键
+        mDialog.show();
+    }
+
     private void updateTime(long currentTime){
         //更新时间
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.layout_widget_weather);
