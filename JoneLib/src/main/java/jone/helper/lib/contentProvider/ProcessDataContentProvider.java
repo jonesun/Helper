@@ -88,6 +88,9 @@ public class ProcessDataContentProvider extends ContentProvider {
         int result = 0;
         switch (flag){
             case SP:
+                if(selection != null){
+                    result = sharedPreferences.edit().remove(selection).commit() ? 1: 0;
+                }
                 break;
             case DB:
                 if(selection != null){

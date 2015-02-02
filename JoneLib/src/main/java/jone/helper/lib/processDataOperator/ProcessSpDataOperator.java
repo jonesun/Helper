@@ -102,7 +102,7 @@ public class ProcessSpDataOperator implements ProcessDataOperator {
 
     @Override
     public boolean delValueByKey(String key) {
-        return false;
+        return context.getContentResolver().delete(URL, key ,null) == 1;
     }
 
     private static <T>String getResult(Context context, String key, T defaultValue){
