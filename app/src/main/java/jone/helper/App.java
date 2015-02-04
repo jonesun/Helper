@@ -1,15 +1,10 @@
 package jone.helper;
 
 import android.app.Application;
-import android.os.Environment;
 import android.os.Handler;
-
-import java.io.File;
 
 import jone.helper.lib.VolleyCommon;
 import jone.helper.lib.view.CommonView;
-import jone.helper.util.JoneORMLiteHelper;
-import jone.helper.util.NDKFileUtil;
 
 /**
  * Created by Administrator on 2014/9/23.

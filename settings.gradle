@@ -1,1 +1,1 @@
-include ':app', ':ZxingScan', ':JoneLib', ':Gallery3D', ':Camera'
+include ':app', ':libraries:ZxingScan', ':libraries:JoneLib', ':libraries:Gallery3D', ':libraries:Camera'

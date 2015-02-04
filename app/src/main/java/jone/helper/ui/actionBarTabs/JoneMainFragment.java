@@ -28,8 +28,6 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,7 +37,6 @@ import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
 import jone.helper.bean.WeatherInfo;
-import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
