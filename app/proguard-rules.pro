@@ -64,3 +64,12 @@ public static ** valueOf(java.lang.String);
 -keep class * implements android.os.Parcelable {
 public static final android.os.Parcelable$Creator *;
 }
+
+-keepattributes Signature
+-keep class com.j256.**
+-keepclassmembers class com.j256.** { *; }
+-keep enum com.j256.**
+-keepclassmembers enum com.j256.** { *; }
+-keep interface com.j256.**
+-keepclassmembers interface com.j256.** { *; }
+-keep class jone.helper.lib.bean.** { *; }

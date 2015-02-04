@@ -20,7 +20,7 @@ public class JoneOrmLiteBaseDao<T> {
 	                .getGenericSuperclass()).getActualTypeArguments()[0];
 	        try {
 	            dao = JoneOrmLiteHelper.getInstance(context).getDao(entityClass);
-	        } catch (SQLException e) {
+	        } catch (Exception e) {
 	            Log.e(TAG, entityClass + "  dao获取失败", e);
 	        }
 	    }
