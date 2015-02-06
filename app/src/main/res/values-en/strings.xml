@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Helper</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Setting</string>
+    <string name="action_change_bg">Background</string>
+
+    <string name="title_section1">Tools</string>
+    <string name="title_section2">Apps</string>
+    <string name="title_section3">Device</string>
+
+    <string name="call_phone">Phone</string>
+    <string name="send_message">Message</string>
+    <string name="camera">Camera</string>
+    <string name="photos">Photos</string>
+    <string name="calculator">Calculator</string>
+    <string name="scan">Scan</string>
+    <string name="flashlight">Flashlight</string>
+</resources>

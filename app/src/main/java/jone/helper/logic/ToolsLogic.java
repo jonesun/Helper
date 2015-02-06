@@ -29,14 +29,14 @@ public class ToolsLogic {
     public List<ToolBean> getToolBeans(){
         List<ToolBean> toolBeans = new ArrayList<ToolBean>();
         if(!SystemUtil.isPad(activity)){
-            toolBeans.add(new ToolBean(1, "拨打电话", R.drawable.ic_menu_call, null,
+            toolBeans.add(new ToolBean(1, activity.getString(R.string.call_phone), R.drawable.ic_menu_call, null,
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             activity.startActivity(new Intent(Intent.ACTION_DIAL));
                         }
                     }));
-            toolBeans.add(new ToolBean(2, "发送信息", R.drawable.ic_menu_send_sms, null,
+            toolBeans.add(new ToolBean(2, activity.getString(R.string.send_message), R.drawable.ic_menu_send_sms, null,
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -44,7 +44,7 @@ public class ToolsLogic {
                         }
                     }));
         }
-        toolBeans.add(new ToolBean(3, "相机", R.drawable.ic_menu_camera, null,
+        toolBeans.add(new ToolBean(3, activity.getString(R.string.camera), R.drawable.ic_menu_camera, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -52,7 +52,7 @@ public class ToolsLogic {
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
                 }));
-        toolBeans.add(new ToolBean(4, "3D相册", R.drawable.ic_menu_gallery, null,
+        toolBeans.add(new ToolBean(4, activity.getString(R.string.photos), R.drawable.ic_menu_gallery, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -60,7 +60,7 @@ public class ToolsLogic {
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
                 }));
-        toolBeans.add(new ToolBean(5, "计算器", R.drawable.ic_menu_default, null,
+        toolBeans.add(new ToolBean(5, activity.getString(R.string.calculator), R.drawable.ic_menu_default, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -68,7 +68,7 @@ public class ToolsLogic {
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
                 }));
-        toolBeans.add(new ToolBean(7, "条码扫描", R.drawable.ic_menu_scan, null,
+        toolBeans.add(new ToolBean(7, activity.getString(R.string.scan), R.drawable.ic_menu_scan, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -77,7 +77,7 @@ public class ToolsLogic {
                     }
                 }));
 
-        toolBeans.add(new ToolBean(9, "手电筒", R.drawable.ic_menu_flashlight, null,
+        toolBeans.add(new ToolBean(9, activity.getString(R.string.flashlight), R.drawable.ic_menu_flashlight, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

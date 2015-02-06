@@ -9,4 +9,12 @@
     <string name="title_section1">常用工具</string>
     <string name="title_section2">应用列表</string>
     <string name="title_section3">设备信息</string>
+
+    <string name="call_phone">拨打电话</string>
+    <string name="send_message">发送信息</string>
+    <string name="camera">相机</string>
+    <string name="photos">3D相册</string>
+    <string name="calculator">计算器</string>
+    <string name="scan">条码扫描</string>
+    <string name="flashlight">手电筒</string>
 </resources>

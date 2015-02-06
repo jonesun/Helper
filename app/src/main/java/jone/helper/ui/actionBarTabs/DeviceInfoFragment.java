@@ -94,6 +94,7 @@ public class DeviceInfoFragment extends Fragment {
     private void addItemView(String txtName, String buildInfo){
         TextView textView = new TextView(getActivity());
         textView.setText(txtName + ": " + buildInfo);
+        textView.setTextColor(getResources().getColor(android.R.color.black));
         centerLayout.addView(textView);
     }
 

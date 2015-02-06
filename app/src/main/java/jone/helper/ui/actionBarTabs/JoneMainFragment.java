@@ -137,8 +137,8 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             @Override
             public View makeView() {
                 TextView tv = new TextView(getActivity());
+                tv.setTextColor(getResources().getColor(android.R.color.black));
                 tv.setTextSize(16);
-                //tv.setTextColor(getResources().getColor(android.R.color.darker_gray));
                 tv.setGravity(Gravity.CENTER);
                 return tv;
             }
