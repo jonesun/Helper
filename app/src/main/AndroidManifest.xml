@@ -35,7 +35,7 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
-        <activity android:name=".app$Calculator.Calculator"
+        <activity android:name=".app.Calculator.Calculator"
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
 
