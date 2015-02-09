@@ -36,7 +36,8 @@ import java.util.Locale;
 import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
-import jone.helper.bean.WeatherInfo;
+import jone.helper.bean.Weather;
+import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
@@ -77,7 +78,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             super.handleMessage(msg);
             switch (msg.what){
                 case 0://更新天气
-                    updateWeatherUI((WeatherInfo) msg.obj);
+                    updateWeatherUI((Weather) msg.obj);
                     break;
             }
         }
@@ -232,9 +233,9 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             txtWeather.setText("");
             WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
                 @Override
-                public void onResponse(WeatherInfo weatherInfo) {
+                public void onResponse(Weather weatherInfo) {
                     if(weatherInfo != null){
-                        System.out.println("weatherInfo: " + weatherInfo.getCity());
+                        System.out.println("weatherInfo: " + weatherInfo.getCurrentCity());
                         Message message = new Message();
                         message.what = 0;
                         message.obj = weatherInfo;
@@ -252,16 +253,20 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         }
     }
 
-    private void updateWeatherUI(WeatherInfo weatherInfo){
+    private void updateWeatherUI(Weather weatherInfo){
         imWeatherIcon.setVisibility(View.VISIBLE);
         if(weatherInfo != null){
-            txtLocation.setText("当前城市: " + weatherInfo.getCity());
-            txtWeather.setText("温度: " + weatherInfo.getTemp1() + "-" + weatherInfo.getTemp2() + "\n"
-                    + "天气: " + weatherInfo.getWeather() + "\n"
-                    + "发布时间: " + weatherInfo.getPtime());
-            Bitmap weatherBitmap = BitmapFactory.decodeResource(getResources(), WeatherUtil.getWeatherIconByWeather(weatherInfo.getWeather()));
-            weatherBitmap = BitmapUtil.createReflectedImage(weatherBitmap);
-            imWeatherIcon.setImageBitmap(weatherBitmap);
+            txtLocation.setText("当前城市: " + weatherInfo.getCurrentCity());
+            List<WeatherData> weatherDatas = weatherInfo.getWeather_data();
+            if(weatherDatas != null && weatherDatas.size() > 0){
+                WeatherData weatherData = weatherDatas.get(0);
+                txtWeather.setText("温度: " + weatherData.getTemperature() + "\n"
+                        + "天气: " + weatherData.getWeather() + "(" + weatherData.getWind() + ")\n"
+                        + "时间: " + weatherData.getDate());
+                Bitmap weatherBitmap = BitmapFactory.decodeResource(getResources(), WeatherUtil.getWeatherIconByWeather(weatherData.getWeather()));
+                weatherBitmap = BitmapUtil.createReflectedImage(weatherBitmap);
+                imWeatherIcon.setImageBitmap(weatherBitmap);
+            }
         }else {
             txtLocation.setText("当前城市: 未知");
             txtWeather.setText("天气获取失败");

@@ -88,6 +88,7 @@ public class BluetoothChat extends Activity {
             finish();
             return;
         }
+        Toast.makeText(this, "请通过按Menu来配对聊天", Toast.LENGTH_LONG).show();
     }
 
     @Override

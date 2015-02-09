@@ -6,7 +6,8 @@ package jone.helper;
  */
 public class Constants {
 
-    public static final String GET_LOCATION_URL = "http://api.map.baidu.com/location/ip?ak=oRPA5xAE6pkjYghCDXDGGOiO";
+    public static final String BAIDU_AK = "oRPA5xAE6pkjYghCDXDGGOiO"; //oRPA5xAE6pkjYghCDXDGGOiO iSOjn5Bo3w35BuYzKoacWKyf
+    public static final String GET_LOCATION_URL = "http://api.map.baidu.com/location/ip?ak=" + BAIDU_AK;
     public static final String LOCATION_CONTENT = "content";
     public static final String LOCATION_ADDRESS = "address";
 

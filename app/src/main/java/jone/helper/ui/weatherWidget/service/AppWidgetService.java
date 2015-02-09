@@ -19,10 +19,12 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
-import jone.helper.bean.WeatherInfo;
+import jone.helper.bean.Weather;
+import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.Utils;
 import jone.helper.ui.weatherWidget.ui.WeatherWidget;
 import jone.helper.util.Lunar;
@@ -133,7 +135,7 @@ public class AppWidgetService extends Service{
             if(Utils.isNetworkAlive(AppWidgetService.this)){
                 WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
                     @Override
-                    public void onResponse(WeatherInfo weatherInfo) {
+                    public void onResponse(Weather weatherInfo) {
                         if(weatherInfo != null){
                             updateWeather(weatherInfo);
                         }else {
@@ -147,13 +149,17 @@ public class AppWidgetService extends Service{
         }
     };
 
-    private void updateWeather(WeatherInfo weatherInfo){
+    private void updateWeather(Weather weatherInfo){
         if(weatherInfo != null){
             RemoteViews remoteViews = new RemoteViews(this.getPackageName(), R.layout.layout_widget_weather);
-            remoteViews.setTextViewText(R.id.tx_weather_city, weatherInfo.getCity());
-            remoteViews.setTextViewText(R.id.tx_weather_template, weatherInfo.getTemp1() + "-" + weatherInfo.getTemp2());
-            remoteViews.setTextViewText(R.id.tx_weather_weather, weatherInfo.getWeather());
-            remoteViews.setImageViewResource(R.id.im_weather_icon, WeatherUtil.getWeatherIconByWeather(weatherInfo.getWeather()));
+            remoteViews.setTextViewText(R.id.tx_weather_city, weatherInfo.getCurrentCity());
+            List<WeatherData> weatherDatas = weatherInfo.getWeather_data();
+            if(weatherDatas != null && weatherDatas.size() > 0){
+                WeatherData weatherData = weatherDatas.get(0);
+                remoteViews.setTextViewText(R.id.tx_weather_template, weatherData.getTemperature());
+                remoteViews.setTextViewText(R.id.tx_weather_weather, weatherData.getWeather());
+                remoteViews.setImageViewResource(R.id.im_weather_icon, WeatherUtil.getWeatherIconByWeather(weatherData.getWeather()));
+            }
             ComponentName componentName = new ComponentName(this, WeatherWidget.class);
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
             appWidgetManager.updateAppWidget(componentName, remoteViews);

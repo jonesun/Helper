@@ -11,7 +11,9 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,12 +21,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Calendar;
+import java.util.List;
 
 import jone.helper.App;
 import jone.helper.Constants;
 import jone.helper.R;
-import jone.helper.bean.WeatherInfo;
+import jone.helper.bean.Weather;
+import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
 
 /**
@@ -71,6 +77,7 @@ public class WeatherUtil {
      */
     public static String getWeatherURLByCityName(Context context, String cityName){
         //String url = "http://www.weather.com.cn/data/cityinfo/101190401.html"; //X默认苏州天气(101190401);
+        //http://api.map.baidu.com/telematics/v3/weather?location=苏州&output=json&ak=oRPA5xAE6pkjYghCDXDGGOiO
         String url = null;
         if(cityName != null){
             try {
@@ -107,7 +114,14 @@ public class WeatherUtil {
                     String code = cursor.getString(cursor.getColumnIndex("code"));
                     // 看输出的信息是否正确
                     System.out.println("weathercity name: " + name + ", code: " + code);
-                    url = "http://www.weather.com.cn/data/cityinfo/" + code + ".html";
+                    try {
+                        name = URLEncoder.encode(name, "utf-8");
+                        url = "http://api.map.baidu.com/telematics/v3/weather?location=" + name + "&output=json&ak=" + Constants.BAIDU_AK;
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    // url = "http://www.weather.com.cn/data/cityinfo/" + code + ".html";
+                    //url = "http://api.map.baidu.com/telematics/v3/weather?location=%E8%8B%8F%E5%B7%9E&output=json&ak=oRPA5xAE6pkjYghCDXDGGOiO";
                 }
                 cursor.close();
                 database.close();
@@ -128,23 +142,32 @@ public class WeatherUtil {
             App.getInstance().getVolleyCommon().requestJsonObject(url, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    Weather weather = null;
                     try {
-                        JSONObject object = response.getJSONObject("weatherinfo");
-                        WeatherInfo weatherInfo = new Gson().fromJson(object.toString(), WeatherInfo.class);
-                        weatherInfoListener.onResponse(weatherInfo);
+                        if (response.has("status")) {
+                            String status = response.getString("status");
+                            if (status.equals("success") && response.has("results")) {
+                                JSONArray results = response.getJSONArray("results");
+                                if (results != null && results.length() > 0) {
+                                    String weatherStr = results.get(0).toString();
+                                    weather = new Gson().fromJson(weatherStr, Weather.class);
+                                }
+                            }
+                        }
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        weatherInfoListener.onResponse(null);
+                        Log.e("WeatherUtil", "getWeatherInfoByURL", e);
+                    } finally {
+                        weatherInfoListener.onResponse(weather);
                     }
                 }
-            }, new Response.ErrorListener(){
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
+            },new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse (VolleyError error){
+                    Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: ", error);
                     weatherInfoListener.onResponse(null);
                 }
             });
-        }else {
+            }else {
             weatherInfoListener.onResponse(null);
         }
 
@@ -176,7 +199,7 @@ public class WeatherUtil {
     }
 
     public interface WeatherInfoListener{
-        void onResponse(WeatherInfo weatherInfo);
+        void onResponse(Weather weatherInfo);
     }
 
     public static int getWeatherIconByWeather(String weather){
