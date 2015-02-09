@@ -11,6 +11,7 @@ import com.cooliris.media.Gallery;
 import java.util.ArrayList;
 import java.util.List;
 
+import jone.bluetoothchat.BluetoothChat;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
 import jone.helper.bean.ToolBean;
@@ -68,7 +69,7 @@ public class ToolsLogic {
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
                 }));
-        toolBeans.add(new ToolBean(7, activity.getString(R.string.scan), R.drawable.ic_menu_scan, null,
+        toolBeans.add(new ToolBean(6, activity.getString(R.string.scan), R.drawable.ic_menu_scan, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -77,11 +78,19 @@ public class ToolsLogic {
                     }
                 }));
 
-        toolBeans.add(new ToolBean(9, activity.getString(R.string.flashlight), R.drawable.ic_menu_flashlight, null,
+        toolBeans.add(new ToolBean(7, activity.getString(R.string.flashlight), R.drawable.ic_menu_flashlight, null,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         activity.startActivity(new Intent(activity, FlashlightActivity.class));
+                        activity.overridePendingTransition(R.anim.zoomin, R.anim.zoomout); //类似iphone的进入和退出时的效果
+                    }
+                }));
+        toolBeans.add(new ToolBean(8, activity.getString(R.string.bluetooth_chat), R.drawable.ic_menu_bluetooth_chat, null,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        activity.startActivity(new Intent(activity, BluetoothChat.class));
                         activity.overridePendingTransition(R.anim.zoomin, R.anim.zoomout); //类似iphone的进入和退出时的效果
                     }
                 }));

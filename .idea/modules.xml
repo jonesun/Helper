@@ -8,6 +8,8 @@
       <module fileurl="file://$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" filepath="$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" filepath="$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bluetoothchat/bluetoothchat.iml" filepath="$PROJECT_DIR$/bluetoothchat/bluetoothchat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
     </modules>
   </component>
 </project>

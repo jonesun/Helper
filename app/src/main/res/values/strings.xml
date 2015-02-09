@@ -17,4 +17,5 @@
     <string name="calculator">计算器</string>
     <string name="scan">条码扫描</string>
     <string name="flashlight">手电筒</string>
+    <string name="bluetooth_chat">蓝牙聊天</string>
 </resources>

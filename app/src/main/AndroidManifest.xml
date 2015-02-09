@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -34,6 +37,15 @@
 
         <activity android:name=".app$Calculator.Calculator"
             android:theme="@android:style/Theme.Black.NoTitleBar">
+        </activity>
+
+        <activity
+            android:name="jone.bluetoothchat.BluetoothChat"
+            android:theme="@style/android:Theme.Light">
+        </activity>
+        <activity
+            android:name="jone.bluetoothchat.DeviceListActivity"
+            android:theme="@style/android:Theme.Light">
         </activity>
 
         <receiver

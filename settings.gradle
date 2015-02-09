@@ -1,1 +1,1 @@
-include ':app', ':libraries:ZxingScan', ':libraries:JoneLib', ':libraries:Gallery3D', ':libraries:Camera'
+include ':app', ':libraries:ZxingScan', ':libraries:JoneLib', ':libraries:Gallery3D', ':libraries:Camera', ':bluetoothchat'
