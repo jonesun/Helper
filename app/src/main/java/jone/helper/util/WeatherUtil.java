@@ -219,7 +219,7 @@ public class WeatherUtil {
             }else {
                 if(weather == null || weather.equals("晴")){
                     weatherIcon = R.drawable.weather_sunny;
-                }else if(weather.equals("多云")){
+                }else if(weather.equals("多云") || weather.equals("多云转晴")){
                     weatherIcon = R.drawable.weather_cloudy;
                 }else if(weather.equals("阴")){
                     weatherIcon = R.drawable.weather_overcast;

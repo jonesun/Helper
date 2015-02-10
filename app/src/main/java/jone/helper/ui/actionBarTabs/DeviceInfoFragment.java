@@ -1,46 +1,58 @@
 package jone.helper.ui.actionBarTabs;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
 
-/**
- * Created by jone_admin on 14-3-14.
- */
 public class DeviceInfoFragment extends Fragment {
-    private LinearLayout centerLayout;
     private Map<Integer, String> versionNameMap;
+    public List<String> data = new ArrayList<>();
+
+    LinearLayoutManager layoutManager;
+
+    public DeviceInfoFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initVersionMap();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_device_info, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        centerLayout = (LinearLayout) view.findViewById(R.id.layout_center);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        initVersionMap();
         initData();
+        recyclerView.setAdapter(new MyAdapter(data));
     }
 
     private void initData(){
@@ -52,13 +64,13 @@ public class DeviceInfoFragment extends Fragment {
         addItemView("本机类型", deviceName);
         addItemView("设备制造商", Build.MANUFACTURER);
         addItemView("设备品牌", Build.BRAND);
-        addItemView("产品名称: ", Build.PRODUCT);
+        addItemView("产品名称", Build.PRODUCT);
         addItemView("设备型号", Build.MODEL);
         String versionName = "unknown";
         if(versionNameMap != null && versionNameMap.containsKey(Build.VERSION.SDK_INT)){
             versionName = versionNameMap.get(Build.VERSION.SDK_INT);
         }
-        addItemView("系统版本", Build.VERSION.RELEASE + "("  +versionName + ")");
+        addItemView("系统版本", Build.VERSION.RELEASE + "(" + versionName + ")");
         addItemView("系统API级别", Build.VERSION.SDK_INT + "");
 
         DisplayMetrics displayMetrics = SystemUtil.getDisplayMetrics(getActivity());
@@ -92,14 +104,11 @@ public class DeviceInfoFragment extends Fragment {
     }
 
     private void addItemView(String txtName, String buildInfo){
-        TextView textView = new TextView(getActivity());
-        textView.setText(txtName + ": " + buildInfo);
-        textView.setTextColor(getResources().getColor(android.R.color.black));
-        centerLayout.addView(textView);
+        data.add(txtName + ": " + buildInfo);
     }
 
     private void initVersionMap(){
-        versionNameMap = new HashMap<Integer, String>();
+        versionNameMap = new HashMap<>();
         versionNameMap.put(Build.VERSION_CODES.BASE, "BASE"); //October 2008: The original, first, version of Android.
         versionNameMap.put(Build.VERSION_CODES.BASE_1_1, "BASE_1_1");//February 2009: First Android update, officially called 1.1
         versionNameMap.put(Build.VERSION_CODES.CUPCAKE, "CUPCAKE"); //May 2009: Android 1.5.
@@ -122,32 +131,40 @@ public class DeviceInfoFragment extends Fragment {
         versionNameMap.put(Build.VERSION_CODES.KITKAT, "KITKAT"); //Android 4.4: KitKat, another tasty treat.
     }
 
-    private void showPhoneInfo(){
-        //android.os.Build类中。包括了这样的一些信息。我们可以直接调用 而不需要添加任何的权限和方法。
-        System.out.println("获取设备基板名称: " + Build.BOARD);
-        System.out.println("获取设备引导程序版本号: " + Build.BOOTLOADER);
-        System.out.println("获取设备品牌: " + Build.BRAND);
-        System.out.println("获取设备指令集名称（CPU的类型）: " + Build.CPU_ABI);
-        System.out.println("获取第二个指令集名称: " + Build.CPU_ABI2);
-        System.out.println("获取设备驱动名称: " + Build.DEVICE);
-        System.out.println("获取设备显示的版本包（在系统设置中显示为版本号）和ID一样: " + Build.DISPLAY);
-        System.out.println("设备的唯一标识。由设备的多个信息拼接合成: " + Build.FINGERPRINT);
-        System.out.println("设备硬件名称,一般和基板名称一样（BOARD）: " + Build.HARDWARE);
-        System.out.println("设备主机地址: " + Build.HOST);
-        System.out.println("设备版本号: " + Build.ID);
-        System.out.println("获取手机的型号 设备名称: " + Build.MODEL);
-        System.out.println("获取设备制造商: " + Build.MANUFACTURER);
-        System.out.println("整个产品的名称: " + Build.PRODUCT);
-        System.out.println("无线电固件版本号，通常是不可用的 显示unknown: " + Build.RADIO);
-        System.out.println("设备标签。如release-keys 或测试的 test-keys: " + Build.TAGS);
-        System.out.println("时间: " + Build.TIME);
-        System.out.println("设备版本类型  主要为\"user\" 或\"eng\": " + Build.TYPE);
-        System.out.println("设备用户名 基本上都为android-build: " + Build.USER);
-        System.out.println("获取系统版本字符串。如4.1.2 或2.2 或2.3等: " + Build.VERSION.RELEASE);
-        System.out.println("设备当前的系统开发代号，一般使用REL代替: " + Build.VERSION.CODENAME);
-        System.out.println("系统源代码控制值，一个数字或者git hash值: " + Build.VERSION.INCREMENTAL);
-        System.out.println("系统的API级别 一般使用下面大的SDK_INT 来查看: " + Build.VERSION.SDK);
-        System.out.println("系统的API级别 数字表示: " + Build.VERSION.SDK_INT);
-//        System.out.println("类中有所有的已公布的Android版本号: " + Build.VERSION_CODES.BASE);
+    private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+        private List<String> data;
+
+        public MyAdapter(List<String> data) {
+            this.data = data;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            // 加载Item的布局.布局中用到的真正的CardView.
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_device_info_layout, viewGroup, false);
+            // ViewHolder参数一定要是Item的Root节点.
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int i) {
+            viewHolder.text.setText(data.get(i));
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView text;
+
+            public ViewHolder(View itemView) {
+                // super这个参数一定要注意,必须为Item的根节点.否则会出现莫名的FC.
+                super(itemView);
+                text = (TextView) itemView.findViewById(R.id.text);
+            }
+        }
     }
+
 }
