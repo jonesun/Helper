@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import cn.waps.AppConnect;
 import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
 import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
@@ -70,6 +72,8 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             "祝新的一年里马到成功！",
     };
 
+    private LinearLayout wp_ad_min_layout, wp_ad_layout;
+
     private BroadcastReceiver networkChangeBroadcastReceiver;
 
     private Calendar calendar;
@@ -99,7 +103,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         return inflater.inflate(R.layout.fragment_jone_main, container, false);
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -117,6 +120,9 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             }
         });
 
+        wp_ad_min_layout = (LinearLayout) rootView.findViewById(R.id.wp_ad_min_layout);
+        wp_ad_layout = (LinearLayout) rootView.findViewById(R.id.wp_ad_layout);
+
         textSwitcherNews = (TextSwitcher) rootView.findViewById(R.id.textSwitcherNews);
         initTextSwitcherNews();
         gridViewCenter = (GridView) rootView.findViewById(R.id.gridViewCenter);
@@ -131,6 +137,8 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
                 festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
                 showDate(rootView); //显示时间
                 showFestival(rootView); //显示节日
+                AppConnect.getInstance(getActivity()).showMiniAd(getActivity(), wp_ad_min_layout, 10);// 10秒刷新一次
+                AppConnect.getInstance(getActivity()).showBannerAd(getActivity(), wp_ad_layout);
             }
         });
     }

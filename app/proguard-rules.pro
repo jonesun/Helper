@@ -73,3 +73,8 @@ public static final android.os.Parcelable$Creator *;
 -keep interface com.j256.**
 -keepclassmembers interface com.j256.** { *; }
 -keep class jone.helper.lib.bean.** { *; }
+
+-keep public class cn.waps.** {*;}
+-keep public interface cn.waps.** {*;}
+
+-dontwarn cn.waps.**

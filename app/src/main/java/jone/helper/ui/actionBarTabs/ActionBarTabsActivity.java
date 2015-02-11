@@ -10,11 +10,13 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Locale;
 
+import cn.waps.AppConnect;
 import jone.helper.App;
 import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
@@ -37,6 +39,7 @@ public class ActionBarTabsActivity extends Activity implements ActionBar.TabList
      */
     ViewPager mViewPager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class ActionBarTabsActivity extends Activity implements ActionBar.TabList
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
 
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have
@@ -80,6 +85,14 @@ public class ActionBarTabsActivity extends Activity implements ActionBar.TabList
         }
         MobclickAgent.updateOnlineConfig(ActionBarTabsActivity.this);
         App.getInstance().getUmengUtil().event_open_main();
+
+        App.getInstance().getHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                AppConnect.getInstance("8cda8e14e15162ebbf69e41fd1562602", "baidu", ActionBarTabsActivity.this); //万普世纪
+            }
+        });
+
     }
 
     @Override
