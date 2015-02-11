@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.bluetoothchat.BluetoothChat;
+import jone.helper.App;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
 import jone.helper.bean.ToolBean;
 import jone.helper.flashlight.FlashlightActivity;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
 /**
@@ -24,8 +26,10 @@ import jone.helper.zxing.scan.CaptureActivity;
  */
 public class ToolsLogic {
     private Activity activity;
+    private UmengUtil umengUtil;
     public ToolsLogic(Activity activity){
         this.activity = activity;
+        umengUtil = App.getInstance().getUmengUtil();
     }
     public List<ToolBean> getToolBeans(){
         List<ToolBean> toolBeans = new ArrayList<ToolBean>();
@@ -34,6 +38,7 @@ public class ToolsLogic {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            umengUtil.event_click_call_phone();
                             activity.startActivity(new Intent(Intent.ACTION_DIAL));
                         }
                     }));
@@ -41,6 +46,7 @@ public class ToolsLogic {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            umengUtil.event_click_send_message();
                             activity.startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:")));
                         }
                     }));
@@ -49,6 +55,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_camera();
                         activity.startActivity(new Intent(activity, Camera.class));
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
@@ -57,6 +64,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_photos();
                         activity.startActivity(new Intent(activity, Gallery.class));
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
@@ -65,6 +73,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_calculator();
                         activity.startActivity(new Intent(activity, Calculator.class));
                         activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
@@ -73,6 +82,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_scan();
                         activity.startActivity(new Intent(activity, CaptureActivity.class));
                         activity.overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);//由左向右滑入的效果
                     }
@@ -82,6 +92,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_flashlight();
                         activity.startActivity(new Intent(activity, FlashlightActivity.class));
                         activity.overridePendingTransition(R.anim.zoomin, R.anim.zoomout); //类似iphone的进入和退出时的效果
                     }
@@ -90,6 +101,7 @@ public class ToolsLogic {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        umengUtil.event_click_bluetooth_chat();
                         activity.startActivity(new Intent(activity, BluetoothChat.class));
                         activity.overridePendingTransition(R.anim.zoomin, R.anim.zoomout); //类似iphone的进入和退出时的效果
                     }

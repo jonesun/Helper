@@ -28,6 +28,8 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -336,5 +338,15 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             // Initialization failed.
             Log.e(TAG, "Could not initialize TextToSpeech.");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
 }

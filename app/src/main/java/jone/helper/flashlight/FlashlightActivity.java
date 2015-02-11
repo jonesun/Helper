@@ -13,11 +13,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.view.ColorPickerDialog;
 import jone.helper.R;
 
 public class FlashlightActivity extends Activity {
+    private static final String TAG = FlashlightActivity.class.getSimpleName();
     private ViewGroup layoutMain;
     private CheckBox checkBoxFlashLight;
 
@@ -99,5 +102,17 @@ public class FlashlightActivity extends Activity {
         if(hasFlashLight && camera != null){
             camera.release(); // 关掉照相机
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面
+        MobclickAgent.onResume(this);          //统计时长
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 }

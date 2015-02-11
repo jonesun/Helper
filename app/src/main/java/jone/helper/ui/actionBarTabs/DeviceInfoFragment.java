@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +24,7 @@ import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
 
 public class DeviceInfoFragment extends Fragment {
+    private static final String TAG = DeviceInfoFragment.class.getSimpleName();
     private Map<Integer, String> versionNameMap;
     public List<String> data = new ArrayList<>();
 
@@ -56,6 +59,7 @@ public class DeviceInfoFragment extends Fragment {
     }
 
     private void initData(){
+        data = new ArrayList<>();
         TelephonyManager tm = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         String imei = tm.getDeviceId();
         String tel = tm.getLine1Number();
@@ -165,6 +169,16 @@ public class DeviceInfoFragment extends Fragment {
                 text = (TextView) itemView.findViewById(R.id.text);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG); //统计页面
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
     }
 
 }

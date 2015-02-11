@@ -11,10 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Locale;
 
+import jone.helper.App;
 import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.util.UmengUtil;
 
 public class ActionBarTabsActivity extends Activity implements ActionBar.TabListener {
 
@@ -74,6 +78,8 @@ public class ActionBarTabsActivity extends Activity implements ActionBar.TabList
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        MobclickAgent.updateOnlineConfig(ActionBarTabsActivity.this);
+        App.getInstance().getUmengUtil().event_open_main();
     }
 
     @Override
@@ -165,4 +171,15 @@ public class ActionBarTabsActivity extends Activity implements ActionBar.TabList
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }
