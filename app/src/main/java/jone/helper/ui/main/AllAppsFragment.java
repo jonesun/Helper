@@ -1,17 +1,17 @@
-package jone.helper.ui.actionBarTabs;
+package jone.helper.ui.main;
 
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import jone.helper.R;
-import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
+import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
 
 public class AllAppsFragment extends Fragment {
     private static final String TAG = AllAppsFragment.class.getSimpleName();
@@ -169,7 +169,7 @@ public class AllAppsFragment extends Fragment {
 
         @Override
         public Loader<List> onCreateLoader(int i, final Bundle bundle) {
-            return new CustomListAsyncTaskLoader(getActivity(), new CustomListAsyncTaskLoader.LoadListener() {
+            return new CustomV4ListAsyncTaskLoader(getActivity(), new CustomV4ListAsyncTaskLoader.LoadListener() {
                 @Override
                 public List loading() {
                     return getAppList();

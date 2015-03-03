@@ -1,20 +1,19 @@
-package jone.helper.ui.actionBarTabs;
+package jone.helper.ui.main;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,14 +36,17 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.waps.AppConnect;
+import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.ToolsAdapter;
-import jone.helper.asyncTaskLoader.CustomListAsyncTaskLoader;
+import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
+import jone.helper.bean.News;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
+import jone.helper.service.NewsService;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
 
@@ -108,6 +110,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         bindBroadcast();
+        getActivity().startService(new Intent(getActivity(), NewsService.class));
     }
     private void initViews(final View rootView){
         txtLocation = (TextView) rootView.findViewById(R.id.txtLocation);
@@ -220,11 +223,29 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
     private void bindBroadcast(){
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); //网络状态变化
+        intentFilter.addAction(Constants.BROADCAST_SAVE_NEWS_DONE);
         networkChangeBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                System.out.println("网络状态变化");
-                setWeatherInfo();
+                switch (intent.getAction()){
+                    case ConnectivityManager.CONNECTIVITY_ACTION:
+                        System.out.println("网络状态变化");
+                        setWeatherInfo();
+                        break;
+                    case Constants.BROADCAST_SAVE_NEWS_DONE:
+                        if(intent.hasExtra(Constants.KEY_NEWS)){
+                            List<News> newses = (List<News>) intent.getSerializableExtra(Constants.KEY_NEWS);
+                            if(newses != null && newses.size() > 0){
+                                for(News news : newses){
+                                    System.err.println("title: " + news.getTitle()
+                                            + ", url: " + news.getUrl()
+                                            + ", imageUrl: " + news.getImageUrl()
+                                            + ", from: " + news.getFrom());
+                                }
+                            }
+                        }
+                        break;
+                }
             }
         };
         getActivity().registerReceiver(networkChangeBroadcastReceiver, intentFilter);
@@ -287,7 +308,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
     private LoaderManager.LoaderCallbacks<List> callbacks = new LoaderManager.LoaderCallbacks<List>() {
         @Override
         public Loader<List> onCreateLoader(int i, Bundle bundle) {
-            return new CustomListAsyncTaskLoader(getActivity(), new CustomListAsyncTaskLoader.LoadListener() {
+            return new CustomV4ListAsyncTaskLoader(getActivity(), new CustomV4ListAsyncTaskLoader.LoadListener() {
                 @Override
                 public List loading() {
                     return toolsLogic.getToolBeans();

@@ -6,6 +6,7 @@
     <string name="action_settings">设置</string>
     <string name="action_change_bg">更换背景</string>
 
+    <string name="title_section0">主页</string>
     <string name="title_section1">常用工具</string>
     <string name="title_section2">应用列表</string>
     <string name="title_section3">设备信息</string>

@@ -16,6 +16,8 @@ android {
             ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
             //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
         }
+
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "jone"]
     }
     //打包签名
     signingConfigs {
@@ -54,16 +56,24 @@ android {
 //        }
 //    }
     //    //生成不同的APK包，有不同的包名，或者不同的资源
-//    productFlavors {
-//        appJone {
-//            packageName "com.jone.appJone"
-////            versionCode 20
-//        }
-////        jone {
-////            packageName "com.jone.app"
-////        }
-//
-//    }
+    productFlavors {
+        baidu {
+            versionCode 4
+            versionName "2.1.1.01"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "baidu"]
+        }
+         _91{
+             versionCode 4
+             versionName "2.1.1.02"
+             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "91助手"]
+        }
+        hiapk {
+            versionCode 4
+            versionName "2.1.1.03"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "安卓市场"]
+        }
+
+    }
 
     sourceSets {
         main {

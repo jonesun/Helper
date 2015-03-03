@@ -20,16 +20,24 @@
         android:label="@string/app_name"
         android:name=".App"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".ui.actionBarTabs.ActionBarTabsActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.clientActivity">
+        <activity android:name=".ui.main.MenuActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".ui.actionBarTabs.ActionBarTabsActivity"-->
+            <!--android:label="@string/app_name"-->
+            <!--android:theme="@style/Theme.clientActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
 
         <activity
             android:name=".flashlight.FlashlightActivity"
@@ -66,6 +74,12 @@
 
         <service android:name=".ui.weatherWidget.service.AppWidgetService" />
 
+        <service android:name="jone.helper.service.NewsService"
+            android:exported="true"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
+
         <provider
             android:authorities="jone.helper.lib.ProcessDataContentProvider"
             android:name=".lib.contentProvider.ProcessDataContentProvider"
@@ -73,6 +87,6 @@
             android:exported="true"/>
 
         <meta-data android:value="5421322856240bf7910000e4" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="baidu" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
     </application>
 </manifest>

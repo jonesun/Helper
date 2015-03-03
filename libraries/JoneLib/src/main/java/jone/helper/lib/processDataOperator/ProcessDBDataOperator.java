@@ -17,7 +17,7 @@ public class ProcessDBDataOperator implements ProcessDataOperator {
     private Context context;
     private static final Uri URL = ProcessDataContentProvider.DB_URI;
 
-    public ProcessDBDataOperator getInstance(Context context){
+    public static ProcessDBDataOperator getInstance(Context context){
         if(instance == null){
             instance = new ProcessDBDataOperator(context);
         }

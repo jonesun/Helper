@@ -9,4 +9,9 @@
         <item name="android:windowBackground">@drawable/window_background</item>
     </style>
 
+    <style name="fragment_text">
+        <item name="android:textColor">#ffacacac</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
 </resources>

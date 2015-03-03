@@ -17,7 +17,7 @@ public class ProcessSpDataOperator implements ProcessDataOperator {
     private Context context;
     private static final Uri URL = ProcessDataContentProvider.SP_URI;
 
-    public ProcessSpDataOperator getInstance(Context context){
+    public static ProcessSpDataOperator getInstance(Context context){
         if(instance == null){
             instance = new ProcessSpDataOperator(context);
         }
