@@ -51,5 +51,4 @@ public class Constants {
     };
 
     public static final String KEY_NEWS = "news";
-    public static final String BROADCAST_SAVE_NEWS_DONE = "helper.action.SAVE_NEWS_DONE";
 }

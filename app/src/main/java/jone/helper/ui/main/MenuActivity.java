@@ -102,15 +102,14 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View view) {
 
         if (view == itemHome){
-            changeFragment(new HomeFragment());
+            changeFragment(HomeFragment.getInstance());
         }else if (view == itemProfile){
-            changeFragment(new JoneMainFragment());
+            changeFragment(JoneMainFragment.getInstance());
         }else if (view == itemCalendar){
-            changeFragment(new AllAppsFragment());
+            changeFragment(AllAppsFragment.getInstance());
         }else if (view == itemSettings){
-            changeFragment(new DeviceInfoFragment());
+            changeFragment(DeviceInfoFragment.getInstance());
         }
-
         resideMenu.closeMenu();
     }
 
@@ -126,7 +125,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         }
     };
 
-    private void changeFragment(Fragment targetFragment){
+    public void changeFragment(Fragment targetFragment){
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()

@@ -74,12 +74,6 @@
 
         <service android:name=".ui.weatherWidget.service.AppWidgetService" />
 
-        <service android:name="jone.helper.service.NewsService"
-            android:exported="true"
-            android:enabled="true"
-            android:process=":remote">
-        </service>
-
         <provider
             android:authorities="jone.helper.lib.ProcessDataContentProvider"
             android:name=".lib.contentProvider.ProcessDataContentProvider"

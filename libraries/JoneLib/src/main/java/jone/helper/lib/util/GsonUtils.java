@@ -1,6 +1,8 @@
 package jone.helper.lib.util;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
@@ -27,5 +29,17 @@ public class GsonUtils {
             throws Exception {
         return gson.fromJson(json, new TypeToken<List<T>>() {
         }.getType());
+    }
+
+    public static boolean isGoodJson(String json) {
+        if (json == null || json.isEmpty()) {
+            return false;
+        }
+        try {
+            new JsonParser().parse(json);
+            return true;
+        } catch (JsonParseException e) {
+            return false;
+        }
     }
 }

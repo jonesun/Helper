@@ -94,4 +94,8 @@ public class VolleyCommon {
                 successListener,
                 errorListener));
     }
+
+    public RequestQueue getmRequestQueue() {
+        return mRequestQueue;
+    }
 }

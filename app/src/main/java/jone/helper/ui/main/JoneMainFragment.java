@@ -46,7 +46,6 @@ import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.logic.ToolsLogic;
-import jone.helper.service.NewsService;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
 
@@ -91,6 +90,14 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             }
         }
     };
+
+    private static JoneMainFragment instance = null;
+    public static JoneMainFragment getInstance(){
+        if(instance == null){
+            instance = new JoneMainFragment();
+        }
+        return instance;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +117,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         bindBroadcast();
-        getActivity().startService(new Intent(getActivity(), NewsService.class));
     }
     private void initViews(final View rootView){
         txtLocation = (TextView) rootView.findViewById(R.id.txtLocation);
@@ -223,7 +229,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
     private void bindBroadcast(){
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); //网络状态变化
-        intentFilter.addAction(Constants.BROADCAST_SAVE_NEWS_DONE);
         networkChangeBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -231,19 +236,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
                     case ConnectivityManager.CONNECTIVITY_ACTION:
                         System.out.println("网络状态变化");
                         setWeatherInfo();
-                        break;
-                    case Constants.BROADCAST_SAVE_NEWS_DONE:
-                        if(intent.hasExtra(Constants.KEY_NEWS)){
-                            List<News> newses = (List<News>) intent.getSerializableExtra(Constants.KEY_NEWS);
-                            if(newses != null && newses.size() > 0){
-                                for(News news : newses){
-                                    System.err.println("title: " + news.getTitle()
-                                            + ", url: " + news.getUrl()
-                                            + ", imageUrl: " + news.getImageUrl()
-                                            + ", from: " + news.getFrom());
-                                }
-                            }
-                        }
                         break;
                 }
             }

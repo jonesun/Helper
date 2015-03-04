@@ -65,6 +65,13 @@ public class AllAppsFragment extends Fragment {
             }
         }
     };
+    private static AllAppsFragment instance = null;
+    public static AllAppsFragment getInstance(){
+        if(instance == null){
+            instance = new AllAppsFragment();
+        }
+        return instance;
+    }
     public AllAppsFragment() {
     }
 

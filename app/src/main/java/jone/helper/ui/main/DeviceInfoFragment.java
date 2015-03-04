@@ -30,6 +30,14 @@ public class DeviceInfoFragment extends Fragment {
 
     LinearLayoutManager layoutManager;
 
+    private static DeviceInfoFragment instance = null;
+    public static DeviceInfoFragment getInstance(){
+        if(instance == null){
+            instance = new DeviceInfoFragment();
+        }
+        return instance;
+    }
+
     public DeviceInfoFragment() {
         // Required empty public constructor
     }
