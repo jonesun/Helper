@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
-import com.shamanland.fab.ShowHideOnScroll;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,14 +86,6 @@ public class HomeFragment extends Fragment {
             loaderManager.initLoader(loader_id, null, loaderCallbacks);
         }
 
-        View fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.changeFragment(JoneMainFragment.getInstance());
-            }
-        });
-        mRecyclerView.setOnTouchListener(new ShowHideOnScroll(fab));
     }
 
     private LoaderManager.LoaderCallbacks<List> loaderCallbacks = new LoaderManager.LoaderCallbacks<List>() {

@@ -12,19 +12,8 @@
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:layout_marginBottom="2dp"/>
-    <GridView
-        android:id="@+id/gridViewCenter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:horizontalSpacing="8dp"
-        android:verticalSpacing="16dp"
-        android:columnWidth="70dp"
-        android:stretchMode="columnWidth"
-        android:layout_below="@+id/wp_ad_min_layout"/>
     <include layout="@layout/layout_jone_main_center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="6dp"
-        android:layout_below="@+id/gridViewCenter"/>
+        android:layout_marginTop="6dp"/>
 </RelativeLayout>

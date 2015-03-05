@@ -102,10 +102,9 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.belerweb:pinyin4j:2.5.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.shamanland:fab:0.0.8'
     compile project(':libraries:Gallery3D')
     compile project(':libraries:Camera')
     compile project(':libraries:JoneLib')
     compile project(':libraries:ZxingScan')
-    compile project(':bluetoothchat')
+    compile project(':circularfloatingactionmenu')
 }

@@ -36,28 +36,18 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.waps.AppConnect;
-import jone.helper.Constants;
 import jone.helper.R;
-import jone.helper.adapter.ToolsAdapter;
-import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
-import jone.helper.bean.News;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
-import jone.helper.logic.ToolsLogic;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
 
 public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitListener{
     private static final String TAG = JoneMainFragment.class.getSimpleName();
-    public static final int loaderId = 001001;
     private TextToSpeech textToSpeech;
     private TextSwitcher textSwitcherNews;
-    private GridView gridViewCenter;
-    private ToolsAdapter adapter;
-    private ToolsLogic toolsLogic;
-    private LoaderManager loaderManager;
 
     private TextView txtLocation, txtWeather;
     private ImageView imWeatherIcon;
@@ -101,8 +91,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolsLogic = new ToolsLogic(getActivity());
-        loaderManager = getLoaderManager();
         currentNewsIndex = (int)(Math.random()*news.length);
         textToSpeech = new TextToSpeech(getActivity(), this);
     }
@@ -134,10 +122,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
 
         textSwitcherNews = (TextSwitcher) rootView.findViewById(R.id.textSwitcherNews);
         initTextSwitcherNews();
-        gridViewCenter = (GridView) rootView.findViewById(R.id.gridViewCenter);
-        adapter = new ToolsAdapter(getActivity());
-        gridViewCenter.setAdapter(adapter);
-        loaderManager.initLoader(loaderId, null, callbacks);
 
         handler.post(new Runnable() {
             @Override
@@ -297,34 +281,10 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         }
     }
 
-    private LoaderManager.LoaderCallbacks<List> callbacks = new LoaderManager.LoaderCallbacks<List>() {
-        @Override
-        public Loader<List> onCreateLoader(int i, Bundle bundle) {
-            return new CustomV4ListAsyncTaskLoader(getActivity(), new CustomV4ListAsyncTaskLoader.LoadListener() {
-                @Override
-                public List loading() {
-                    return toolsLogic.getToolBeans();
-                }
-            });
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List> listLoader, List list) {
-            adapter.setData(list);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List> listLoader) {
-            adapter.clear();
-        }
-    };
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(loaderManager.getLoader(loaderId) != null){
-            loaderManager.destroyLoader(loaderId);
-        }
         if(showNewsRunnable != null){
             handler.removeCallbacks(showNewsRunnable);
         }

@@ -104,7 +104,6 @@
     <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="fab-0.0.8" level="project" />
     <orderEntry type="library" exported="" name="nineoldandroids-library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.48" level="project" />
@@ -117,8 +116,8 @@
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="module" module-name="JoneLib" exported="" />
-    <orderEntry type="module" module-name="bluetoothchat" exported="" />
     <orderEntry type="module" module-name="Camera" exported="" />
+    <orderEntry type="module" module-name="circularfloatingactionmenu" exported="" />
     <orderEntry type="module" module-name="ZxingScan" exported="" />
     <orderEntry type="module" module-name="Gallery3D" exported="" />
   </component>

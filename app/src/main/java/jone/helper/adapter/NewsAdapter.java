@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -13,6 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
+import cn.waps.AppConnect;
 import jone.helper.App;
 import jone.helper.BitmapCache;
 import jone.helper.R;
@@ -60,6 +63,8 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             }
         } else if (viewHolder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
+            VHHeader item = (VHHeader) viewHolder;
+            AppConnect.getInstance(mContext).showBannerAd(mContext, item.layout_ad);
         }
     }
 
@@ -100,9 +105,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     }
 
     class VHHeader extends RecyclerView.ViewHolder {
-
+        public LinearLayout layout_ad;
         public VHHeader(View itemView) {
             super(itemView);
+            layout_ad = (LinearLayout) itemView.findViewById(R.id.layout_ad);
         }
     }
 }
