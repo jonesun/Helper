@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import jone.helper.Constants;
@@ -30,6 +31,7 @@ import jone.helper.lib.processDataOperator.ProcessDBDataOperator;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.util.DownloadHtmlFrom36krUtil;
+import jone.helper.util.FestivalUtil;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -85,7 +87,6 @@ public class HomeFragment extends Fragment {
         if(Utils.isNetworkAlive(activity)){
             loaderManager.initLoader(loader_id, null, loaderCallbacks);
         }
-
     }
 
     private LoaderManager.LoaderCallbacks<List> loaderCallbacks = new LoaderManager.LoaderCallbacks<List>() {

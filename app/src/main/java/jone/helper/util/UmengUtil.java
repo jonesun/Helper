@@ -4,6 +4,9 @@ import android.content.Context;
 
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by jone.sun on 2015/2/11.
  */
@@ -25,12 +28,20 @@ public class UmengUtil {
         MobclickAgent.onEvent(context, "event_open_main");
     }
 
-    public void event_click_call_phone(){
-        MobclickAgent.onEvent(context, "event_click_call_phone");
+    public void get_location(String url, String response, String city){
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("url", url);
+        data.put("response", response);
+        data.put("city", city);
+        MobclickAgent.onEvent(context, "get_location", data);
     }
 
-    public void event_click_send_message(){
-        MobclickAgent.onEvent(context, "event_click_send_message");
+    public void get_weather(String url, String response, String weather){
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("url", url);
+        data.put("response", response);
+        data.put("weather", weather);
+        MobclickAgent.onEvent(context, "get_weather", data);
     }
 
     public void event_click_camera(){
@@ -53,7 +64,7 @@ public class UmengUtil {
         MobclickAgent.onEvent(context, "event_click_flashlight");
     }
 
-    public void event_click_bluetooth_chat(){
-        MobclickAgent.onEvent(context, "event_click_bluetooth_chat");
+    public void event_click_floating_action_menu(){
+        MobclickAgent.onEvent(context, "event_click_floating_action_menu");
     }
 }

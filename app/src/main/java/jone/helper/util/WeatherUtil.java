@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.List;
@@ -32,6 +33,7 @@ import jone.helper.R;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
+import jone.helper.lib.util.GsonUtils;
 
 /**
  * Created by jone_admin on 2014/4/28.
@@ -48,9 +50,10 @@ public class WeatherUtil {
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
-                    String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "苏州" : locationContent.getString(Constants.LOCATION_ADDRESS);
+                    String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
                     String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
                     System.out.println("getLocationAddressFromBaidu:" + city);
+                    App.getInstance().getUmengUtil().get_location(Constants.GET_LOCATION_URL, response.toString(), city);
                     locationListener.onExecute(city);
                 } catch (JSONException e) {
 //                            e.printStackTrace();
@@ -137,7 +140,7 @@ public class WeatherUtil {
      * 通过指定URL从天气网获取天气信息
      * @param weatherInfoListener
      */
-    public static void getWeatherInfoByURL(String url, final WeatherInfoListener weatherInfoListener){
+    public static void getWeatherInfoByURL(final String url, final WeatherInfoListener weatherInfoListener){
         if(url != null){
             App.getInstance().getVolleyCommon().requestJsonObject(url, new Response.Listener<JSONObject>() {
                 @Override
@@ -153,6 +156,11 @@ public class WeatherUtil {
                                     weather = new Gson().fromJson(weatherStr, Weather.class);
                                 }
                             }
+                        }
+                        if(weather != null){
+                            App.getInstance().getUmengUtil().get_weather(url, response.toString(), GsonUtils.toJson(weather));
+                        }else {
+                            App.getInstance().getUmengUtil().get_weather(url, response.toString(), "");
                         }
                     } catch (JSONException e) {
                         Log.e("WeatherUtil", "getWeatherInfoByURL", e);

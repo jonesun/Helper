@@ -23,6 +23,8 @@ import com.umeng.analytics.MobclickAgent;
 
 import cn.waps.AppConnect;
 import jone.helper.App;
+import jone.helper.BuildConfig;
+import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
 import jone.helper.ui.view.ResideMenu;
@@ -56,7 +58,8 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         App.getInstance().getHandler().post(new Runnable() {
             @Override
             public void run() {
-                AppConnect.getInstance("8cda8e14e15162ebbf69e41fd1562602", "baidu", MenuActivity.this); //万普世纪
+                AppConnect.getInstance(Constants.WPSJ_ID,
+                        BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
             }
         });
 
@@ -107,6 +110,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                 PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 45);
                 ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIconNew, pvhR);
                 animation.start();
+                App.getInstance().getUmengUtil().event_click_floating_action_menu();
             }
 
             @Override
@@ -151,7 +155,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             public void onClick(View view) {
                 App.getInstance().getUmengUtil().event_click_scan();
                 startActivity(new Intent(MenuActivity.this, CaptureActivity.class));
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
     }
@@ -210,7 +214,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         if (view == itemHome){
             changeFragment(HomeFragment.getInstance());
         }else if (view == itemProfile){
-            changeFragment(JoneMainFragment.getInstance());
+            changeFragment(WeatherFragment.getInstance());
         }else if (view == itemCalendar){
             changeFragment(AllAppsFragment.getInstance());
         }else if (view == itemSettings){
