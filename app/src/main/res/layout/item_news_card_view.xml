@@ -18,7 +18,8 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:scaleType="fitXY" />
+            android:scaleType="fitXY"
+            android:focusable="false"/>
 
         <TextView
             android:clickable="true"
@@ -27,7 +28,19 @@
             android:layout_height="match_parent"
             android:textColor="@android:color/black"
             android:layout_toRightOf="@+id/pic"
-            android:layout_marginLeft="2dp"/>
+            android:layout_marginLeft="2dp"
+            android:focusable="false"/>
+
+        <TextView
+            android:clickable="true"
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ADADAD"
+            android:text="36kr"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:focusable="false"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

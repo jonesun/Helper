@@ -38,7 +38,7 @@ import jone.helper.util.WeatherUtil;
 /**
  * @author jone.sun on 2015/3/4.
  */
-public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener{
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private List<News> newsList;
@@ -55,10 +55,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 new BitmapCache());
     }
 
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
         if (i == TYPE_ITEM) {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_news_card_view, viewGroup, false);
+            v.setOnClickListener(this);
             return new VHItem(v);
         } else if (i == TYPE_HEADER) {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_news_head, viewGroup, false);
@@ -79,6 +85,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 item.mImageView.setImageUrl(news.getImageUrl(),
                         imageLoader);
             }
+            viewHolder.itemView.setTag(news);
         } else if (viewHolder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
             VHHeader item = (VHHeader) viewHolder;
@@ -121,6 +128,15 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private News getItem(int position) {
         return newsList == null ? null : newsList.get(position - 1);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (mOnItemClickListener != null &&
+                view.getTag()!= null
+                && view.getTag() instanceof News) {
+            mOnItemClickListener.onClick(view,(News)view.getTag());
+        }
     }
 
     class VHItem extends RecyclerView.ViewHolder {
@@ -201,5 +217,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }else {
             txt_weather.setText(weatherStringBuffer);
         }
+    }
+
+    public static interface OnRecyclerViewItemClickListener {
+        void onClick(View view , News news);
     }
 }

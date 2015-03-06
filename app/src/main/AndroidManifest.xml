@@ -47,6 +47,11 @@
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
 
+        <activity android:name=".ui.NewsDetailActivity"
+            android:theme="@android:style/Theme.Holo.Light"
+            android:parentActivityName=".ui.main.MenuActivity"
+            android:launchMode="singleInstance"/>
+
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
             android:label="JoneWeather" >

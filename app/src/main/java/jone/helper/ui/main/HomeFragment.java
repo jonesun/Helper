@@ -1,5 +1,6 @@
 package jone.helper.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -30,6 +32,7 @@ import jone.helper.bean.News;
 import jone.helper.lib.processDataOperator.ProcessDBDataOperator;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
+import jone.helper.ui.NewsDetailActivity;
 import jone.helper.util.DownloadHtmlFrom36krUtil;
 
 public class HomeFragment extends Fragment {
@@ -90,6 +93,16 @@ public class HomeFragment extends Fragment {
 
         layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
         AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
+
+        newsAdapter.setOnItemClickListener(new NewsAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onClick(View view, News news) {
+                Intent intent = new Intent(activity, NewsDetailActivity.class);
+                intent.putExtra("url", news.getUrl());
+                activity.startActivity(intent);
+                activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            }
+        });
     }
 
     private LoaderManager.LoaderCallbacks<List> loaderCallbacks = new LoaderManager.LoaderCallbacks<List>() {
