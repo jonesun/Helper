@@ -76,7 +76,7 @@ public class DownloadHtmlFrom36krUtil {
         List<String> newsList = new ArrayList<>();
         while (matcher.find()) {
             newsList.add(matcher.group());
-            System.out.println("searchReg: " + matcher.group());
+            //System.out.println("searchReg: " + matcher.group());
         }
         return newsList;
     }
@@ -160,13 +160,13 @@ public class DownloadHtmlFrom36krUtil {
     public static void main(String[] args) throws IOException {
         DownloadHtmlFrom36krUtil gcp = new DownloadHtmlFrom36krUtil();
         List<News> newses = gcp.get36krNews();
-        if(newses != null && newses.size() > 0){
-            for(News news : newses){
-                System.err.println("title: " + news.getTitle()
-                        + ", url: " + news.getUrl()
-                        + ", imageUrl: " + news.getImageUrl()
-                        + ", from: " + news.getFrom());
-            }
-        }
+//        if(newses != null && newses.size() > 0){
+//            for(News news : newses){
+//                System.err.println("title: " + news.getTitle()
+//                        + ", url: " + news.getUrl()
+//                        + ", imageUrl: " + news.getImageUrl()
+//                        + ", from: " + news.getFrom());
+//            }
+//        }
     }
 }

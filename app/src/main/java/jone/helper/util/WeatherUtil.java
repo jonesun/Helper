@@ -47,13 +47,12 @@ public class WeatherUtil {
     public static void getLocationAddressFromBaidu(final CommonListener locationListener){
         App.getInstance().getVolleyCommon().requestJsonObject( Constants.GET_LOCATION_URL, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(final JSONObject response) {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
                     String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
-                    String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
+                    final String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
                     System.out.println("getLocationAddressFromBaidu:" + city);
-                    App.getInstance().getUmengUtil().get_location(Constants.GET_LOCATION_URL, response.toString(), city);
                     locationListener.onExecute(city);
                 } catch (JSONException e) {
 //                            e.printStackTrace();
@@ -156,11 +155,6 @@ public class WeatherUtil {
                                     weather = new Gson().fromJson(weatherStr, Weather.class);
                                 }
                             }
-                        }
-                        if(weather != null){
-                            App.getInstance().getUmengUtil().get_weather(url, response.toString(), GsonUtils.toJson(weather));
-                        }else {
-                            App.getInstance().getUmengUtil().get_weather(url, response.toString(), "");
                         }
                     } catch (JSONException e) {
                         Log.e("WeatherUtil", "getWeatherInfoByURL", e);

@@ -29,6 +29,7 @@ import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
+import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
 public class MenuActivity extends FragmentActivity implements View.OnClickListener{
@@ -53,7 +54,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             changeFragment(new HomeFragment());
         }
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
-        App.getInstance().getUmengUtil().event_open_main();
+        UmengUtil.event_open_main(MenuActivity.this);
 
         App.getInstance().getHandler().post(new Runnable() {
             @Override
@@ -110,7 +111,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                 PropertyValuesHolder pvhR = PropertyValuesHolder.ofFloat(View.ROTATION, 45);
                 ObjectAnimator animation = ObjectAnimator.ofPropertyValuesHolder(fabIconNew, pvhR);
                 animation.start();
-                App.getInstance().getUmengUtil().event_click_floating_action_menu();
+                UmengUtil.event_click_floating_action_menu(MenuActivity.this);
             }
 
             @Override
@@ -126,7 +127,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         rlIcon1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.getInstance().getUmengUtil().event_click_camera();
+                UmengUtil.event_click_camera(MenuActivity.this);
                 startActivity(new Intent(MenuActivity.this, Camera.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
@@ -135,7 +136,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         rlIcon2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.getInstance().getUmengUtil().event_click_photos();
+                UmengUtil.event_click_photos(MenuActivity.this);
                 startActivity(new Intent(MenuActivity.this, Gallery.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
@@ -144,7 +145,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         rlIcon3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.getInstance().getUmengUtil().event_click_calculator();
+                UmengUtil.event_click_calculator(MenuActivity.this);
                 startActivity(new Intent(MenuActivity.this, Calculator.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
@@ -153,7 +154,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         rlIcon4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.getInstance().getUmengUtil().event_click_scan();
+                UmengUtil.event_click_scan(MenuActivity.this);
                 startActivity(new Intent(MenuActivity.this, CaptureActivity.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
