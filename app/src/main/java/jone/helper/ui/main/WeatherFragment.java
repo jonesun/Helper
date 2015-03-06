@@ -6,20 +6,31 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.Constants;
 import jone.helper.R;
+import jone.helper.adapter.NewsAdapter;
+import jone.helper.adapter.WeatherAdapter;
+import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
+import jone.helper.bean.News;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.util.GsonUtils;
+import jone.helper.lib.util.Utils;
 import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
 
@@ -39,7 +50,13 @@ public class WeatherFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private TextView txt_city, txt_weather;
+    private TextView txt_city, txt_pm25;
+    private static final String TAG = WeatherFragment.class.getSimpleName();
+    private RecyclerView mRecyclerView;
+    private WeatherAdapter weatherAdapter;
+    private List<WeatherData> weatherDataList = new ArrayList<>();
+    private MenuActivity activity;
+    private String weatherUrl;
 
     private static final int WHAT_UPDATE_CITY_VIEW = 1000;
     private static final int WHAT_UPDATE_WEATHER_VIEW = 1001;
@@ -61,29 +78,29 @@ public class WeatherFragment extends Fragment {
                     }
                     break;
                 case WHAT_UPDATE_WEATHER_VIEW:
-                    if(msg.obj != null){
+                    if(msg.obj != null && msg.obj instanceof Weather){
                         Weather weather = (Weather) msg.obj;
-                        if(txt_weather != null && weather != null){
-                            StringBuffer weatherStringBuffer = new StringBuffer();
-                            weatherStringBuffer.append("当前城市: " + weather.getCurrentCity()).append("\n");
-                            List<WeatherData> weatherDatas = weather.getWeather_data();
-                            if(weatherDatas != null && weatherDatas.size() > 0){
-                                WeatherData weatherData = weatherDatas.get(0);
-                                weatherStringBuffer.append("温度: " + weatherData.getTemperature() + "\n"
-                                        + "天气: " + weatherData.getWeather() + "(" + weatherData.getWind() + ")\n"
-                                        + "发布时间: " + weatherData.getDate());
-                            }
-                            txt_weather.setText(weatherStringBuffer);
+                        if(txt_pm25 != null){
+                            txt_pm25.setText("pm2.5: " + weather.getPm25());
                         }
-                    }else {
-                        if(txt_weather != null){
-                            txt_weather.setText("天气获取失败");
+                        weatherDataList = weather.getWeather_data();
+                        if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
+                            weatherAdapter.setWeatherDataList(weatherDataList);
+                            weatherAdapter.notifyDataSetChanged();
+                            UmengUtil.get_weather(activity, weatherUrl, weatherDataList.get(0).getWeather());
                         }
                     }
                     break;
             }
         }
     };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (MenuActivity) getActivity();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -95,34 +112,41 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         txt_city = (TextView) view.findViewById(R.id.txt_city);
-        txt_weather = (TextView) view.findViewById(R.id.txt_weather);
+        txt_pm25 = (TextView) view.findViewById(R.id.txt_pm25);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.weather_list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setHasFixedSize(true);
+
+        weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
+        mRecyclerView.setAdapter(weatherAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        WeatherUtil.getLocationAddressFromBaidu(new CommonListener() {
-            @Override
-            public Object onExecute(Object o) {
-                handler.sendMessage(handler.obtainMessage(WHAT_UPDATE_CITY_VIEW, o));
-                if(o != null){
-                    UmengUtil.get_location(getActivity(), Constants.GET_LOCATION_URL, o.toString());
-                    String weatherUrl = WeatherUtil.getWeatherURLByCityName(getActivity(), o.toString());
-                    Log.e("sss", "weatherUrl: " + weatherUrl);
-                    if(weatherUrl != null){
-                        WeatherUtil.getWeatherInfoByURL(weatherUrl, new WeatherUtil.WeatherInfoListener() {
-                            @Override
-                            public void onResponse(Weather weatherInfo) {
-                                handler.sendMessage(handler.obtainMessage(WHAT_UPDATE_WEATHER_VIEW, weatherInfo));
-                                if(weatherInfo != null){
-                                    UmengUtil.get_weather(getActivity(), Constants.GET_LOCATION_URL, GsonUtils.toJson(weatherInfo));
+        if(Utils.isNetworkAlive(activity)){
+            WeatherUtil.getLocationAddressFromBaidu(new CommonListener() {
+                @Override
+                public Object onExecute(Object o) {
+                    handler.sendMessage(handler.obtainMessage(WHAT_UPDATE_CITY_VIEW, o));
+                    if(o != null){
+                        UmengUtil.get_location(activity, Constants.GET_LOCATION_URL, o.toString());
+                        weatherUrl = WeatherUtil.getWeatherURLByCityName(getActivity(), o.toString());
+                        if(weatherUrl != null){
+                            WeatherUtil.getWeatherInfoByURL(weatherUrl, new WeatherUtil.WeatherInfoListener() {
+                                @Override
+                                public void onResponse(Weather weatherInfo) {
+                                    handler.sendMessage(handler.obtainMessage(WHAT_UPDATE_WEATHER_VIEW, weatherInfo));
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
+                    return null;
                 }
-                return null;
-            }
-        });
+            });
+        }
     }
+
 }

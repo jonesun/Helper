@@ -30,6 +30,8 @@ import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.ui.main.MenuActivity;
+import jone.helper.ui.main.WeatherFragment;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
 
@@ -40,14 +42,14 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private List<News> newsList;
-    private Context mContext;
+    private MenuActivity menuActivity;
     private ImageLoader imageLoader;
     private StringBuffer weatherStringBuffer = null;
     private Calendar calendar = Calendar.getInstance();
     private FestivalUtil festivalUtil;
     private StringBuffer festival = null;
-    public NewsAdapter(Context context , List<News> newsList){
-        this.mContext = context;
+    public NewsAdapter(MenuActivity menuActivity, List<News> newsList){
+        this.menuActivity = menuActivity;
         this.newsList = newsList;
         imageLoader = new ImageLoader(App.getInstance().getVolleyCommon().getmRequestQueue(),
                 new BitmapCache());
@@ -82,9 +84,19 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             VHHeader item = (VHHeader) viewHolder;
             showDate(item.txt_date, item.txt_festival);
             showWeatherInfo(item.txt_weather);
+            item.txt_date.setOnClickListener(openWeatherFragment);
+            item.txt_festival.setOnClickListener(openWeatherFragment);
         }
     }
 
+    private View.OnClickListener openWeatherFragment = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(menuActivity != null){
+                menuActivity.changeFragment(WeatherFragment.getInstance());
+            }
+        }
+    };
 
     public void setNewsList(List<News> newsList) {
         this.newsList = newsList;
@@ -161,7 +173,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private void showWeatherInfo(final TextView txt_weather){
         if(weatherStringBuffer == null){
-            if(SystemUtil.isNetworkAlive(mContext)){
+            if(SystemUtil.isNetworkAlive(menuActivity)){
                 txt_weather.setText("loading...");
                 txt_weather.setSelected(true);
                 WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {

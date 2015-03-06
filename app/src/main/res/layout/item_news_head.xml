@@ -54,6 +54,4 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:focusable="true"/>
     </LinearLayout>
-
-
 </FrameLayout>

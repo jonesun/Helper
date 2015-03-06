@@ -1,6 +1,5 @@
 package jone.helper.ui.main;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,8 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import cn.waps.AppConnect;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.NewsAdapter;
@@ -31,7 +31,6 @@ import jone.helper.lib.processDataOperator.ProcessDBDataOperator;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.util.DownloadHtmlFrom36krUtil;
-import jone.helper.util.FestivalUtil;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
@@ -39,6 +38,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private TextView txt_welcome;
     private NewsAdapter newsAdapter;
+    private LinearLayout layout_ad;
     private List<News> newsList = new ArrayList<>();
     private LoaderManager loaderManager;
     private MenuActivity activity;
@@ -87,6 +87,9 @@ public class HomeFragment extends Fragment {
         if(Utils.isNetworkAlive(activity)){
             loaderManager.initLoader(loader_id, null, loaderCallbacks);
         }
+
+        layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
+        AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
     }
 
     private LoaderManager.LoaderCallbacks<List> loaderCallbacks = new LoaderManager.LoaderCallbacks<List>() {
