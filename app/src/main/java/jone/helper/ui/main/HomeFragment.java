@@ -92,7 +92,12 @@ public class HomeFragment extends Fragment {
         }
 
         layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
-        AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
+        try{
+            AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage(), e);
+        }
+
 
         newsAdapter.setOnItemClickListener(new NewsAdapter.OnRecyclerViewItemClickListener() {
             @Override
