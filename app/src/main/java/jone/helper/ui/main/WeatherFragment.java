@@ -15,11 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import cn.waps.AppConnect;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.NewsAdapter;
@@ -31,6 +34,7 @@ import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
+import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
 
@@ -57,6 +61,9 @@ public class WeatherFragment extends Fragment {
     private List<WeatherData> weatherDataList = new ArrayList<>();
     private MenuActivity activity;
     private String weatherUrl;
+    public TextView txt_date;
+    public TextView txt_festival;
+    private LinearLayout layout_ad;
 
     private static final int WHAT_UPDATE_CITY_VIEW = 1000;
     private static final int WHAT_UPDATE_WEATHER_VIEW = 1001;
@@ -114,6 +121,9 @@ public class WeatherFragment extends Fragment {
         txt_city = (TextView) view.findViewById(R.id.txt_city);
         txt_pm25 = (TextView) view.findViewById(R.id.txt_pm25);
 
+        txt_date = (TextView) view.findViewById(R.id.txt_date);
+        txt_festival = (TextView) view.findViewById(R.id.txt_festival);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.weather_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -121,6 +131,32 @@ public class WeatherFragment extends Fragment {
 
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
         mRecyclerView.setAdapter(weatherAdapter);
+        showDate();
+        layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
+        try{
+            AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    private void showDate(){
+        Calendar calendar = Calendar.getInstance();
+        FestivalUtil festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
+
+        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
+                (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
+        ArrayList<String> fest = festivalUtil.getFestVals();
+        StringBuffer festival = new StringBuffer();
+        if(fest.size() > 0){
+            for(String str:fest){
+                festival.append(str + "(" + FestivalUtil.getPinYin(str).trim() + ")" +" ");
+                System.out.println(str + "(" + FestivalUtil.getPinYin(str, "_").trim() + ")");
+            }
+            txt_festival.setText("今天是: " + festival);
+        }else {
+            txt_festival.setText("今天没有节日");
+        }
     }
 
     @Override
@@ -146,6 +182,8 @@ public class WeatherFragment extends Fragment {
                     return null;
                 }
             });
+        }else {
+            txt_city.setText("网络连接失败");
         }
     }
 

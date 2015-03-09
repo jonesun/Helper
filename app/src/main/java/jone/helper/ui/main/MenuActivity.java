@@ -51,7 +51,12 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         mContext = this;
         setUpMenu();
         if( savedInstanceState == null ){
-            changeFragment(new HomeFragment());
+            if(BuildConfig.FLAVOR.equals("baidu")){
+                changeFragment(WeatherFragment.getInstance());
+            }else {
+                changeFragment(HomeFragment.getInstance());
+            }
+
         }
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
         UmengUtil.event_open_main(MenuActivity.this);
@@ -182,7 +187,9 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         itemCalendar.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
 
-        resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+        if(!BuildConfig.FLAVOR.equals("baidu")){
+            resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+        }
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
@@ -211,7 +218,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
         if (view == itemHome){
             changeFragment(HomeFragment.getInstance());
         }else if (view == itemProfile){

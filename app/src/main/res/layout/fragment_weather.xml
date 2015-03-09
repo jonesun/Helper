@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" tools:context="jone.helper.ui.main.WeatherFragment"
     android:padding="2dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_ad"
+        android:orientation="vertical"/>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_date"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_festival"
+                android:textColor="@android:color/black"/>
             <TextView
                 android:id="@+id/txt_city"
                 android:layout_width="match_parent"
