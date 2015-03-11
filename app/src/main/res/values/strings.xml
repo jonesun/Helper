@@ -7,9 +7,10 @@
     <string name="action_change_bg">更换背景</string>
 
     <string name="title_section0">主页</string>
-    <string name="title_section1">天气</string>
+    <string name="title_section1">精美游戏</string>
     <string name="title_section2">应用列表</string>
     <string name="title_section3">设备信息</string>
+    <string name="title_section4">用户反馈</string>
 
     <string name="call_phone">拨打电话</string>
     <string name="send_message">发送信息</string>

@@ -40,6 +40,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private ResideMenuItem itemProfile;
     private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
+    private ResideMenuItem itemFeedback;
 
     /**
      * Called when the activity is first created.
@@ -181,18 +182,22 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  getString(R.string.title_section1));
         itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, getString(R.string.title_section2));
         itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, getString(R.string.title_section3));
+        itemFeedback = new ResideMenuItem(this, R.drawable.icon_settings, getString(R.string.title_section4));
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
         itemCalendar.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
+        itemFeedback.setOnClickListener(this);
 
-        if(!BuildConfig.FLAVOR.equals("baidu")){
-            resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
-        }
+//        if(!BuildConfig.FLAVOR.equals("baidu")){
+//            resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+//        }
+        resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemFeedback, ResideMenu.DIRECTION_RIGHT);
 
         // You can disable a direction by setting ->
         // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
@@ -219,13 +224,20 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if (view == itemHome){
-            changeFragment(HomeFragment.getInstance());
-        }else if (view == itemProfile){
             changeFragment(WeatherFragment.getInstance());
+        }else if (view == itemProfile){
+            try{
+                AppConnect.getInstance(MenuActivity.this).showGameOffers(MenuActivity.this);
+            }catch (Exception e){}
         }else if (view == itemCalendar){
             changeFragment(AllAppsFragment.getInstance());
         }else if (view == itemSettings){
             changeFragment(DeviceInfoFragment.getInstance());
+        }else if(view == itemFeedback){
+            try{
+                //用户反馈
+                AppConnect.getInstance(MenuActivity.this).showFeedback(MenuActivity.this);
+            }catch (Exception e){}
         }
         resideMenu.closeMenu();
     }

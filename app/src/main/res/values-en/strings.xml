@@ -6,9 +6,15 @@
     <string name="action_settings">Setting</string>
     <string name="action_change_bg">Background</string>
 
-    <string name="title_section1">Tools</string>
+
+    <string name="title_section0">Home</string>
+    <string name="title_section1">Games</string>
     <string name="title_section2">Apps</string>
     <string name="title_section3">Device</string>
+    <string name="title_section4">Feedback</string>
+    <!--<string name="title_section1">Tools</string>-->
+    <!--<string name="title_section2">Apps</string>-->
+    <!--<string name="title_section3">Device</string>-->
 
     <string name="call_phone">Phone</string>
     <string name="send_message">Message</string>
