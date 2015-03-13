@@ -22,17 +22,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.waps.AppConnect;
+import jone.helper.AppConnect;
 import jone.helper.Constants;
 import jone.helper.R;
-import jone.helper.adapter.NewsAdapter;
 import jone.helper.adapter.WeatherAdapter;
-import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
-import jone.helper.bean.News;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
-import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;

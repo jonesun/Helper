@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.waps.AppConnect;
+import jone.helper.AppConnect;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.NewsAdapter;
@@ -97,7 +97,6 @@ public class HomeFragment extends Fragment {
         }catch (Exception e){
             Log.e(TAG, e.getMessage(), e);
         }
-
 
         newsAdapter.setOnItemClickListener(new NewsAdapter.OnRecyclerViewItemClickListener() {
             @Override

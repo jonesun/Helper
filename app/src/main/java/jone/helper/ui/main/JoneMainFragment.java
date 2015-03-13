@@ -35,7 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import cn.waps.AppConnect;
+import jone.helper.AppConnect;
 import jone.helper.R;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;

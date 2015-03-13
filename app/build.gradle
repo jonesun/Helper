@@ -8,7 +8,7 @@ android {
         applicationId "jone.helper"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 5
+        versionCode 6
         versionName "3.0"
         ndk {
             moduleName "tp_file"
@@ -58,19 +58,24 @@ android {
     //    //生成不同的APK包，有不同的包名，或者不同的资源
     productFlavors {
         baidu {
-            versionCode 5
-            versionName "3.0.01"
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "baidu"]
+            versionCode 6
+            versionName "3.0.1"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu", FM_VALUE: "baidu"]
         }
          _91{
-             versionCode 5
-             versionName "3.0.02"
-             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "91助手"]
+             versionCode 6
+             versionName "3.0.1"
+             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "91助手", FM_VALUE: "91助手"]
         }
         hiapk {
-            versionCode 5
-            versionName "3.0.03"
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "安卓市场"]
+            versionCode 6
+            versionName "3.0.1"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "安卓市场", FM_VALUE: "安卓市场"]
+        }
+        _163 {
+            versionCode 6
+            versionName "3.0.1"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "网易应用", FM_VALUE: "网易应用"]
         }
 
     }

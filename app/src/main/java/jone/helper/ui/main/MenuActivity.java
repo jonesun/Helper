@@ -21,8 +21,8 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
 
-import cn.waps.AppConnect;
 import jone.helper.App;
+import jone.helper.AppConnect;
 import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
@@ -52,25 +52,13 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         mContext = this;
         setUpMenu();
         if( savedInstanceState == null ){
-            if(BuildConfig.FLAVOR.equals("baidu")){
-                changeFragment(WeatherFragment.getInstance());
-            }else {
-                changeFragment(HomeFragment.getInstance());
-            }
-
+            changeFragment(WeatherFragment.getInstance());
         }
+        setFloatingActionButton();
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
         UmengUtil.event_open_main(MenuActivity.this);
-
-        App.getInstance().getHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                AppConnect.getInstance(Constants.WPSJ_ID,
-                        BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
-            }
-        });
-
-        setFloatingActionButton();
+        AppConnect.getInstance(Constants.WPSJ_ID,
+                BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
     }
 
     private void setFloatingActionButton(){
@@ -182,7 +170,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  getString(R.string.title_section1));
         itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, getString(R.string.title_section2));
         itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, getString(R.string.title_section3));
-        itemFeedback = new ResideMenuItem(this, R.drawable.icon_settings, getString(R.string.title_section4));
+        itemFeedback = new ResideMenuItem(this, R.drawable.icon_profile, getString(R.string.title_section4));
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
