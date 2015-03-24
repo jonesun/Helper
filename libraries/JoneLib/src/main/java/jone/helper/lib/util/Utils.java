@@ -9,6 +9,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,9 +56,14 @@ public class Utils {
     }
 
     public static File getSharedPicFile(Context context) {
+        setNomedia();
         File file = new File(Environment.getExternalStorageDirectory().toString()
-                + File.separator + "jone_helper_shared.png");
+                + File.separator + "jone_helper"+ File.separator +"jone_helper_shared.png");
         if(!file.exists()){
+            File path = file.getParentFile();
+            if(!path.exists()){
+                path.mkdirs();
+            }
             try {
                 copyFromAssets(context, "jone_helper_shared.png", file.getPath());
             } catch (Exception e) {
@@ -79,5 +85,17 @@ public class Utils {
         fileOutputStream.flush();
         fileOutputStream.close();
         inputStream.close();
+    }
+
+    public static void setNomedia() {
+        File file = new File(Environment.getExternalStorageDirectory().toString()
+                + File.separator + "jone_helper"+ File.separator + ".nomedia");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (Exception e) {
+               Log.e(TAG, "setNomedia", e);
+            }
+        }
     }
 }
