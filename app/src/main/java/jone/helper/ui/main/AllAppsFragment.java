@@ -23,10 +23,8 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,21 +32,19 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import jone.helper.R;
+import jone.helper.adapter.AppsAdapter;
 import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
+import jone.helper.lib.util.SystemUtil;
 
 public class AllAppsFragment extends Fragment {
     private static final String TAG = AllAppsFragment.class.getSimpleName();
     private static final int APP_LIST_LOADER = 10001;
     private View rootView;
     private PackageManager packageManager;
-    private List<Map<String, Object>> appItems = new ArrayList<>();
-    private List<ApplicationInfo> applicationInfoList = new ArrayList<>();
-    private SimpleAdapter adapter;
+    private AppsAdapter adapter;
     private LoaderManager loaderManager;
     private TextView txt_info;
     private ProgressBar apps_progressBar;
@@ -94,27 +90,12 @@ public class AllAppsFragment extends Fragment {
         apps_progressBar = (ProgressBar) rootView.findViewById(R.id.apps_progressBar);
         GridView gridView_appList = (GridView) rootView.findViewById(R.id.gridView_appList);
         txt_info = setGridEmptyView(getActivity(), gridView_appList, "加载中...");
-        adapter = new SimpleAdapter(getActivity(),
-                appItems,
-                R.layout.item_app_list,
-                new String[]{"app_icon", "app_title"},
-                new int[]{R.id.app_icon, R.id.app_title});
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Object o, String s) {
-                if(view instanceof ImageView && o instanceof Drawable){
-                    ImageView iv=(ImageView)view;
-                    iv.setImageDrawable((Drawable)o);
-                    return true;
-                }
-                else return false;
-            }
-        });
+        adapter = new AppsAdapter(getActivity());
         gridView_appList.setAdapter(adapter);
         gridView_appList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ApplicationInfo applicationInfo = applicationInfoList.get(i);
+                ApplicationInfo applicationInfo = (ApplicationInfo) adapterView.getAdapter().getItem(i);
                 try{
                     Intent intent = packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
                     startActivity(intent);
@@ -127,7 +108,7 @@ public class AllAppsFragment extends Fragment {
         gridView_appList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
-
+                adapter.checkSelect(actionMode, i);
             }
 
             @Override
@@ -144,12 +125,22 @@ public class AllAppsFragment extends Fragment {
 
             @Override
             public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_delete:
+                        List<ApplicationInfo> applicationInfos = adapter.getSelectDeleteData();
+                        if(applicationInfos != null && applicationInfos.size() > 0){
+                            SystemUtil.uninstallAPK(getActivity(), applicationInfos.get(0).packageName);
+                        }
+                        actionMode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
             }
 
             @Override
             public void onDestroyActionMode(ActionMode actionMode) {
-
+                adapter.unSelectAll(actionMode);
             }
         });
 
@@ -158,9 +149,10 @@ public class AllAppsFragment extends Fragment {
 
     private void bindBroadcast(){
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED); //一个新应用包已经安装在设备上，数据包括包名（最新安装的包程序不能接收到这个广播）
-        intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED); //一个新版本的应用安装到设备，替换之前已经存在的版本
-        intentFilter.addAction(Intent.ACTION_PACKAGE_REPLACED); //一个已存在的应用程序包已经从设备上移除，包括包名（正在被安装的包程序不能接收到这个广播）
+        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+        intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        intentFilter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        intentFilter.addDataScheme("package");
         getActivity().registerReceiver(appChangeBroadcastReceiver, intentFilter);
     }
 
@@ -169,6 +161,9 @@ public class AllAppsFragment extends Fragment {
         super.onDestroy();
         if(loaderManager != null && loaderManager.getLoader(APP_LIST_LOADER) != null){
             loaderManager.destroyLoader(APP_LIST_LOADER);
+        }
+        if(getActivity() != null){
+            getActivity().unregisterReceiver(appChangeBroadcastReceiver);
         }
     }
 
@@ -189,26 +184,19 @@ public class AllAppsFragment extends Fragment {
             apps_progressBar.setVisibility(View.GONE);
             if(list.size() == 0){
                 txt_info.setText("无应用");
+            }else {
+                adapter.setData(list);
             }
-            appItems.clear();
-            for(ApplicationInfo applicationInfo : (List<ApplicationInfo>) list){
-                Map<String, Object> item = new HashMap<>();
-                item.put("app_icon", applicationInfo.loadIcon(packageManager));
-                item.put("app_title", applicationInfo.loadLabel(packageManager));//按序号添加ItemText
-                item.put("applicationInfo", applicationInfo);
-                appItems.add(item);
-            }
-            adapter.notifyDataSetChanged();
         }
 
         @Override
         public void onLoaderReset(Loader<List> listLoader) {
-            appItems.clear();
+            adapter.clear();
         }
     };
 
     private List<ApplicationInfo> getAppList(){
-        applicationInfoList =  new ArrayList<>();
+        List<ApplicationInfo> applicationInfoList =  new ArrayList<>();
         List<ApplicationInfo> tmpList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
         for(ApplicationInfo applicationInfo : tmpList){
             if(packageManager.getLaunchIntentForPackage(applicationInfo.packageName) != null){
