@@ -7,14 +7,18 @@
     android:orientation="horizontal"
     card_view:cardBackgroundColor="@color/cardview_light_background"
     card_view:cardCornerRadius="5dp" >
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp">
         <TextView
             android:id="@+id/txt_weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="加载中..."
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:textColor="@color/dark_grey"
+            android:textSize="14sp"/>
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/image_weather_pic"
             android:layout_width="wrap_content"

@@ -290,4 +290,28 @@ public class WeatherUtil {
                 return "";
         }
     }
+
+    public static String getPm25String(String pm25){
+        try{
+            int p = Integer.parseInt(pm25);
+            if(p >= 0 && p <= 35){
+                return "优";
+            }else if(p > 35 && p <= 75){
+                return "良";
+            }else if( p > 75 && p <= 115){
+                return "轻度污染";
+            }else if( p > 115 && p <= 150){
+                return "中度污染";
+            }else if( p > 150 && p <= 250){
+                return "重度污染";
+            }else if( p > 250){
+                return "严重污染";
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            return null;
+        }
+
+    }
 }

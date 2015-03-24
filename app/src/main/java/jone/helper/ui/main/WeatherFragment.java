@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import jone.helper.App;
 import jone.helper.AppConnect;
+import jone.helper.AppListener;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.WeatherAdapter;
@@ -84,7 +86,13 @@ public class WeatherFragment extends Fragment {
                     if(msg.obj != null && msg.obj instanceof Weather){
                         Weather weather = (Weather) msg.obj;
                         if(txt_pm25 != null){
-                            txt_pm25.setText("pm2.5: " + weather.getPm25());
+                            String pm25String = WeatherUtil.getPm25String(weather.getPm25());
+                            if(pm25String != null){
+                                txt_pm25.setText("pm2.5: " + weather.getPm25() + "(" + pm25String + ")");
+                            }else {
+                                txt_pm25.setText("pm2.5: " + weather.getPm25());
+                            }
+
                         }
                         weatherDataList = weather.getWeather_data();
                         if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
@@ -128,8 +136,8 @@ public class WeatherFragment extends Fragment {
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
         mRecyclerView.setAdapter(weatherAdapter);
         showDate();
-        layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
         try{
+            layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
             AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
         }catch (Exception e){
             Log.e(TAG, e.getMessage(), e);
