@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -21,14 +22,18 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.File;
+
 import jone.helper.App;
 import jone.helper.AppConnect;
 import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
+import jone.helper.lib.util.Utils;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
+import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
@@ -37,6 +42,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private ResideMenu resideMenu;
     private MenuActivity mContext;
     private ResideMenuItem itemHome;
+    private ResideMenuItem itemShared;
     private ResideMenuItem itemProfile;
     private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
@@ -168,12 +174,14 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         // create menu items;
         itemHome     = new ResideMenuItem(this, R.drawable.icon_home,     getString(R.string.title_section0));
         itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  getString(R.string.title_section1));
+        itemShared = new ResideMenuItem(this, R.drawable.icon_share, getString(R.string.share));
         itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, getString(R.string.title_section2));
         itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, getString(R.string.title_section3));
         itemFeedback = new ResideMenuItem(this, R.drawable.icon_profile, getString(R.string.title_section4));
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
+        itemShared.setOnClickListener(this);
         itemCalendar.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
         itemFeedback.setOnClickListener(this);
@@ -183,6 +191,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 //        }
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemShared, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemFeedback, ResideMenu.DIRECTION_RIGHT);
@@ -216,7 +225,15 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         }else if (view == itemProfile){
             try{
                 AppConnect.getInstance(MenuActivity.this).showGameOffers(MenuActivity.this);
-            }catch (Exception e){}
+            }catch (Exception e){
+                Toast.makeText(MenuActivity.this, "服务器异常,请稍候再试", Toast.LENGTH_SHORT).show();
+            }
+        }else if(view == itemShared){
+            try{
+                SharedToUtil.shareToWeixin(MenuActivity.this, "欢迎来到帮手的世界\nhttp://shouji.baidu.com/software/item?docid=7577214&from=as", Utils.getSharedPicFile(MenuActivity.this));
+            }catch (Exception e){
+                Toast.makeText(MenuActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
+            }
         }else if (view == itemCalendar){
             changeFragment(AllAppsFragment.getInstance());
         }else if (view == itemSettings){
