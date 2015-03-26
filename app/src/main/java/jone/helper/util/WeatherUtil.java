@@ -8,10 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.DateFormat;
 import android.util.Log;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,21 +19,19 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Calendar;
-import java.util.List;
 
 import jone.helper.App;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.bean.Weather;
-import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
-import jone.helper.lib.util.GsonUtils;
+import jone.helper.lib.model.net.NetResponseCallback;
+import jone.helper.lib.volley.Method;
 
 /**
- * Created by jone_admin on 2014/4/28.
+ * @author jone_admin on 2014/4/28.
  */
 public class WeatherUtil {
 
@@ -45,9 +40,9 @@ public class WeatherUtil {
      * @param locationListener
      */
     public static void getLocationAddressFromBaidu(final CommonListener locationListener){
-        App.getInstance().getVolleyCommon().requestJsonObject( Constants.GET_LOCATION_URL, new Response.Listener<JSONObject>() {
+        App.getNetJsonOperator().request(Method.GET, Constants.GET_LOCATION_URL, null, new NetResponseCallback<JSONObject>() {
             @Override
-            public void onResponse(final JSONObject response) {
+            public void onSuccess(JSONObject response) {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
                     String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
@@ -59,12 +54,10 @@ public class WeatherUtil {
                     locationListener.onExecute(null);
                     Log.e("baiduapi", "获取当前位置失败 ", e);
                 }
-                System.out.println(response.toString());
             }
-        }, new Response.ErrorListener(){
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-//                        locationListener.onExecute("苏州");
+            public void onFailure(int statusCode, String error) {
                 locationListener.onExecute(null);
                 Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + error);
             }
@@ -141,9 +134,9 @@ public class WeatherUtil {
      */
     public static void getWeatherInfoByURL(final String url, final WeatherInfoListener weatherInfoListener){
         if(url != null){
-            App.getInstance().getVolleyCommon().requestJsonObject(url, new Response.Listener<JSONObject>() {
+            App.getNetJsonOperator().request(Method.GET, url, null, new NetResponseCallback<JSONObject>() {
                 @Override
-                public void onResponse(JSONObject response) {
+                public void onSuccess(JSONObject response) {
                     Weather weather = null;
                     try {
                         if (response.has("status")) {
@@ -162,14 +155,14 @@ public class WeatherUtil {
                         weatherInfoListener.onResponse(weather);
                     }
                 }
-            },new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse (VolleyError error){
-                    Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: ", error);
+
+                @Override
+                public void onFailure(int statusCode, String error) {
+                    Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
                     weatherInfoListener.onResponse(null);
                 }
             });
-            }else {
+        }else {
             weatherInfoListener.onResponse(null);
         }
 

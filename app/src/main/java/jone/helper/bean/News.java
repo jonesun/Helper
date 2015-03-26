@@ -10,14 +10,16 @@ public class News implements Serializable{
     private String url;
     private String imageUrl;
     private String from;
+    private long time;
 
     public News(){}
 
-    public News(String title, String url, String imageUrl, String from){
+    public News(String title, String url, String imageUrl, String from, long time){
         this.title = title;
         this.url = url;
         this.imageUrl = imageUrl;
         this.from = from;
+        this.time = time;
     }
 
     public String getTitle() {
@@ -50,5 +52,13 @@ public class News implements Serializable{
 
     public void setFrom(String from) {
         this.from = from;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

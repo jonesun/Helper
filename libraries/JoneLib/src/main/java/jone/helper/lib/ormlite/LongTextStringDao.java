@@ -8,10 +8,11 @@ import com.j256.ormlite.stmt.DeleteBuilder;
 
 import java.sql.SQLException;
 
-import jone.helper.lib.bean.LongTextString;
+import jone.helper.lib.ormlite.entities.LongTextString;
 
 /**
- * Created by jone.sun on 2015/1/30.
+ *
+ * @author jone.sun on 2015/3/24.
  */
 public class LongTextStringDao extends JoneOrmLiteBaseDao<LongTextString> {
     public static final String KEY_COLUMN_KEY = "key";

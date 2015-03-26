@@ -18,6 +18,7 @@ import jone.helper.App;
 import jone.helper.BitmapCache;
 import jone.helper.R;
 import jone.helper.bean.WeatherData;
+import jone.helper.lib.volley.VolleyCommon;
 
 /**
  * @author jone.sun on 2015/3/6.
@@ -30,7 +31,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public WeatherAdapter(Context context , List<WeatherData> weatherDataList){
         this.mContext = context;
         this.weatherDataList = weatherDataList;
-        imageLoader = new ImageLoader(App.getInstance().getVolleyCommon().getmRequestQueue(),
+        imageLoader = new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
                 new BitmapCache());
     }
 

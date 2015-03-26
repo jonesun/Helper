@@ -14,7 +14,8 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import jone.helper.lib.bean.LongTextString;
+import jone.helper.lib.ormlite.entities.LongTextString;
+
 
 /**
  * Created by jone_admin on 13-12-6.

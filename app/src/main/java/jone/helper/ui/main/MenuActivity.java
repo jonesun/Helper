@@ -76,7 +76,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                     dialog.dismiss();
                 }
             }
-        }, 5000);
+        }, 4000);
     }
 
     private void setFloatingActionButton(){

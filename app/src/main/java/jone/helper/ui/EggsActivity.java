@@ -1,6 +1,8 @@
 package jone.helper.ui;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -20,21 +22,28 @@ import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jone.helper.App;
 import jone.helper.AppConnect;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.adapter.NewsAdapter;
-import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
 import jone.helper.bean.News;
-import jone.helper.lib.processDataOperator.ProcessDBDataOperator;
+import jone.helper.lib.model.net.NetResponseCallback;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
-import jone.helper.util.DownloadHtmlFrom36krUtil;
+import jone.helper.lib.volley.Method;
 
 public class EggsActivity extends FragmentActivity {
+    private static final String TAG = EggsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +78,6 @@ public class EggsActivity extends FragmentActivity {
         private TextView txt_welcome;
         private NewsAdapter newsAdapter;
         private LinearLayout layout_ad;
-        private List<News> newsList = new ArrayList<>();
-        private LoaderManager loaderManager;
         private EggsActivity activity;
         private static EggsFragment instance = null;
         public static EggsFragment getInstance(){
@@ -79,11 +86,34 @@ public class EggsActivity extends FragmentActivity {
             }
             return instance;
         }
-
+        private static final int WHAT_GET_DONE = 100001;
+        private Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case WHAT_GET_DONE:
+                        if(msg.obj != null && msg.obj instanceof List){
+                            List<News> newses = (List<News>) msg.obj;
+                            if(newses.size() == 0){
+                                txt_welcome.setVisibility(View.VISIBLE);
+                                txt_welcome.setText("欢迎来到帮手的世界");
+                            }else {
+                                newsAdapter.setNewsList(newses);
+                                newsAdapter.notifyDataSetChanged();
+                                txt_welcome.setVisibility(View.GONE);
+                            }
+                        }else {
+                            txt_welcome.setVisibility(View.VISIBLE);
+                            txt_welcome.setText("欢迎来到帮手的世界");
+                        }
+                        break;
+                }
+            }
+        };
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            loaderManager = getLoaderManager();
             activity = (EggsActivity) getActivity();
         }
 
@@ -100,22 +130,13 @@ public class EggsActivity extends FragmentActivity {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setHasFixedSize(true);
-            String json = ProcessDBDataOperator.getInstance(activity).getValueByKey(Constants.KEY_NEWS,
-                    null);
-            if(GsonUtils.isGoodJson(json)){
-                newsList = GsonUtils.getGson().fromJson(json, new TypeToken<List<News>>() {
-                }.getType());
-            }
-            if(newsList == null || newsList.size() == 0){
-                txt_welcome.setVisibility(View.VISIBLE);
-            }else {
-                txt_welcome.setVisibility(View.GONE);
-            }
-            newsAdapter = new NewsAdapter(activity, newsList);
-            mRecyclerView.setAdapter(newsAdapter);
 
+            newsAdapter = new NewsAdapter(activity, new ArrayList<News>());
+            mRecyclerView.setAdapter(newsAdapter);
             if(Utils.isNetworkAlive(activity)){
-                loaderManager.initLoader(loader_id, null, loaderCallbacks);
+                getNewsList();
+            }else {
+                handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, null));
             }
 
             layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
@@ -136,53 +157,66 @@ public class EggsActivity extends FragmentActivity {
             });
         }
 
-        private LoaderManager.LoaderCallbacks<List> loaderCallbacks = new LoaderManager.LoaderCallbacks<List>() {
+        /***
+         * 新闻类别     col          取值(90:国内,91:国际,92:社会,94:体育,95:娱乐,93:军事,96:科技,97:财经,98:股市,99:美股)
+         * 新闻形式     type       取值(3:视频,2:图片,空:全部)
+         * 新闻条数     num
+         * http://roll.news.sina.com.cn/interface/rollnews_ch_out_interface.php?col=90,91&type=2&num=5
+         */
+        private void getNewsList() {
+            //
 
-            @Override
-            public Loader<List> onCreateLoader(int i, final Bundle bundle) {
-                return new CustomV4ListAsyncTaskLoader(activity, new CustomV4ListAsyncTaskLoader.LoadListener() {
-                    @Override
-                    public List loading() {
-                        return getNewsList();
-                    }
-                });
-            }
+            App.getNetStringOperator().request(Method.GET,
+                    "http://roll.news.sina.com.cn/interface/rollnews_ch_out_interface.php?num=20",
+                    null,
+                    new NetResponseCallback<String>() {
+                        @Override
+                        public void onSuccess(String response) {
+                            List<News> newses = new ArrayList<>();
+                            if(response != null && response.length() > 0){
+                                response = response.replace("var jsonData = ", "").replace(";", "");
+                                Log.e(TAG, "response: " + response);
+                                if(GsonUtils.isGoodJson(response)){
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        if(jsonObject.length() > 0 && jsonObject.has("list")){
+                                            String listStr = jsonObject.getString("list");
+                                            Log.e(TAG, "list: " + listStr);
+                                            JSONArray jsonArray = new JSONArray(listStr);
+                                            if(jsonArray.length() > 0){
+                                                for(int i = 0; i < jsonArray.length(); i++){
+                                                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                                    News news = new News();
+                                                    if(jsonObject1.has("title")){
+                                                        news.setTitle(jsonObject1.getString("title"));
+                                                    }
+                                                    if(jsonObject1.has("url")){
+                                                        news.setUrl(jsonObject1.getString("title"));
+                                                    }
+                                                    if(jsonObject1.has("pic")){
+                                                        news.setImageUrl(jsonObject1.getString("pic"));
+                                                    }
+                                                    if(jsonObject1.has("time")){
+                                                        news.setTime(jsonObject1.getLong("time"));
+                                                    }
+                                                    news.setFrom("sina");
+                                                    newses.add(news);
+                                                }
+                                            }
+                                        }
+                                    } catch (JSONException e) {
+                                        Log.e(TAG, "", e);
+                                    }
+                                }
+                            }
+                            handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, newses));
+                        }
 
-            @Override
-            public void onLoadFinished(Loader<List> listLoader, List list) {
-                if(list.size() != 0){
-                    newsList.clear();
-                    newsList.addAll(list);
-                    newsAdapter.setNewsList(newsList);
-                    newsAdapter.notifyDataSetChanged();
-                }
-                if(newsList == null || newsList.size() == 0){
-                    txt_welcome.setVisibility(View.VISIBLE);
-                    txt_welcome.setText("欢迎来到帮手的世界");
-                }else {
-                    txt_welcome.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onLoaderReset(Loader<List> listLoader) {
-                newsList.clear();
-            }
-        };
-
-        public List<News> getNewsList() {
-            List<News> newses = new ArrayList<>();
-            try{
-                DownloadHtmlFrom36krUtil gcp = new DownloadHtmlFrom36krUtil();
-                newses = gcp.get36krNews();
-                if(newses != null && newses.size() > 0){
-                    ProcessDBDataOperator.getInstance(getActivity()).delValueByKey(Constants.KEY_NEWS);
-                    ProcessDBDataOperator.getInstance(getActivity()).putValue(Constants.KEY_NEWS, GsonUtils.toJson(newses));
-                }
-            }catch (Exception e){
-                Log.e(TAG, e.getMessage(), e);
-            }
-            return newses;
+                        @Override
+                        public void onFailure(int statusCode, String error) {
+                            handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, null));
+                        }
+                    });
         }
     }
 }

@@ -9,8 +9,10 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import jone.helper.App;
@@ -20,6 +22,7 @@ import jone.helper.bean.News;
 import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.EggsActivity;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.WeatherUtil;
@@ -40,7 +43,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public NewsAdapter(EggsActivity eggsActivity, List<News> newsList){
         this.eggsActivity = eggsActivity;
         this.newsList = newsList;
-        imageLoader = new ImageLoader(App.getInstance().getVolleyCommon().getmRequestQueue(),
+        imageLoader = new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
                 new BitmapCache());
     }
 
@@ -71,8 +74,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 item.mTextView.setText(news.getTitle());
                 item.mImageView.setDefaultImageResId(R.drawable.default_news);
                 item.mImageView.setErrorImageResId(R.drawable.default_news);
-                item.mImageView.setImageUrl(news.getImageUrl(),
-                        imageLoader);
+                if(news.getImageUrl() != null && news.getImageUrl().length() > 0){
+                    item.mImageView.setImageUrl(news.getImageUrl(),
+                            imageLoader);
+                }
+                item.from.setText(news.getFrom());
             }
             viewHolder.itemView.setTag(news);
         } else if (viewHolder instanceof VHHeader) {
@@ -129,11 +135,12 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     class VHItem extends RecyclerView.ViewHolder {
-        public TextView mTextView;
+        public TextView mTextView, from;
         public NetworkImageView mImageView;
         public VHItem(View v){
             super(v);
             mTextView = (TextView) v.findViewById(R.id.name);
+            from = (TextView) v.findViewById(R.id.from);
             mImageView = (NetworkImageView) v.findViewById(R.id.pic);
         }
     }
