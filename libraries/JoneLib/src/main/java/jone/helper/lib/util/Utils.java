@@ -1,6 +1,8 @@
 package jone.helper.lib.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -96,6 +98,18 @@ public class Utils {
             } catch (Exception e) {
                Log.e(TAG, "setNomedia", e);
             }
+        }
+    }
+
+    /**
+     * 根据设备类型设置屏幕方向
+     * @param activity
+     */
+    public static void setScreenOrientation(Activity activity){
+        if(SystemUtil.isPad(activity)){
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     }
 }

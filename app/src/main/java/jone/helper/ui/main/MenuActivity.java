@@ -54,6 +54,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.setScreenOrientation(this);
         AppConnect.getInstance(MenuActivity.this).showPopAd(MenuActivity.this);
         setContentView(R.layout.menu_main);
         mContext = this;
