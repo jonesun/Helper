@@ -2,9 +2,11 @@ package jone.helper.ui.main;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -47,13 +49,12 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
     private ResideMenuItem itemFeedback;
+    private Handler handler = new Handler();
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppConnect.getInstance(MenuActivity.this).showPopAd(MenuActivity.this);
         setContentView(R.layout.menu_main);
         mContext = this;
         setUpMenu();
@@ -63,8 +64,18 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         setFloatingActionButton();
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
         UmengUtil.event_open_main(MenuActivity.this);
-        AppConnect.getInstance(Constants.WPSJ_ID,
-                BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
+        AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
+        AppConnect.getInstance(MenuActivity.this).initPopAd(MenuActivity.this);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Dialog dialog = AppConnect.getInstance(MenuActivity.this).getPopAdDialog();
+                if(dialog != null){
+                    dialog.dismiss();
+                }
+            }
+        }, 5000);
     }
 
     private void setFloatingActionButton(){
@@ -272,7 +283,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     public ResideMenu getResideMenu(){
         return resideMenu;
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -301,5 +311,11 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppConnect.getInstance(MenuActivity.this).close();
     }
 }

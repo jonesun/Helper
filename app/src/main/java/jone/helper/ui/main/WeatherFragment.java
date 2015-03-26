@@ -1,6 +1,7 @@
 package jone.helper.ui.main;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -137,8 +138,10 @@ public class WeatherFragment extends Fragment {
         mRecyclerView.setAdapter(weatherAdapter);
         showDate();
         try{
+            AppConnect.getInstance(activity).setAdBackColor(Color.WHITE);
+            AppConnect.getInstance(activity).setAdForeColor(Color.BLACK);
             layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
-            AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
+            AppConnect.getInstance(activity).showMiniAd(activity, layout_ad, 8);
         }catch (Exception e){
             Log.e(TAG, e.getMessage(), e);
         }
