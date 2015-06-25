@@ -39,7 +39,7 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
--keep public class  jone.helper.bean.**{*;}
+-keep public class jone.helper.bean.**{*;}
 -keepclasseswithmembernames class * {
 native <methods>;
 }
@@ -78,3 +78,7 @@ public static final android.os.Parcelable$Creator *;
 -keep public interface cn.waps.** {*;}
 
 -dontwarn cn.waps.**
+
+-keep class com.baidu.** {*;}
+-keep class vi.com.** {*;}
+-dontwarn com.baidu.**

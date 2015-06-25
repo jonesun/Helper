@@ -55,7 +55,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.setScreenOrientation(this);
-        AppConnect.getInstance(MenuActivity.this).showPopAd(MenuActivity.this);
         setContentView(R.layout.menu_main);
         mContext = this;
         setUpMenu();
@@ -66,17 +65,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
         UmengUtil.event_open_main(MenuActivity.this);
         AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
-        AppConnect.getInstance(MenuActivity.this).initPopAd(MenuActivity.this);
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Dialog dialog = AppConnect.getInstance(MenuActivity.this).getPopAdDialog();
-                if(dialog != null){
-                    dialog.dismiss();
-                }
-            }
-        }, 4000);
     }
 
     private void setFloatingActionButton(){

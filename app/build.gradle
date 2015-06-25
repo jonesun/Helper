@@ -10,12 +10,12 @@ android {
         targetSdkVersion 21
         versionCode 6
         versionName "3.0"
-        ndk {
-            moduleName "tp_file"
-            //stl "stlport_shared"    //对应APP_STL
-            ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
-            //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
-        }
+//        ndk {
+//            moduleName "tp_file"
+//            //stl "stlport_shared"    //对应APP_STL
+//            ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
+//            //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
+//        }
 
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG", FM_VALUE: "jone"]
     }
@@ -58,23 +58,23 @@ android {
     //    //生成不同的APK包，有不同的包名，或者不同的资源
     productFlavors {
         baidu {
-            versionCode 6
-            versionName "3.0.1"
+            versionCode 7
+            versionName "3.0.2"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu", FM_VALUE: "baidu"]
         }
          _91{
-             versionCode 6
-             versionName "3.0.1"
+             versionCode 7
+             versionName "3.0.2"
              manifestPlaceholders = [UMENG_CHANNEL_VALUE: "91助手", FM_VALUE: "91助手"]
         }
         hiapk {
-            versionCode 6
-            versionName "3.0.1"
+            versionCode 7
+            versionName "3.0.2"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "安卓市场", FM_VALUE: "安卓市场"]
         }
         _163 {
-            versionCode 6
-            versionName "3.0.1"
+            versionCode 7
+            versionName "3.0.2"
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "网易应用", FM_VALUE: "网易应用"]
         }
 
@@ -107,6 +107,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.belerweb:pinyin4j:2.5.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.nineoldandroids:library:2.4.0'
     compile project(':libraries:Gallery3D')
     compile project(':libraries:Camera')
     compile project(':libraries:JoneLib')

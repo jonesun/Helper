@@ -34,6 +34,7 @@ import jone.helper.bean.Weather;
 import jone.helper.bean.WeatherData;
 import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.util.Utils;
+import jone.helper.ui.BaiduMapActivity;
 import jone.helper.ui.EggsActivity;
 import jone.helper.ui.SelectCityActivity;
 import jone.helper.util.FestivalUtil;
@@ -169,7 +170,7 @@ public class WeatherFragment extends Fragment {
                     System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
                     mHits[mHits.length-1] = SystemClock.uptimeMillis();
                     if (mHits[0] >= (SystemClock.uptimeMillis()-500)) {
-                        startActivity(new Intent(getActivity(), EggsActivity.class));
+                        startActivity(new Intent(getActivity(), BaiduMapActivity.class));
                     }
                 }
             });
