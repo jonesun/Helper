@@ -10,14 +10,13 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import jone.helper.App;
 import jone.helper.BitmapCache;
 import jone.helper.R;
-import jone.helper.bean.WeatherData;
+import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.volley.VolleyCommon;
 
 /**

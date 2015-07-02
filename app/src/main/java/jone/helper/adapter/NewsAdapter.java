@@ -9,18 +9,16 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import jone.helper.App;
 import jone.helper.BitmapCache;
 import jone.helper.R;
 import jone.helper.bean.News;
-import jone.helper.bean.Weather;
-import jone.helper.bean.WeatherData;
+import jone.helper.model.weather.entity.Weather;
+import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.EggsActivity;

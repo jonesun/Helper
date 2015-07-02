@@ -33,6 +33,7 @@ import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
 import jone.helper.lib.util.Utils;
+import jone.helper.ui.fragments.*;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
 import jone.helper.util.SharedToUtil;

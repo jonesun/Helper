@@ -23,8 +23,8 @@ import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
-import jone.helper.bean.Weather;
-import jone.helper.bean.WeatherData;
+import jone.helper.model.weather.entity.Weather;
+import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.util.Utils;
 import jone.helper.ui.weatherWidget.ui.WeatherWidget;
 import jone.helper.util.Lunar;

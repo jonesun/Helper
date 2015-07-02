@@ -25,7 +25,7 @@ import java.util.Calendar;
 import jone.helper.App;
 import jone.helper.Constants;
 import jone.helper.R;
-import jone.helper.bean.Weather;
+import jone.helper.model.weather.entity.Weather;
 import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.model.net.NetResponseCallback;
 import jone.helper.lib.volley.Method;

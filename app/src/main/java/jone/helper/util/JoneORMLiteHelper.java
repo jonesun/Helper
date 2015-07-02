@@ -15,7 +15,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import jone.helper.bean.WeatherCity;
+import jone.helper.model.weather.entity.WeatherCity;
 
 /**
  * Created by jone_admin on 2014/3/25.
