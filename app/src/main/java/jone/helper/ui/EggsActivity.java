@@ -213,7 +213,7 @@ public class EggsActivity extends FragmentActivity {
                         }
 
                         @Override
-                        public void onFailure(int statusCode, String error) {
+                        public void onFailure(String error) {
                             handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, null));
                         }
                     });

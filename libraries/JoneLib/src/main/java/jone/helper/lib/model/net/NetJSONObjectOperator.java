@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import org.json.JSONObject;
 
 import jone.helper.lib.volley.VolleyCommon;
+import jone.helper.lib.volley.VolleyErrorHelper;
 
 /**
  * @author jone.sun on 2015/3/24.
@@ -45,8 +46,7 @@ public class NetJSONObjectOperator implements NetOperator<JSONObject, JSONObject
                     public void onErrorResponse(VolleyError error) {
                         //todo 先把VolleyError转换成String
                         if(responseCallback != null){
-                            responseCallback.onFailure(error.networkResponse.statusCode,
-                                    error.getMessage());
+                            responseCallback.onFailure(VolleyErrorHelper.getMessage(error));
                         }
                     }
                 });

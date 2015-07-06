@@ -57,7 +57,7 @@ public class WeatherUtil {
             }
 
             @Override
-            public void onFailure(int statusCode, String error) {
+            public void onFailure(String error) {
                 locationListener.onExecute(null);
                 Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + error);
             }
@@ -157,7 +157,7 @@ public class WeatherUtil {
                 }
 
                 @Override
-                public void onFailure(int statusCode, String error) {
+                public void onFailure(String error) {
                     Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
                     weatherInfoListener.onResponse(null);
                 }
@@ -300,10 +300,10 @@ public class WeatherUtil {
             }else if( p > 250){
                 return "严重污染";
             }else {
-                return null;
+                return "未知";
             }
         }catch (Exception e){
-            return null;
+            return "未知";
         }
 
     }

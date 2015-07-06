@@ -11,7 +11,7 @@ public class Weather implements Serializable{
     private String currentCity;
     private String pm25;
     private List<WeatherData> weather_data;
-
+    private List<WeatherIndex> index;
     public Weather(){
 
     }
@@ -38,5 +38,13 @@ public class Weather implements Serializable{
 
     public void setWeather_data(List<WeatherData> weather_data) {
         this.weather_data = weather_data;
+    }
+
+    public List<WeatherIndex> getIndex() {
+        return index;
+    }
+
+    public void setIndex(List<WeatherIndex> index) {
+        this.index = index;
     }
 }

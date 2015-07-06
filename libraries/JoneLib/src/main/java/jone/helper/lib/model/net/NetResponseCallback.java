@@ -7,5 +7,5 @@ public interface NetResponseCallback<T> {
 
     void onSuccess(T response);
 
-    void onFailure(int statusCode, String error);
+    void onFailure(String error);
 }

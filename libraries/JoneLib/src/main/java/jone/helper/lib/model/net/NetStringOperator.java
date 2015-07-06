@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import java.util.Map;
 
 import jone.helper.lib.volley.VolleyCommon;
+import jone.helper.lib.volley.VolleyErrorHelper;
 
 
 /**
@@ -47,8 +48,7 @@ public class NetStringOperator implements NetOperator<Map<String, String>, Strin
                     public void onErrorResponse(VolleyError error) {
                         //todo 先把VolleyError转换成String
                         if(responseCallback != null){
-                            responseCallback.onFailure(error.networkResponse.statusCode,
-                                    error.getMessage());
+                            responseCallback.onFailure(VolleyErrorHelper.getMessage(error));
                         }
                     }
                 });

@@ -57,7 +57,7 @@ public class BaiduWeatherModel implements WeatherModel {
             }
 
             @Override
-            public void onFailure(int statusCode, String error) {
+            public void onFailure(String error) {
                 if(locationListener != null){
                     locationListener.onError(error);
                 }
@@ -68,7 +68,7 @@ public class BaiduWeatherModel implements WeatherModel {
 
     @Override
     public void loadWeather(Context context, String city, final OnWeatherListener listener) {
-        String weatherUrl = getWeatherURLByCity(context, city);
+        String weatherUrl = getWeatherUrlByCityFromBaidu(city);
         App.getNetJsonOperator().request(Method.GET, weatherUrl, null, new NetResponseCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject response) {
@@ -95,13 +95,23 @@ public class BaiduWeatherModel implements WeatherModel {
             }
 
             @Override
-            public void onFailure(int statusCode, String error) {
+            public void onFailure(String error) {
                 Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
                 if(listener != null){
                     listener.onError(error);
                 }
             }
         });
+    }
+
+    private String getWeatherUrlByCityFromBaidu(String city){
+        String url = null;
+        try {
+            url = "http://api.map.baidu.com/telematics/v3/weather?location=" + URLEncoder.encode(city, "utf-8") + "&output=json&ak=" + Constants.BAIDU_AK;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
 
     /**

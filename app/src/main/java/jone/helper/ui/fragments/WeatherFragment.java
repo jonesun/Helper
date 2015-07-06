@@ -11,10 +11,20 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +36,7 @@ import jone.helper.callbacks.CommonListener;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
+import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.WeatherPresenter;
 import jone.helper.presenter.impl.BaiduWeatherPresenter;
 import jone.helper.thridAd.Jone_AppConnectAd;
@@ -101,6 +112,53 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         weatherPresenter = new BaiduWeatherPresenter(this); //传入WeatherView
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
+
+        // 定位初始化
+        getLocation();
+    }
+
+    private LocationClient mLocClient;
+    private MyLocationListenner myListener = new MyLocationListenner();
+    private void getLocation(){
+        // 定位初始化
+        mLocClient = new LocationClient(getHostActivity());
+        mLocClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        //option.setOpenGps(true);// 打开gps
+        option.setIsNeedAddress(true);
+        option.setNeedDeviceDirect(true);
+        option.setCoorType("bd09ll"); //返回的定位结果是百度经纬度,默认值gcj02
+//        option.setScanSpan(1000); //设置发起定位请求的间隔时间为5000ms
+        mLocClient.setLocOption(option);
+        mLocClient.start();
+    }
+
+    /**
+     * 定位SDK监听函数
+     */
+    public class MyLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location != null && location.getCity() != null){
+                Log.e("sss", "city: " + location.getCity());
+                getWeatherByCity(location.getCity().replace("市", ""));
+            }
+            if(mLocClient != null){
+                mLocClient.stop();
+                mLocClient.unRegisterLocationListener(this);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 退出时销毁定位
+        if(mLocClient != null){
+            mLocClient.stop();
+        }
     }
 
     private boolean isFirst = true;
@@ -108,18 +166,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     public void onResume() {
         super.onResume();
         if(isFirst){
-            WeatherUtil.getLocationAddressFromBaidu(new CommonListener() {
-                @Override
-                public Object onExecute(Object o) {
-                    if(o != null){
-                        getWeatherByCity(o.toString());
-                    }else {
-                        getWeatherByCity("泰州");
-                    }
-                    return null;
-                }
-            });
-
+            getLocation();
             isFirst = false;
         }
     }
@@ -197,12 +244,18 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     @Override
     public void setWeatherInfo(Weather weather) {
         if(txt_pm25 != null){
+            List<WeatherIndex> weatherIndexList = weather.getIndex();
             String pm25String = WeatherUtil.getPm25String(weather.getPm25());
-            if(pm25String != null){
-                txt_pm25.setText("pm2.5: " + weather.getPm25() + "(" + pm25String + ")");
-            }else {
-                txt_pm25.setText("pm2.5: " + weather.getPm25());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("pm2.5: ").append(weather.getPm25()).append("(").append(pm25String).append(")");
+            if(weatherIndexList != null && weatherIndexList.size() > 0){
+                for(WeatherIndex weatherIndex : weatherIndexList){
+                    stringBuilder.append("\r\n").append(weatherIndex.getTitle())
+                            .append("(").append(weatherIndex.getZs()).append(")").append(": ")
+                            .append(weatherIndex.getDes());
+                }
             }
+            txt_pm25.setText(stringBuilder.toString());
         }
         weatherDataList = weather.getWeather_data();
         if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
