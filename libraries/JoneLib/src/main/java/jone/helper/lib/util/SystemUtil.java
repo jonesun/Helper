@@ -1,16 +1,29 @@
 package jone.helper.lib.util;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.lang.reflect.Field;
+import java.util.Iterator;
+
+import jone.helper.lib.R;
 
 /**
  * Created by Administrator on 2014/9/18.
@@ -99,5 +112,138 @@ public class SystemUtil {
         Uri uri = Uri.parse("package:" + packageName);
         Intent intent=new Intent(Intent.ACTION_DELETE,uri);
         context.startActivity(intent);
+    }
+
+    /***
+     * 在小米应用图标的快捷方式上加数字<br>
+     *
+     *
+     * @param context
+     * @param num 显示的数字：大于99，为"99"，当为""时，不显示数字，相当于隐藏了)<br><br>
+     *
+     * 注意点：
+     * context.getPackageName()+"/."+clazz.getSimpleName() （这个是启动activity的路径）中的"/."不能缺少
+     *
+     */
+    public static void xiaoMiShortCut(Context context,Class<?> clazz, String num){
+        Log.e("SystemUtil", "xiaoMiShortCut....");
+        Intent localIntent = new Intent("android.intent.action.APPLICATION_MESSAGE_UPDATE");
+        localIntent.putExtra("android.intent.extra.update_application_component_name", context.getPackageName()+"/."+clazz.getSimpleName());
+        if(TextUtils.isEmpty(num)){
+            num = "";
+        }else{
+            int numInt = Integer.valueOf(num);
+            if (numInt > 0){
+                if (numInt > 99){
+                    num = "99";
+                }
+            }else{
+                num = "0";
+            }
+        }
+        localIntent.putExtra("android.intent.extra.update_application_message_text", num);
+        context.sendBroadcast(localIntent);
+    }
+
+
+    public static void sendBadgeNum(Context context, String number){
+        String launcherActivityClassName = getLaunchActivityName(context);
+        if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
+            sendBadgeNumToXiaoMi(context, launcherActivityClassName, number);
+        } else if (Build.MANUFACTURER.equalsIgnoreCase("samsung")) {
+            sendBadgeNumToSamsumg(context, launcherActivityClassName, number);
+        } else if (Build.MANUFACTURER.toLowerCase().contains("sony")) {
+            sendBadgeNumToSony(context, launcherActivityClassName, number);
+        } else {
+            Toast.makeText(context, "Not Support", Toast.LENGTH_LONG).show();
+        }
+    }
+    public static void sendBadgeNumToXiaoMi(Context context,String launcherActivityClassName, String number) {
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = null;
+        boolean isMiUIV6 = true;
+        try {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            builder.setContentTitle("您有"+number+"未读消息");
+            builder.setTicker("您有"+number+"未读消息");
+            builder.setAutoCancel(true);
+            builder.setSmallIcon(R.drawable.ic_launcher);
+            builder.setDefaults(Notification.DEFAULT_LIGHTS);
+            notification = builder.build();
+            Class miuiNotificationClass = Class.forName("android.app.MiuiNotification");
+            Object miuiNotification = miuiNotificationClass.newInstance();
+            Field field = miuiNotification.getClass().getDeclaredField("messageCount");
+            field.setAccessible(true);
+            //field.set(miuiNotification, number);// 设置信息数
+            field.set(miuiNotification, Integer.valueOf(number));// 红米2，改一行代码就可以设置信息数
+            field = notification.getClass().getField("extraNotification");
+            field.setAccessible(true);
+            field.set(notification, miuiNotification);
+            Toast.makeText(context, "Xiaomi=>isSendOk=>1", Toast.LENGTH_LONG).show();
+        }catch (Exception e) {
+            Log.e("SystemUtil", "sendBageNumToXiaoMi", e);
+            //miui 6之前的版本
+            isMiUIV6 = false;
+            Intent localIntent = new Intent("android.intent.action.APPLICATION_MESSAGE_UPDATE");
+            localIntent.putExtra("android.intent.extra.update_application_component_name",
+                    context.getPackageName() + "/"+ launcherActivityClassName);
+            localIntent.putExtra("android.intent.extra.update_application_message_text",number);
+            context.sendBroadcast(localIntent);
+        }finally{
+            if(notification!=null && isMiUIV6 ){
+                //miui6以上版本需要使用通知发送
+                nm.notify(0, notification);
+            }
+        }
+    }
+
+    public static void sendBadgeNumToSony(Context context,String launcherActivityClassName, String number) {
+        boolean isShow = true;
+        if ("0".equals(number)) {
+            isShow = false;
+        }
+        Intent localIntent = new Intent();
+        localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.SHOW_MESSAGE",isShow);//是否显示
+        localIntent.setAction("com.sonyericsson.home.action.UPDATE_BADGE");
+        localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.ACTIVITY_NAME",launcherActivityClassName );//启动页
+        localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.MESSAGE", number);//数字
+        localIntent.putExtra("com.sonyericsson.home.intent.extra.badge.PACKAGE_NAME",context.getPackageName());//包名
+        context.sendBroadcast(localIntent);
+
+        Toast.makeText(context, "Sony," + "isSendOk", Toast.LENGTH_LONG).show();
+    }
+
+    public static void sendBadgeNumToSamsumg(Context context,String launcherActivityClassName, String number){
+        Intent localIntent = new Intent("android.intent.action.BADGE_COUNT_UPDATE");
+        localIntent.putExtra("badge_count", number);//数字
+        localIntent.putExtra("badge_count_package_name", context.getPackageName());//包名
+        localIntent.putExtra("badge_count_class_name", launcherActivityClassName ); //启动页
+        context.sendBroadcast(localIntent);
+        Toast.makeText(context, "Samsumg," + "isSendOk", Toast.LENGTH_LONG).show();
+    }
+
+    /***
+     * 取得当前应用的启动activity的名称：
+     * mainfest.xml中配置的 android:name:"
+     * @param context
+     * @return
+     */
+    public static String getLaunchActivityName(Context context){
+        PackageManager localPackageManager = context.getPackageManager();
+        Intent localIntent = new Intent("android.intent.action.MAIN");
+        localIntent.addCategory("android.intent.category.LAUNCHER");
+        try{
+            Iterator<ResolveInfo> localIterator = localPackageManager.queryIntentActivities(localIntent, 0).iterator();
+            while (localIterator.hasNext()){
+                ResolveInfo localResolveInfo = localIterator.next();
+                if (!localResolveInfo.activityInfo.applicationInfo.packageName.equalsIgnoreCase(context.getPackageName()))
+                    continue;
+                String str = localResolveInfo.activityInfo.name;
+                return str;
+            }
+        } catch (Exception localException){
+            return null;
+        }
+        return null;
     }
 }

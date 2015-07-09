@@ -33,6 +33,7 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.adapter.WeatherAdapter;
 import jone.helper.callbacks.CommonListener;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
@@ -113,8 +114,12 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
 
-        // 定位初始化
-        getLocation();
+        if(Utils.isNetworkAlive(getHostActivity())){
+            // 定位初始化
+            getLocation();
+        }else {
+            txt_city.setText("网络连接失败");
+        }
     }
 
     private LocationClient mLocClient;
@@ -158,16 +163,6 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         // 退出时销毁定位
         if(mLocClient != null){
             mLocClient.stop();
-        }
-    }
-
-    private boolean isFirst = true;
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(isFirst){
-            getLocation();
-            isFirst = false;
         }
     }
 
@@ -239,6 +234,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     public void showError(String reason) {
         //Do something
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
+        txt_city.setText("网络连接失败");
     }
 
     @Override

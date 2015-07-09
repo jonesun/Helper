@@ -4,12 +4,14 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +34,7 @@ import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.ui.fragments.*;
 import jone.helper.ui.view.ResideMenu;
@@ -66,6 +69,17 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
         UmengUtil.event_open_main(MenuActivity.this);
         AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, MenuActivity.this); //万普世纪
+    }
+
+    private void sendBadgeNumber() {
+        String number = "2";
+        if (TextUtils.isEmpty(number)) {
+            number = "0";
+        } else {
+            int numInt = Integer.valueOf(number);
+            number = String.valueOf(Math.max(0, Math.min(numInt, 99)));
+        }
+        SystemUtil.sendBadgeNum(MenuActivity.this, number);
     }
 
     private void setFloatingActionButton(){
@@ -276,6 +290,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        sendBadgeNumber();
         MobclickAgent.onResume(this);
     }
 
