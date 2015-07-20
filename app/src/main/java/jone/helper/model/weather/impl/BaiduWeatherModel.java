@@ -67,7 +67,7 @@ public class BaiduWeatherModel implements WeatherModel {
     }
 
     @Override
-    public void loadWeather(Context context, String city, final OnWeatherListener listener) {
+    public void loadData(Context context, String city, final OnWeatherListener listener) {
         String weatherUrl = getWeatherUrlByCityFromBaidu(city);
         App.getNetJsonOperator().request(Method.GET, weatherUrl, null, new NetResponseCallback<JSONObject>() {
             @Override

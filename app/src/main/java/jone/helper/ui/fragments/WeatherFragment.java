@@ -1,11 +1,8 @@
 package jone.helper.ui.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,10 +18,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,22 +25,20 @@ import java.util.List;
 
 import jone.helper.R;
 import jone.helper.adapter.WeatherAdapter;
-import jone.helper.callbacks.CommonListener;
-import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
-import jone.helper.presenter.WeatherPresenter;
-import jone.helper.presenter.impl.BaiduWeatherPresenter;
+import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.thridAd.Jone_AppConnectAd;
 import jone.helper.ui.BaiduMapActivity;
+import jone.helper.ui.EggsActivity;
 import jone.helper.ui.SelectCityActivity;
 import jone.helper.ui.main.MenuActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
-import jone.helper.util.WeatherUtil;
+import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
 
 /**
  * Created by jone.sun on 2015/7/2.
@@ -55,7 +46,7 @@ import jone.helper.util.WeatherUtil;
 public class WeatherFragment extends BaseFragment<MenuActivity> implements WeatherView {
     private static final String TAG = WeatherFragment.class.getSimpleName();
     private LinearLayout layout_top, layout_ad;
-    private TextView txt_city, txt_pm25, txt_date, txt_festival;
+    private TextView txt_city, txt_date, txt_festival;
     private RecyclerView mRecyclerView;
     private WeatherAdapter weatherAdapter;
     private Dialog loadingDialog;
@@ -85,7 +76,6 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     protected void findViews(View view) {
         layout_top = findView(view, R.id.layout_top);
         txt_city = findView(view, R.id.txt_city);
-        txt_pm25 = findView(view, R.id.txt_pm25);
         txt_date = findView(view, R.id.txt_date);
         txt_festival = findView(view, R.id.txt_festival);
         mRecyclerView = findView(view, R.id.weather_list);
@@ -239,22 +229,9 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
 
     @Override
     public void setWeatherInfo(Weather weather) {
-        if(txt_pm25 != null){
-            List<WeatherIndex> weatherIndexList = weather.getIndex();
-            String pm25String = WeatherUtil.getPm25String(weather.getPm25());
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("pm2.5: ").append(weather.getPm25()).append("(").append(pm25String).append(")");
-            if(weatherIndexList != null && weatherIndexList.size() > 0){
-                for(WeatherIndex weatherIndex : weatherIndexList){
-                    stringBuilder.append("\r\n").append(weatherIndex.getTitle())
-                            .append("(").append(weatherIndex.getZs()).append(")").append(": ")
-                            .append(weatherIndex.getDes());
-                }
-            }
-            txt_pm25.setText(stringBuilder.toString());
-        }
         weatherDataList = weather.getWeather_data();
         if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
+            weatherAdapter.setWeather(weather);
             weatherAdapter.setWeatherDataList(weatherDataList);
             weatherAdapter.notifyDataSetChanged();
             UmengUtil.get_weather(getHostActivity(), "url", weatherDataList.get(0).getWeather());

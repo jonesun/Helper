@@ -1,4 +1,4 @@
-package jone.helper.presenter;
+package jone.helper.presenter.weather;
 
 import android.content.Context;
 

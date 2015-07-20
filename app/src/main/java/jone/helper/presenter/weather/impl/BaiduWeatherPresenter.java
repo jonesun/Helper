@@ -1,13 +1,12 @@
-package jone.helper.presenter.impl;
+package jone.helper.presenter.weather.impl;
 
 import android.content.Context;
 
-import jone.helper.model.weather.OnLocationListener;
 import jone.helper.model.weather.OnWeatherListener;
 import jone.helper.model.weather.WeatherModel;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.impl.BaiduWeatherModel;
-import jone.helper.presenter.WeatherPresenter;
+import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.ui.view.WeatherView;
 
 /**
@@ -26,7 +25,7 @@ public class BaiduWeatherPresenter implements WeatherPresenter, OnWeatherListene
     @Override
     public void getWeather(Context context, String city) {
         weatherView.showLoading();
-        weatherModel.loadWeather(context, city, this);
+        weatherModel.loadData(context, city, this);
     }
 
     @Override

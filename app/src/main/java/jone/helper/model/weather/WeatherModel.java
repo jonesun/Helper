@@ -7,5 +7,5 @@ import android.content.Context;
  */
 public interface WeatherModel {
     void getLocationCity(Context context, OnLocationListener locationListener);
-    void loadWeather(Context context, String city, OnWeatherListener listener);
+    void loadData(Context context, String city, OnWeatherListener listener);
 }

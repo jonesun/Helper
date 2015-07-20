@@ -54,6 +54,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private ResideMenuItem itemSettings;
     private ResideMenuItem itemFeedback;
     private Handler handler = new Handler();
+    private boolean isCurrentPageFirst = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +80,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             int numInt = Integer.valueOf(number);
             number = String.valueOf(Math.max(0, Math.min(numInt, 99)));
         }
-        SystemUtil.sendBadgeNum(MenuActivity.this, number);
+//        SystemUtil.sendBadgeNum(MenuActivity.this, number);
     }
 
     private void setFloatingActionButton(){
@@ -235,14 +236,12 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        isCurrentPageFirst = false;
         if (view == itemHome){
+            isCurrentPageFirst = true;
             changeFragment(WeatherFragment.getInstance());
         }else if (view == itemProfile){
-            try{
-                AppConnect.getInstance(MenuActivity.this).showGameOffers(MenuActivity.this);
-            }catch (Exception e){
-                Toast.makeText(MenuActivity.this, "服务器异常,请稍候再试", Toast.LENGTH_SHORT).show();
-            }
+            changeFragment(JoneAdListFragment.getInstance());
         }else if(view == itemShared){
             try{
                 SharedToUtil.shareToWeixin(MenuActivity.this, "欢迎来到帮手的世界\nhttp://shouji.baidu.com/software/item?docid=7577214&from=as", Utils.getSharedPicFile(MenuActivity.this));
@@ -305,13 +304,19 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN){
-            if((System.currentTimeMillis() - exitTime) > 2000){
-                Toast.makeText(getApplicationContext(), "再按一次退出程序",Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            }
-            else{
-                finish();
-                System.exit(0);
+            if(isCurrentPageFirst){
+                if((System.currentTimeMillis() - exitTime) > 2000){
+                    Toast.makeText(getApplicationContext(), "再按一次退出程序",Toast.LENGTH_SHORT).show();
+                    exitTime = System.currentTimeMillis();
+                }
+                else{
+                    finish();
+                    System.exit(0);
+                }
+            }else {
+                changeFragment(WeatherFragment.getInstance());
+                resideMenu.closeMenu();
+                isCurrentPageFirst = true;
             }
             return true;
         }
