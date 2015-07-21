@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 一张图片360度旋转 -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/store_loading_bg">
+    </item>
+    <item>
+        <rotate
+            android:drawable="@drawable/store_loading"
+            android:fromDegrees="0.0"
+            android:pivotX="50.0%"
+            android:pivotY="50.0%"
+            android:toDegrees="360.0" />
+    </item>
+</layer-list>

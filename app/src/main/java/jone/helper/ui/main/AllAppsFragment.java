@@ -38,6 +38,7 @@ import jone.helper.R;
 import jone.helper.adapter.AppsAdapter;
 import jone.helper.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.ui.view.PullToRefreshView;
 
 public class AllAppsFragment extends Fragment {
     private static final String TAG = AllAppsFragment.class.getSimpleName();
@@ -48,6 +49,7 @@ public class AllAppsFragment extends Fragment {
     private LoaderManager loaderManager;
     private TextView txt_info;
     private ProgressBar apps_progressBar;
+    private PullToRefreshView pullToRefreshView;
     private BroadcastReceiver appChangeBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -96,10 +98,10 @@ public class AllAppsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 ApplicationInfo applicationInfo = (ApplicationInfo) adapterView.getAdapter().getItem(i);
-                try{
+                try {
                     Intent intent = packageManager.getLaunchIntentForPackage(applicationInfo.packageName);
                     startActivity(intent);
-                }catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getActivity(), applicationInfo.loadLabel(packageManager) + "没有主启动项", Toast.LENGTH_LONG).show();
                 }
             }
@@ -128,7 +130,7 @@ public class AllAppsFragment extends Fragment {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_delete:
                         List<ApplicationInfo> applicationInfos = adapter.getSelectDeleteData();
-                        if(applicationInfos != null && applicationInfos.size() > 0){
+                        if (applicationInfos != null && applicationInfos.size() > 0) {
                             SystemUtil.uninstallAPK(getActivity(), applicationInfos.get(0).packageName);
                         }
                         actionMode.finish();
@@ -144,7 +146,17 @@ public class AllAppsFragment extends Fragment {
             }
         });
 
+        pullToRefreshView = (PullToRefreshView) rootView.findViewById(R.id.pullToRefreshView);
+        pullToRefreshView.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(PullToRefreshView view) {
+                loaderManager.restartLoader(APP_LIST_LOADER, null, appsCallbacks);
+            }
+        });
+        pullToRefreshView.setEnablePullLoadMoreDataStatus(false);
+
         loaderManager.initLoader(APP_LIST_LOADER, null, appsCallbacks);
+
     }
 
     private void bindBroadcast(){
@@ -186,6 +198,9 @@ public class AllAppsFragment extends Fragment {
                 txt_info.setText("无应用");
             }else {
                 adapter.setData(list);
+            }
+            if(pullToRefreshView != null){
+                pullToRefreshView.onHeaderRefreshComplete();
             }
         }
 

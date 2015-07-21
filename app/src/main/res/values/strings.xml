@@ -26,4 +26,11 @@
     <string name="title_activity_news">NewsActivity</string>
     <string name="no_data">No data</string>
     <string name="search">search</string>
+
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">松开后刷新</string>
+    <string name="pull_to_refresh_refreshing_label">加载中，请稍后…\u2026</string>
+    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
+    <string name="pull_to_refresh_footer_pull_label">上拉加载</string>
+    <string name="pull_to_refresh_footer_refreshing_label">加载中，请稍后…\u2026</string>
 </resources>

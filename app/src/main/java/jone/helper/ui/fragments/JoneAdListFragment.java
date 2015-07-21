@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,8 +19,10 @@ import jone.helper.adapter.CustomAdAdapter;
 import jone.helper.model.customAd.entity.CustomAdInfo;
 import jone.helper.presenter.customAd.CustomAdPresenter;
 import jone.helper.presenter.customAd.impl.JoneWPCustomPresenter;
+import jone.helper.thridAd.JoneBaiduAd;
 import jone.helper.ui.main.MenuActivity;
 import jone.helper.ui.view.CustomAdView;
+import jone.helper.ui.view.PullToRefreshView;
 
 /**
  * Created by jone.sun on 2015/7/2.
@@ -30,6 +33,7 @@ public class JoneAdListFragment extends BaseFragment<MenuActivity> implements Cu
     private CustomAdAdapter adapter;
     private ProgressBar progressBar;
     private Handler handler = new Handler();
+    private LinearLayout baidu_layout_ad;
 
     private CustomAdPresenter presenter;
 
@@ -55,6 +59,7 @@ public class JoneAdListFragment extends BaseFragment<MenuActivity> implements Cu
     protected void findViews(View view) {
         mRecyclerView = findView(view, R.id.recyclerView);
         progressBar = findView(view, R.id.progressBar);
+        baidu_layout_ad = findView(view, R.id.baidu_layout_ad);
     }
 
     @Override
@@ -80,7 +85,7 @@ public class JoneAdListFragment extends BaseFragment<MenuActivity> implements Cu
         }else {
             presenter.getCustomAdList(getHostActivity());
         }
-
+        JoneBaiduAd.showBDBannerAd(getHostActivity(), baidu_layout_ad);
     }
 
     @Override

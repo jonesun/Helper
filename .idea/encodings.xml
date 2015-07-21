@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/libs/baidu_appx_android_2.0.0.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/libs/baidu_cuid.jar" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/model/customAd/entity/CustomAdInfo.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/thridAd/JoneBaiduAd.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/ui/view/PullToRefreshView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/store_loading.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-hdpi/store_loading_bg.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/progress_image.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/refresh_footer.xml" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/refresh_header.xml" charset="UTF-8" />
   </component>
 </project>
