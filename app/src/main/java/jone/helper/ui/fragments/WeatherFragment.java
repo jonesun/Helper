@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import jone.helper.BuildConfig;
 import jone.helper.R;
 import jone.helper.adapter.WeatherAdapter;
 import jone.helper.lib.util.Utils;
@@ -92,7 +93,9 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         mRecyclerView.setAdapter(weatherAdapter);
         showDate();
         Jone_AppConnectAd.showMinAd(getHostActivity(), layout_ad);
-        showEggs();
+        if(BuildConfig.FLAVOR.equals("baidumap")){
+            showEggs();
+        }
         txt_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

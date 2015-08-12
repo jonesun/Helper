@@ -180,3 +180,90 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
     ...
 }
+
+//自动化打包
+
+import com.android.build.gradle.internal.dsl.ProductFlavor
+import com.android.builder.core.AndroidBuilder
+import groovy.json.JsonSlurper
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "esg.sykes.autopackage.app"
+        minSdkVersion 8
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+//        buildConfigField("String", "testString", "\"this is test field\"")
+//        buildConfigField("boolean", "testBoolean", "true")
+//        buildConfigField("int", "testInt", "146")
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('store.jks')
+            storePassword 'sunjianan22'
+            keyAlias 'jonesun'
+            keyPassword 'sunjianan22'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    String productFlavorsJson = new File(getProjectDir().getPath() + File.separator + "products.json").text;
+//    println("productFlavorsJson: " + productFlavorsJson)
+
+    def products = new JsonSlurper().parseText(productFlavorsJson).products
+
+//    println("products: " + products)
+    products.collect { product ->
+        product.productFlavors.collect { flavor ->
+            ProductFlavor productFlavor = android.productFlavors.create(product.id + "_" + flavor.channel.id)
+            productFlavor.setApplicationId(flavor.applicationId)
+//            if(flavor.minSdkVersion == 0){
+//                flavor.minSdkVersion = 8;
+//                productFlavor.setMinSdkVersion(flavor.minSdkVersion)
+//            }
+//            if(flavor.targetSdkVersion == 0){
+//                flavor.targetSdkVersion = 21
+//                productFlavor.setTargetSdkVersion(flavor.targetSdkVersion)
+//            }
+            productFlavor.versionName = flavor.versionName
+            productFlavor.versionCode = flavor.versionCode
+            productFlavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: flavor.channel.umeng_value]
+
+            def sourceSet = sourceSets.getByName(productFlavor.getName())
+            sourceSet.java.srcDirs = ['src/' + product.id + '/java']
+            sourceSet.res.srcDirs = ['src/' + product.id + '/res']
+            sourceSet.assets.srcDirs = ['src/' + product.id + '/assets']
+
+            flavor.buildConfigFields.collect{ buildConfigField ->
+                String value = buildConfigField.value;
+                if(buildConfigField.type == "String"){
+                    value = '"' + value + '"';
+                }
+                productFlavor.addBuildConfigField(AndroidBuilder.createClassField(buildConfigField.type, buildConfigField.name, value))
+            }
+            println("productFlavor: " + productFlavor)
+        }
+
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.google.code.gson:gson:2.3'
+}
