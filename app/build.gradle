@@ -44,6 +44,26 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                def productFlavor = variant.productFlavors[0]
+                String versionName = productFlavor.versionName
+                if(versionName == null){
+                    versionName = defaultConfig.versionName
+                }
+                String versionCode = productFlavor.versionCode
+                if(versionCode == null){
+                    versionCode = defaultConfig.versionCode
+                }
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = outputFile.name.replace(".apk", "") + "_" + versionName + "_" + versionCode + "_${releaseTime()}.apk"
+                        println("fileName: " + fileName)
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
     }
 
@@ -84,6 +104,10 @@ def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
         }
     }
     return empty1;
+}
+
+def releaseTime() {
+    return new Date().format("yyyy_MM_dd")
 }
 
 dependencies {

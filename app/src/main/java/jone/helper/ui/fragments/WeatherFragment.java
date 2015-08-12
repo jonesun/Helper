@@ -35,6 +35,7 @@ import jone.helper.thridAd.Jone_AppConnectAd;
 import jone.helper.ui.BaiduMapActivity;
 import jone.helper.ui.EggsActivity;
 import jone.helper.ui.SelectCityActivity;
+import jone.helper.ui.activities.HeartRateMonitorActivity;
 import jone.helper.ui.main.MenuActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.util.FestivalUtil;
@@ -93,9 +94,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         mRecyclerView.setAdapter(weatherAdapter);
         showDate();
         Jone_AppConnectAd.showMinAd(getHostActivity(), layout_ad);
-        if(BuildConfig.FLAVOR.equals("baidumap")){
-            showEggs();
-        }
+        showEggs();
         txt_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +177,11 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
                     System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
                     mHits[mHits.length-1] = SystemClock.uptimeMillis();
                     if (mHits[0] >= (SystemClock.uptimeMillis()-500)) {
-                        startActivity(new Intent(getActivity(), BaiduMapActivity.class));
+                        if(BuildConfig.FLAVOR.equals("baidumap")){
+                            startActivity(new Intent(getActivity(), BaiduMapActivity.class));
+                        }else {
+                            startActivity(new Intent(getHostActivity(), HeartRateMonitorActivity.class));
+                        }
                     }
                 }
             });

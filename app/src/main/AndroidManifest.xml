@@ -27,6 +27,11 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <!--baidu location end-->
 
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.flash"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!--<uses-permission android:name="android.permission.WAKE_LOCK"/>-->
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -82,6 +87,10 @@
             android:theme="@android:style/Theme.Holo.Light"/>
 
         <activity android:name=".ui.BaiduMapActivity"/>
+
+        <activity android:name=".ui.activities.HeartRateMonitorActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
