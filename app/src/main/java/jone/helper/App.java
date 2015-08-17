@@ -11,7 +11,6 @@ import jone.helper.lib.model.net.NetJSONObjectOperator;
 import jone.helper.lib.model.net.NetOperator;
 import jone.helper.lib.model.net.NetStringOperator;
 import jone.helper.lib.view.CommonView;
-import jone.helper.lib.volley.VolleyCommon;
 
 /**
  * Created by Administrator on 2014/9/23.
@@ -33,6 +32,7 @@ public class App extends Application {
         netStringOperator = NetStringOperator.getInstance(this);
         netJsonOperator = NetJSONObjectOperator.getInstance(this);
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
+
     }
 
     public static NetOperator<Map<String, String>, String> getNetStringOperator() {

@@ -8,8 +8,8 @@
 
     <string name="title_section0">主页</string>
     <string name="title_section1">精彩推荐</string>
-    <string name="title_section2">应用管理</string>
-    <string name="title_section3">设备信息</string>
+    <string name="title_section2">手机管理</string>
+    <string name="title_section3">天气信息</string>
     <string name="title_section4">用户反馈</string>
 
     <string name="call_phone">拨打电话</string>
@@ -33,4 +33,7 @@
     <string name="pull_to_refresh_footer_release_label">松开后加载</string>
     <string name="pull_to_refresh_footer_pull_label">上拉加载</string>
     <string name="pull_to_refresh_footer_refreshing_label">加载中，请稍后…\u2026</string>
+    <string name="title_activity_app_manager">应用管理</string>
+    <string name="title_activity_memory_manager">内存管理</string>
+    <string name="title_activity_phone_info">设备信息</string>
 </resources>

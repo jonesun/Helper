@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jone.helper" >
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
-    <!--baidu map-->
+    <!-- baidu map -->
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!--baidu map end-->
+    <!-- baidu map end -->
 
-    <!--baidu location-->
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <!-- SD卡读取权限，用户写入离线定位数据-->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <!--允许应用读取低级别的系统日志文件 -->
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-    <!--baidu location end-->
 
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.flash"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <!--<uses-permission android:name="android.permission.WAKE_LOCK"/>-->
+    <!-- baidu location -->
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 允许应用读取低级别的系统日志文件 -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- baidu location end -->
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- <uses-permission android:name="android.permission.WAKE_LOCK"/> -->
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".App"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".ui.main.MenuActivity"
-            android:theme="@style/Theme.clientActivity"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.main.MenuActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.clientActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -51,46 +55,46 @@
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-            <!--android:name=".ui.actionBarTabs.ActionBarTabsActivity"-->
-            <!--android:label="@string/app_name"-->
-            <!--android:theme="@style/Theme.clientActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+        <!-- <activity -->
+        <!-- android:name=".ui.actionBarTabs.ActionBarTabsActivity" -->
+        <!-- android:label="@string/app_name" -->
+        <!-- android:theme="@style/Theme.clientActivity"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
 
         <activity
             android:name=".flashlight.FlashlightActivity"
-            android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
-
-        <activity android:name=".app.Calculator.Calculator"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+        <activity
+            android:name=".app.Calculator.Calculator"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
-
-        <activity android:name=".ui.EggsActivity"
+        <activity
+            android:name=".ui.EggsActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Light" >
         </activity>
-
-        <activity android:name=".ui.NewsDetailActivity"
-            android:theme="@android:style/Theme.Holo.Light"
-            android:launchMode="singleInstance"/>
-
-        <activity android:name=".ui.SelectCityActivity"
-            android:theme="@android:style/Theme.Holo.Light"/>
-
-        <activity android:name=".ui.BaiduMapActivity"/>
-
-        <activity android:name=".ui.activities.HeartRateMonitorActivity"
+        <activity
+            android:name=".ui.NewsDetailActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity
+            android:name=".ui.SelectCityActivity"
+            android:theme="@android:style/Theme.Holo.Light" />
+        <activity android:name=".ui.BaiduMapActivity" />
+        <activity
+            android:name=".ui.activities.HeartRateMonitorActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
@@ -106,7 +110,6 @@
         </receiver>
 
         <service android:name=".ui.weatherWidget.service.AppWidgetService" />
-
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -114,14 +117,17 @@
         </service>
 
         <provider
-            android:authorities="jone.helper.lib.ProcessDataContentProvider"
             android:name=".lib.model.processData.ProcessDataContentProvider"
+            android:authorities="jone.helper.lib.ProcessDataContentProvider"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
-        <meta-data android:value="5421322856240bf7910000e4" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
-
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5421322856240bf7910000e4" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="iSOjn5Bo3w35BuYzKoacWKyf" />
@@ -141,6 +147,12 @@
                 <!-- 注意！！ 这句必须要加，否则接收不到安装完成广播 -->
             </intent-filter>
         </receiver>
-        <!-- 移动云AppX SDK end-->
+        <!-- 移动云AppX SDK end -->
+        <activity
+            android:name=".ui.activities.AppManagerActivity"
+            android:label="@string/title_section2"
+            android:parentActivityName=".ui.main.MenuActivity">
+        </activity>
     </application>
+
 </manifest>

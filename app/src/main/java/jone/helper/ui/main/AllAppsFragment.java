@@ -131,7 +131,14 @@ public class AllAppsFragment extends Fragment {
                     case R.id.menu_delete:
                         List<ApplicationInfo> applicationInfos = adapter.getSelectDeleteData();
                         if (applicationInfos != null && applicationInfos.size() > 0) {
-                            SystemUtil.uninstallAPK(getActivity(), applicationInfos.get(0).packageName);
+                            ApplicationInfo applicationInfo = applicationInfos.get(0);
+                            if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                                //系统应用
+                                Toast.makeText(getActivity(), "系统应用不可卸载", Toast.LENGTH_SHORT).show();
+                            } else {
+                                //用户应用
+                                SystemUtil.uninstallAPK(getActivity(), applicationInfos.get(0).packageName);
+                            }
                         }
                         actionMode.finish();
                         return true;

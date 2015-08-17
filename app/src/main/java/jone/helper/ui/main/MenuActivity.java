@@ -2,11 +2,8 @@ package jone.helper.ui.main;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.app.Dialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,16 +23,13 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.File;
-
-import jone.helper.App;
 import jone.helper.AppConnect;
 import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.app.Calculator.Calculator;
-import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
+import jone.helper.ui.activities.AppManagerActivity;
 import jone.helper.ui.fragments.*;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
@@ -64,7 +58,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         mContext = this;
         setUpMenu();
         if( savedInstanceState == null ){
-            changeFragment(WeatherFragment.getInstance());
+            changeFragment(JoneHelperMainFragment.getInstance());
         }
         setFloatingActionButton();
         MobclickAgent.updateOnlineConfig(MenuActivity.this);
@@ -206,12 +200,12 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 //            resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
 //        }
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemShared, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
-        resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
-        resideMenu.addMenuItem(itemFeedback, ResideMenu.DIRECTION_RIGHT);
 
+        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemFeedback, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemShared, ResideMenu.DIRECTION_RIGHT);
         // You can disable a direction by setting ->
         // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 
@@ -236,10 +230,8 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        isCurrentPageFirst = false;
         if (view == itemHome){
-            isCurrentPageFirst = true;
-            changeFragment(WeatherFragment.getInstance());
+            changeFragment(JoneHelperMainFragment.getInstance());
         }else if (view == itemProfile){
             changeFragment(JoneAdListFragment.getInstance());
         }else if(view == itemShared){
@@ -249,9 +241,9 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                 Toast.makeText(MenuActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
             }
         }else if (view == itemCalendar){
-            changeFragment(AllAppsFragment.getInstance());
+            startActivity(new Intent(MenuActivity.this, AppManagerActivity.class));
         }else if (view == itemSettings){
-            changeFragment(DeviceInfoFragment.getInstance());
+            changeFragment(WeatherFragment.getInstance());
         }else if(view == itemFeedback){
             try{
                 //用户反馈
@@ -280,6 +272,11 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                 .replace(R.id.main_fragment, targetFragment, "fragment")
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
+        if(targetFragment instanceof JoneHelperMainFragment){
+            isCurrentPageFirst = true;
+        }else {
+            isCurrentPageFirst = false;
+        }
     }
 
     // What good method is to access resideMenu？
@@ -314,9 +311,8 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                     System.exit(0);
                 }
             }else {
-                changeFragment(WeatherFragment.getInstance());
+                changeFragment(JoneHelperMainFragment.getInstance());
                 resideMenu.closeMenu();
-                isCurrentPageFirst = true;
             }
             return true;
         }
