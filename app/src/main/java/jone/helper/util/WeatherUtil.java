@@ -238,6 +238,47 @@ public class WeatherUtil {
         return weatherIcon;
     }
 
+    public static int getIconResIdByWeather(String weather){
+//        晴0、多云1、阴2、阵雨3、雷阵雨4、雷阵雨伴有冰雹5、雨夹雪6、小雨7、
+//        中雨8、大雨9、暴雨10、大暴雨11、特大暴雨12、阵雪13、小雪14、中雪15、
+//        大雪16、暴雪17、雾18、冻雨19、沙尘暴20、小雨-中雨21、中雨-大雨22、大雨-暴雨23、
+//        暴雨-大暴雨24、大暴雨-特大暴雨25、小雪-中雪26、中雪-大雪27、大雪-暴雪28、浮尘29、扬沙30、强沙尘暴31、
+//        霾32
+        int weatherIcon;
+        if(weather == null){
+            weatherIcon = R.drawable.weather_sunny;
+        }else {
+            Calendar calendar = Calendar.getInstance();
+            int hour= calendar.get(Calendar.HOUR_OF_DAY);
+            if(hour > 17){ //晚间
+                weatherIcon = R.drawable.weather_night;
+            }else {
+                if(weather == null || weather.contains("晴")){
+                    weatherIcon = R.drawable.weather_sunny;
+                }else if(weather.contains("多云")){
+                    weatherIcon = R.drawable.weather_cloudy;
+                }else if(weather.contains("阴")){
+                    weatherIcon = R.drawable.weather_overcast;
+                }else if(weather.contains("阵雨")){
+                    weatherIcon = R.drawable.weather_shower;
+                }else if(weather.contains("霾")){
+                    weatherIcon = R.drawable.weather_haze;
+                }else if(weather.contains("雨夹雪")){
+                    weatherIcon = R.drawable.weather_sleet;
+                }else if(weather.contains("雷")){
+                    weatherIcon = R.drawable.weather_thunder;
+                }else if(weather.contains("雨")){
+                    weatherIcon = R.drawable.weather_rain;
+                }else if(weather.contains("雪")){
+                    weatherIcon = R.drawable.weather_snow;
+                }else {
+                    weatherIcon = R.drawable.weather_fog;
+                }
+            }
+        }
+        return weatherIcon;
+    }
+
     public static boolean isUpdateCalendar(Calendar calendar){
         //每天0:00更新日历
         if((calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0) || (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 1)){
@@ -304,6 +345,30 @@ public class WeatherUtil {
             }
         }catch (Exception e){
             return "未知";
+        }
+
+    }
+
+    public static int getPm25BgResId(String pm25){
+        try{
+            int p = Integer.parseInt(pm25);
+            if(p >= 0 && p <= 35){
+                return R.drawable.bg_weather_pm25_0;
+            }else if(p > 35 && p <= 75){
+                return R.drawable.bg_weather_pm25_1;
+            }else if( p > 75 && p <= 115){
+                return R.drawable.bg_weather_pm25_2;
+            }else if( p > 115 && p <= 150){
+                return R.drawable.bg_weather_pm25_3;
+            }else if( p > 150 && p <= 250){
+                return R.drawable.bg_weather_pm25_4;
+            }else if( p > 250){
+                return R.drawable.bg_weather_pm25_5;
+            }else {
+                return R.drawable.bg_weather_pm25_0;
+            }
+        }catch (Exception e){
+            return R.drawable.bg_weather_pm25_0;
         }
 
     }

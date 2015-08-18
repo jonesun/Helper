@@ -308,6 +308,14 @@ public class FestivalUtil {
         lday = offset + 1;
     }
 
+    public int getLday(){
+        return lday;
+    }
+
+    public String getChinaDayString(){
+        return getChinaDayString(lday);
+    }
+
     public static String getChinaDayString(int day) {
         String chineseTen[] = { "初", "十", "廿", "卅" };
         int n = day % 10 == 0 ? 9 : day % 10 - 1;

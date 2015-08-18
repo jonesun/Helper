@@ -7,6 +7,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.thridAd.Jone_AppConnectAd;
+import jone.helper.ui.SelectCityActivity;
 import jone.helper.ui.activities.AppManagerActivity;
 import jone.helper.ui.main.MenuActivity;
 import jone.helper.ui.view.WeatherView;
@@ -46,9 +49,18 @@ import jone.helper.util.WeatherUtil;
  */
 public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implements WeatherView {
     private static final String TAG = JoneHelperMainFragment.class.getSimpleName();
-    private ViewGroup layout_arcProgress;
-    private LinearLayout layout_top, layout_ad;
-    private TextView txt_weather, txt_date, txt_festival, txtCapacity;
+    private ViewGroup layout_arcProgress, layout_weather;
+    private LinearLayout layout_ad;
+    private TextView txt_calendar, txt_pm25, txt_weather_temperature, txt_weather_weather, txtCapacity, txt_weather;
+    private Button btn_city;
+    private ImageView image_weather;
+    public static final int resultCode = 10001;
+    private int[] txt_calendar_ids = new int[]{
+            R.id.txt_calendar_0, R.id.txt_calendar_1, R.id.txt_calendar_2,
+            R.id.txt_calendar_3, R.id.txt_calendar_4, R.id.txt_calendar_5,
+            R.id.txt_calendar_6
+    };
+    private TextView[] txt_calendars = new TextView[txt_calendar_ids.length];
     private ArcProgress arcStore, arcProcess;
 
     private Dialog loadingDialog;
@@ -75,16 +87,26 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
 
     @Override
     protected void findViews(View view) {
+        txt_calendar = findView(view, R.id.txt_calendar);
+        btn_city = findView(view, R.id.btn_city);
+        image_weather = findView(view, R.id.image_weather);
+        txt_pm25 = findView(view, R.id.txt_pm25);
+        txt_weather_temperature = findView(view, R.id.txt_weather_temperature);
+        txt_weather_weather = findView(view, R.id.txt_weather_weather);
         layout_arcProgress = findView(view, R.id.layout_arcProgress);
-        layout_top = findView(view, R.id.layout_top);
         txt_weather = findView(view, R.id.txt_weather);
-        txt_date = findView(view, R.id.txt_date);
-        txt_festival = findView(view, R.id.txt_festival);
+
+        layout_weather = findView(view, R.id.layout_weather);
+
         layout_ad = findView(view, R.id.layout_ad);
 
         arcStore = findView(view, R.id.arc_store);
         arcProcess = findView(view, R.id.arc_process);
         txtCapacity = findView(view, R.id.txt_capacity);
+
+        for(int i = 0; i < txt_calendar_ids.length; i++){
+            txt_calendars[i] = findView(view, txt_calendar_ids[i]);
+        }
     }
 
     @Override
@@ -98,23 +120,36 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
             // 定位初始化
             getLocation();
         }else {
+            layout_weather.setVisibility(View.GONE);
             txt_weather.setText("网络连接失败");
         }
+        image_weather.setOnClickListener(gotoWeatherFragmentListener);
+        txt_pm25.setOnClickListener(gotoWeatherFragmentListener);
+        layout_weather.setOnClickListener(gotoWeatherFragmentListener);
 
-        layout_arcProgress.setOnClickListener(new View.OnClickListener() {
+        btn_city.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                getHostActivity().startActivity(new Intent(getHostActivity(), AppManagerActivity.class));
-            }
-        });
-
-        layout_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getHostActivity().changeFragment(WeatherFragment.getInstance());
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
             }
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == getHostActivity().RESULT_OK){
+            String result = data.getExtras().getString("result");
+            getWeatherByCity(result);
+        }
+    }
+
+    View.OnClickListener gotoWeatherFragmentListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            getHostActivity().changeFragment(WeatherFragment.getInstance());
+        }
+    };
 
     private LocationClient mLocClient;
     private MyLocationListenner myListener = new MyLocationListenner();
@@ -146,31 +181,30 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
     public void showError(String reason) {
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
         txt_weather.setText("网络连接失败");
+        layout_weather.setVisibility(View.GONE);
     }
 
     @Override
     public void setWeatherInfo(Weather weather) {
         List<WeatherData> weatherDataList = weather.getWeather_data();
-        StringBuffer weatherStringBuffer = new StringBuffer();
-        String city = weather.getCurrentCity();
-        weatherStringBuffer.append(city).append("\r\n");
-        String pm25String = WeatherUtil.getPm25String(weather.getPm25());
-        weatherStringBuffer.append("pm2.5: ").append(weather.getPm25()).append("(").append(pm25String).append(")").append("\r\n");
+        txt_pm25.setText(weather.getPm25() + " " + WeatherUtil.getPm25String(weather.getPm25()));
+        txt_pm25.setBackgroundResource(WeatherUtil.getPm25BgResId(weather.getPm25()));
         if(weatherDataList != null && weatherDataList.size() > 0){
             WeatherData todayWeatherData = weatherDataList.get(0);
             UmengUtil.get_weather(getHostActivity(), "url", todayWeatherData.getWeather());
-            weatherStringBuffer.append("温度: ").append(todayWeatherData.getTemperature()).append("\r\n")
-                    .append("天气: ").append(todayWeatherData.getWeather()).append("\r\n")
-                    .append("风度: ").append(todayWeatherData.getWind());
+            txt_weather_temperature.setText(todayWeatherData.getTemperature());
+            txt_weather_weather.setText(todayWeatherData.getWeather() + "(" + todayWeatherData.getWind() + ")");
+            image_weather.setBackgroundResource(WeatherUtil.getIconResIdByWeather(todayWeatherData.getWeather()));
         }
+        StringBuffer weatherStringBuffer = new StringBuffer();
         List<WeatherIndex> weatherIndexList = weather.getIndex();
         if(weatherIndexList != null && weatherIndexList.size() > 0){
             for(WeatherIndex weatherIndex : weatherIndexList){
                 weatherStringBuffer.append("\r\n")
-                        .append("\r\n")
                         .append(weatherIndex.getTitle())
                         .append("(").append(weatherIndex.getZs()).append(")").append(": ")
-                        .append(weatherIndex.getDes());
+                        .append(weatherIndex.getDes())
+                        .append("\r\n");
             }
         }
         if(txt_weather != null){
@@ -198,12 +232,14 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
     }
 
     private void getWeatherByCity(String city){
+        btn_city.setText(" " + city);
         if(Utils.isNetworkAlive(getHostActivity())){
             if(weatherPresenter != null){
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
             txt_weather.setText("网络连接失败");
+            layout_weather.setVisibility(View.GONE);
         }
     }
 
@@ -299,21 +335,52 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
     }
 
     private void showDate(){
+        StringBuilder stringBuilder = new StringBuilder();
         Calendar calendar = Calendar.getInstance();
         FestivalUtil festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
-
-        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
-                (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
+        stringBuilder.append(calendar.get(Calendar.YEAR)).append("年")
+                .append(calendar.get(Calendar.MONTH) + 1).append("月")
+                .append(calendar.get(Calendar.DAY_OF_MONTH)).append("日")
+                .append(" 周").append(FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1))
+                .append("\r\n")
+                .append(" 农历:").append(festivalUtil.getChineseDate()).append(" ");
         ArrayList<String> fest = festivalUtil.getFestVals();
-        StringBuilder festival = new StringBuilder();
         if(fest.size() > 0){
             for(String str:fest){
-                festival.append(str).append("(").append(FestivalUtil.getPinYin(str).trim()).append(")").append(" ");
-                System.out.println(str + "(" + FestivalUtil.getPinYin(str, "_").trim() + ")");
+                stringBuilder.append("今天是: (")
+                        .append(FestivalUtil.getPinYin(str).trim())
+                        .append(")");
             }
-            txt_festival.setText("今天是: " + festival);
         }else {
-            txt_festival.setText("今天没有节日");
+            stringBuilder.append("今天没有节日");
+        }
+        txt_calendar.setText(stringBuilder.toString());
+        int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if(week > 0 && week < txt_calendars.length){
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int chinaDay = festivalUtil.getLday();
+            txt_calendars[week].setText(day + "\r\n" + FestivalUtil.getChinaDayString(chinaDay));
+            txt_calendars[week].setBackgroundResource(R.drawable.today_bg);
+            int leftWeek = week - 1;
+            while (leftWeek >= 0){
+                txt_calendars[leftWeek].setText((day - 1)
+                        + "\r\n"
+                        + FestivalUtil.getChinaDayString(chinaDay - 1));
+                day--;
+                chinaDay--;
+                leftWeek --;
+            }
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+            chinaDay = festivalUtil.getLday();
+            int rightWeek = week + 1;
+            while (rightWeek < txt_calendars.length){
+                txt_calendars[rightWeek].setText((day + 1)
+                        + "\r\n"
+                        + FestivalUtil.getChinaDayString(chinaDay + 1));
+                day++;
+                chinaDay++;
+                rightWeek++;
+            }
         }
     }
 }

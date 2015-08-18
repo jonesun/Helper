@@ -1,106 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="220dip"
-        android:layout_margin="16dp"
-        android:id="@+id/layout_arcProgress">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_height="match_parent">
-            <RelativeLayout
-                android:id="@+id/arc_left"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content">
-                <jone.helper.ui.widget.circleprogress.ArcProgress
-                    android:id="@+id/arc_store"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    custom:arc_bottom_text="存储空间"
-                    custom:arc_bottom_text_size="18dip"
-                    custom:arc_progress="10"
-                    custom:arc_stroke_width="8dip"
-                    custom:arc_text_color="#ffffff"
-                    custom:arc_text_size="32dip" />
-
-                <TextView
-                    android:id="@+id/txt_capacity"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
-                    android:textSize="12dip"
-                    android:text="20/30"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="70dip" />
-            </RelativeLayout>
-
-            <jone.helper.ui.widget.circleprogress.ArcProgress
-                android:id="@+id/arc_process"
-                android:layout_width="100dp"
-                android:layout_marginTop="15dip"
-                android:layout_marginLeft="15dip"
-                android:layout_toRightOf="@+id/arc_left"
-                android:layout_height="100dp"
-                custom:arc_bottom_text="内存"
-                custom:arc_bottom_text_size="14dip"
-                custom:arc_progress="10"
-                custom:arc_stroke_width="6dip"
-                custom:arc_text_color="#ffffff"
-                custom:arc_text_size="26dip" />
-        </RelativeLayout>
-    </RelativeLayout>
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout_ad"
-        android:orientation="horizontal"
-        android:layout_marginLeft="4dip"
-        android:layout_marginRight="4dip"
-        android:layout_marginTop="210dip"
-        android:gravity="center_horizontal"/>
-    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:orientation="vertical"
-        custom:cardBackgroundColor="@color/cardview_light_background"
-        custom:cardCornerRadius="5dp"
-        android:layout_below="@+id/layout_ad">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:id="@+id/layout_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="4dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txt_date"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txt_festival"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
-                <TextView
-                    android:id="@+id/txt_weather"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="加载中..."
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-        </ScrollView>
-    </android.support.v7.widget.CardView>
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_ad"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"/>
+        <include
+            layout="@layout/layout_jone_helper_calendar"/>
 
-</RelativeLayout>
+        <include
+            android:id="@+id/layout_weather"
+            layout="@layout/layout_jone_helper_main_weather"/>
+
+        <View
+            android:id="@+id/view_weather_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#20FFFFFF"
+            android:layout_margin="2dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/layout_arcProgress">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/arc_left"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content">
+                    <jone.helper.ui.widget.circleprogress.ArcProgress
+                        android:id="@+id/arc_store"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        custom:arc_bottom_text="存储空间"
+                        custom:arc_bottom_text_size="18dip"
+                        custom:arc_progress="10"
+                        custom:arc_stroke_width="8dip"
+                        custom:arc_text_color="#ffffff"
+                        custom:arc_text_size="32dip" />
+
+                    <TextView
+                        android:id="@+id/txt_capacity"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textSize="12dip"
+                        android:text="20/30"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="70dip" />
+                </RelativeLayout>
+
+                <jone.helper.ui.widget.circleprogress.ArcProgress
+                    android:id="@+id/arc_process"
+                    android:layout_width="100dp"
+                    android:layout_marginTop="15dip"
+                    android:layout_marginLeft="15dip"
+                    android:layout_toRightOf="@+id/arc_left"
+                    android:layout_height="100dp"
+                    custom:arc_bottom_text="内存"
+                    custom:arc_bottom_text_size="14dip"
+                    custom:arc_progress="10"
+                    custom:arc_stroke_width="6dip"
+                    custom:arc_text_color="#ffffff"
+                    custom:arc_text_size="26dip" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#20FFFFFF"
+            android:layout_margin="2dp" />
+
+        <TextView
+            android:id="@+id/txt_weather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="加载中..."
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:padding="4dp"/>
+    </LinearLayout>
+
+
+</ScrollView>

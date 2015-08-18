@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,8 @@ import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
 public class WeatherFragment extends BaseFragment<MenuActivity> implements WeatherView {
     private static final String TAG = WeatherFragment.class.getSimpleName();
     private LinearLayout layout_top, layout_ad;
-    private TextView txt_city, txt_date, txt_festival;
+    private TextView txt_date, txt_festival;
+    private Button btn_city;
     private RecyclerView mRecyclerView;
     private WeatherAdapter weatherAdapter;
     private Dialog loadingDialog;
@@ -77,7 +79,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     @Override
     protected void findViews(View view) {
         layout_top = findView(view, R.id.layout_top);
-        txt_city = findView(view, R.id.txt_city);
+        btn_city = findView(view, R.id.btn_city);
         txt_date = findView(view, R.id.txt_date);
         txt_festival = findView(view, R.id.txt_festival);
         mRecyclerView = findView(view, R.id.weather_list);
@@ -95,7 +97,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         showDate();
         Jone_AppConnectAd.showMinAd(getHostActivity(), layout_ad);
         showEggs();
-        txt_city.setOnClickListener(new View.OnClickListener() {
+        btn_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
@@ -110,7 +112,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
             // 定位初始化
             getLocation();
         }else {
-            txt_city.setText("网络连接失败");
+            btn_city.setText("网络连接失败");
         }
     }
 
@@ -164,7 +166,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
-            txt_city.setText("网络连接失败");
+            btn_city.setText("网络连接失败");
         }
     }
 
@@ -230,7 +232,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
     public void showError(String reason) {
         //Do something
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
-        txt_city.setText("网络连接失败");
+        btn_city.setText("网络连接失败");
     }
 
     @Override
@@ -244,8 +246,8 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
         }
 
         String city = weather.getCurrentCity();
-        if(txt_city != null){
-            txt_city.setText(Html.fromHtml("<u>" + city + "</u>"));
+        if(btn_city != null){
+            btn_city.setText(Html.fromHtml("<u>" + city + "</u>"));
         }
     }
 }
