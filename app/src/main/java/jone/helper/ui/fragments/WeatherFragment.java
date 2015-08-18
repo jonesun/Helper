@@ -33,7 +33,6 @@ import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.thridAd.Jone_AppConnectAd;
-import jone.helper.ui.BaiduMapActivity;
 import jone.helper.ui.EggsActivity;
 import jone.helper.ui.SelectCityActivity;
 import jone.helper.ui.activities.HeartRateMonitorActivity;
@@ -180,7 +179,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
                     mHits[mHits.length-1] = SystemClock.uptimeMillis();
                     if (mHits[0] >= (SystemClock.uptimeMillis()-500)) {
                         if(BuildConfig.FLAVOR.equals("baidumap")){
-                            startActivity(new Intent(getActivity(), BaiduMapActivity.class));
+                            //startActivity(new Intent(getActivity(), BaiduMapActivity.class));
                         }else {
                             startActivity(new Intent(getHostActivity(), HeartRateMonitorActivity.class));
                         }

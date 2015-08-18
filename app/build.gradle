@@ -8,8 +8,8 @@ android {
         applicationId "jone.helper"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 7
-        versionName "3.0.2"
+        versionCode 8
+        versionName "3.0.3"
 //        ndk {
 //            moduleName "tp_file"
 //            //stl "stlport_shared"    //对应APP_STL
@@ -43,6 +43,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             applicationVariants.all { variant ->
@@ -69,9 +70,9 @@ android {
 
     //    //生成不同的APK包，有不同的包名，或者不同的资源
     productFlavors {
-        baidumap {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
-        }
+//        baidumap {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
+//        }
         baidu {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
         }
