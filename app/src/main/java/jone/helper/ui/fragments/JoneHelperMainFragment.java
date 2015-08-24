@@ -356,7 +356,7 @@ public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implement
         }
         txt_calendar.setText(stringBuilder.toString());
         int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if(week > 0 && week < txt_calendars.length){
+        if(week >= 0 && week < txt_calendars.length){
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int chinaDay = festivalUtil.getLday();
             txt_calendars[week].setText(day + "\r\n" + FestivalUtil.getChinaDayString(chinaDay));
