@@ -184,7 +184,7 @@ public class EggsActivity extends FragmentActivity {
                                                         news.setTitle(jsonObject1.getString("title"));
                                                     }
                                                     if(jsonObject1.has("url")){
-                                                        news.setUrl(jsonObject1.getString("title"));
+                                                        news.setUrl(jsonObject1.getString("url"));
                                                     }
                                                     if(jsonObject1.has("pic")){
                                                         news.setImageUrl(jsonObject1.getString("pic"));
