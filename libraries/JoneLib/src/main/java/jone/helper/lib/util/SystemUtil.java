@@ -167,7 +167,7 @@ public class SystemUtil {
             builder.setContentTitle("您有"+number+"未读消息");
             builder.setTicker("您有"+number+"未读消息");
             builder.setAutoCancel(true);
-            builder.setSmallIcon(R.drawable.ic_launcher);
+//            builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setDefaults(Notification.DEFAULT_LIGHTS);
             notification = builder.build();
             Class miuiNotificationClass = Class.forName("android.app.MiuiNotification");

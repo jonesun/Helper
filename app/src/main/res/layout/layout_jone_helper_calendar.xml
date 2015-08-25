@@ -22,7 +22,7 @@
         android:textSize="20sp"
         android:shadowRadius="5"
         android:shadowColor="#000000"
-        android:drawableLeft="@drawable/icon_search_location"
+        android:drawableLeft="@mipmap/icon_search_location"
         android:padding="8dp"
         android:background="@android:color/transparent"/>
 

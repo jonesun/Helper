@@ -2,7 +2,6 @@ package jone.helper.ui.activities;
 
 import java.util.Locale;
 
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +19,8 @@ import android.view.ViewGroup;
 import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.fragments.MemoryManagerFragment;
-import jone.helper.ui.main.AllAppsFragment;
-import jone.helper.ui.main.DeviceInfoFragment;
+import jone.helper.ui.fragments.AllAppsFragment;
+import jone.helper.ui.fragments.DeviceInfoFragment;
 
 public class AppManagerActivity extends AppCompatActivity implements ActionBar.TabListener {
 

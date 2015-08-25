@@ -30,11 +30,11 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.main.MenuActivity"
+            android:name=".ui.activities.JoneHelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.clientActivity" >
@@ -62,27 +62,27 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".flashlight.FlashlightActivity"
+            android:name=".ui.activities.FlashlightActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name=".app.Calculator.Calculator"
+            android:name=".model.Calculator.Calculator"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:name=".ui.EggsActivity"
+            android:name=".ui.activities.EggsActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Light" >
         </activity>
         <activity
-            android:name=".ui.NewsDetailActivity"
+            android:name=".ui.activities.NewsDetailActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
-            android:name=".ui.SelectCityActivity"
+            android:name=".ui.activities.SelectCityActivity"
             android:theme="@android:style/Theme.Holo.Light" />
 
         <activity
@@ -145,7 +145,7 @@
         <activity
             android:name=".ui.activities.AppManagerActivity"
             android:label="@string/title_section2"
-            android:parentActivityName=".ui.main.MenuActivity">
+            android:parentActivityName=".ui.activities.JoneHelperMainActivity">
         </activity>
     </application>
 

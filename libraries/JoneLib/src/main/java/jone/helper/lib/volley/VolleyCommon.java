@@ -93,18 +93,14 @@ public class VolleyCommon {
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
                 try {
-                    String type = response.headers.get(HTTP.CONTENT_TYPE);
-                    if (type == null) {
-                        type = "charset=UTF-8";
-                        response.headers.put(HTTP.CONTENT_TYPE, type);
-                    } else if (!type.contains("UTF-8")) {
-                        type += ";" + "charset=UTF-8";
-                        response.headers.put(HTTP.CONTENT_TYPE, type);
-                    }
-                } catch (Exception e) {
-                    // print stacktrace e.g.
+                    String data = new String(response.data, "GBK");
+                    return Response.success(data,
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (Exception je) {
+                    return Response.error(new ParseError(je));
                 }
-                return super.parseNetworkResponse(response);
             }
         }, "requestString");
     }

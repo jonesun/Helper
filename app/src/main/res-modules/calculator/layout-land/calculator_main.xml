@@ -29,7 +29,7 @@
          android:layout_weight="2"
          >
 
-            <jone.helper.app.Calculator.CalculatorDisplay
+            <jone.helper.model.Calculator.CalculatorDisplay
                  android:id="@+id/display"
                  android:layout_width="0dp"
                  android:layout_weight="5"
@@ -39,9 +39,9 @@
                 <EditText style="@style/display_style" />                
                 <EditText style="@style/display_style" />
                 
-            </jone.helper.app.Calculator.CalculatorDisplay >
+            </jone.helper.model.Calculator.CalculatorDisplay>
 
-        <jone.helper.app.Calculator.ColorButton
+        <jone.helper.model.Calculator.ColorButton
              android:id="@+id/del"
              android:text="@string/clear"
              android:layout_width="0dp"
@@ -54,7 +54,7 @@
              />
     </LinearLayout>
 
-    <jone.helper.app.Calculator.PanelSwitcher
+    <jone.helper.model.Calculator.PanelSwitcher
          android:id="@+id/panelswitch"
          android:layout_width="match_parent"
          android:layout_height="0dp"
@@ -73,32 +73,32 @@
              android:layout_width="match_parent"
              android:layout_height="0dp"
              >    
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit7"
                 android:text="@string/digit7"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit8"
                 android:text="@string/digit8"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit9"
                 android:text="@string/digit9"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/leftParen"
                 android:text="@string/leftParen"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/rightParen"
                 android:text="@string/rightParen"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/mul"
                 android:text="@string/mul"
                 style="@style/button_style"
@@ -110,32 +110,32 @@
              android:layout_width="match_parent"
              android:layout_height="0dp"
              >    
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit4"
                 android:text="@string/digit4"
                 style="@style/digit_button_style"
                 />        
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit5"
                 android:text="@string/digit5"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit6"
                 android:text="@string/digit6"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/dot"
                 android:text="@string/dot"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/div"
                 android:text="@string/div"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/minus"
                 android:text="@string/minus"
                 style="@style/button_style"
@@ -147,32 +147,32 @@
              android:layout_width="match_parent"
              android:layout_height="0dp"
              >            
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit1"
                 android:text="@string/digit1"
                 style="@style/digit_button_style"
                 />        
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit2"
                 android:text="@string/digit2"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit3"
                 android:text="@string/digit3"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/digit0"
                 android:text="@string/digit0"
                 style="@style/digit_button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/equal"
                 android:text="@string/equal"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/plus"
                 android:text="@string/plus"
                 style="@style/button_style"
@@ -196,27 +196,27 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             >            
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/sin"
                 android:text="@string/sin"
                 style="@style/button_small_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/cos"
                 android:text="@string/cos"
                 style="@style/button_small_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/tan"
                 android:text="@string/tan"
                 style="@style/button_small_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/pi"
                 android:text="@string/pi"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/factorial"
                 android:text="@string/factorial"
                 style="@style/button_style"
@@ -228,32 +228,32 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             >            
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/ln"
                 android:text="@string/ln"
                 style="@style/button_small_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/lg"
                 android:text="@string/lg"
                 style="@style/button_small_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/e"
                 android:text="@string/e"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/power"
                 android:text="@string/power"
                 style="@style/button_style"
                 />
-            <jone.helper.app.Calculator.ColorButton
+            <jone.helper.model.Calculator.ColorButton
                 android:id="@+id/sqrt"
                 android:text="@string/sqrt"
                 style="@style/button_style"
                 />
         </LinearLayout>
     </LinearLayout>
-    </jone.helper.app.Calculator.PanelSwitcher>
+    </jone.helper.model.Calculator.PanelSwitcher>
 </LinearLayout>

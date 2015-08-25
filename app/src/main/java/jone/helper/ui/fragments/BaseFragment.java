@@ -46,7 +46,7 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
 
     protected abstract void findViews(View view);
 
-    protected abstract void initViews(View view);
+    protected void initViews(View view){}
 
     public <T extends View> T findView(View view, int id) {
         return (T) view.findViewById(id);

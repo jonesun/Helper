@@ -47,7 +47,7 @@
                 android:textColor="@android:color/black"
                 android:text="加载中..."
                 android:textSize="14sp"
-                android:drawableLeft="@drawable/city_item_location"
+                android:drawableLeft="@mipmap/city_item_location"
                 android:paddingLeft="2dp"
                 android:background="@android:color/transparent"/>
         </LinearLayout>

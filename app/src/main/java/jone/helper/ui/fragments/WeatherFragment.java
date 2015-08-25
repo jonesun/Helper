@@ -26,17 +26,16 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
-import jone.helper.adapter.WeatherAdapter;
+import jone.helper.ui.activities.EggsActivity;
+import jone.helper.ui.adapter.WeatherAdapter;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
-import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
-import jone.helper.thridAd.Jone_AppConnectAd;
-import jone.helper.ui.EggsActivity;
-import jone.helper.ui.SelectCityActivity;
+import jone.helper.model.customAd.Jone_AppConnectAd;
+import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.ui.activities.HeartRateMonitorActivity;
-import jone.helper.ui.main.MenuActivity;
+import jone.helper.ui.activities.JoneHelperMainActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
@@ -45,7 +44,7 @@ import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
 /**
  * Created by jone.sun on 2015/7/2.
  */
-public class WeatherFragment extends BaseFragment<MenuActivity> implements WeatherView {
+public class WeatherFragment extends BaseFragment<JoneHelperMainActivity> implements WeatherView {
     private static final String TAG = WeatherFragment.class.getSimpleName();
     private LinearLayout layout_top, layout_ad;
     private TextView txt_date, txt_festival;
@@ -181,7 +180,7 @@ public class WeatherFragment extends BaseFragment<MenuActivity> implements Weath
                         if(BuildConfig.FLAVOR.equals("baidumap")){
                             //startActivity(new Intent(getActivity(), BaiduMapActivity.class));
                         }else {
-                            startActivity(new Intent(getHostActivity(), HeartRateMonitorActivity.class));
+                            startActivity(new Intent(getHostActivity(), EggsActivity.class));
                         }
                     }
                 }

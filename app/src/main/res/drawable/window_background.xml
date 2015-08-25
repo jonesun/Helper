@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <bitmap
-            android:src="@drawable/bg01"
+            android:src="@mipmap/bg01"
             android:gravity="center" />
     </item>
     <item>

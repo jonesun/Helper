@@ -2,6 +2,7 @@ package jone.helper.ui.fragments;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
@@ -60,39 +61,57 @@ public class MemoryManagerFragment extends BaseFragment<AppManagerActivity> {
 
     }
 
+    MyTask myTask = null;
     @Override
     public void onResume() {
         super.onResume();
-        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-        activityManager.getMemoryInfo(mi);
-        String availMemStr = Formatter.formatFileSize(getHostActivity(), mi.availMem);
-        String totalMemStr = Formatter.formatFileSize(getHostActivity(), getTotalMem(activityManager));
-        txt_memory.setText("可用内存: " + availMemStr + "/" + totalMemStr);
-
-        StringBuffer buffer = new StringBuffer("可用内存: " + availMemStr + "/" + totalMemStr + "\r\n");
-        buffer.append("临界值: " + Formatter.formatFileSize(getHostActivity(), mi.threshold) + " " + mi.lowMemory).append("\r\n");
-        List<ActivityManager.RunningAppProcessInfo> runningAppProcessInfoList = activityManager.getRunningAppProcesses();
-        for(ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcessInfoList){
-            buffer.append("\r\n")
-                    .append("uid: " + runningAppProcessInfo.uid + "\r\n"
-                            + "processName: " + runningAppProcessInfo.processName + "\r\n"
-                            + "pid: " + runningAppProcessInfo.pid)
-                    .append("\r\n");
-            String[] pkgList = runningAppProcessInfo.pkgList;
-            for(int i = 0; i < pkgList.length; i++){
-                buffer.append("pkg_" + i + ": " + pkgList[i]).append("\r\n");
-            }
-            // 获得该进程占用的内存
-            int[] myMempid = new int[] { runningAppProcessInfo.pid };
-            // 此MemoryInfo位于android.os.Debug.MemoryInfo包中，用来统计进程的内存信息
-            Debug.MemoryInfo[] memoryInfo = activityManager
-                    .getProcessMemoryInfo(myMempid);
-            // 获取进程占内存用信息 kb单位
-            int memSize = memoryInfo[0].dalvikPrivateDirty;
-            buffer.append("占用内存: " + memSize + "kb");
-            buffer.append("\r\n").append("\r\n");
+        if(myTask == null || myTask.getStatus().equals(AsyncTask.Status.FINISHED.toString())){
+            myTask = new MyTask();
+            myTask.execute();
         }
-        txt_memory.setText(buffer.toString());
+
+    }
+
+    private class MyTask extends AsyncTask<Void, Void, StringBuffer>{
+
+        @Override
+        protected StringBuffer doInBackground(Void... params) {
+            ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(mi);
+            String availMemStr = Formatter.formatFileSize(getHostActivity(), mi.availMem);
+            String totalMemStr = Formatter.formatFileSize(getHostActivity(), getTotalMem(activityManager));
+
+            StringBuffer buffer = new StringBuffer("可用内存: " + availMemStr + "/" + totalMemStr + "\r\n");
+            buffer.append("临界值: " + Formatter.formatFileSize(getHostActivity(), mi.threshold) + " " + mi.lowMemory).append("\r\n");
+            List<ActivityManager.RunningAppProcessInfo> runningAppProcessInfoList = activityManager.getRunningAppProcesses();
+            for(ActivityManager.RunningAppProcessInfo runningAppProcessInfo : runningAppProcessInfoList){
+                buffer.append("\r\n")
+                        .append("uid: " + runningAppProcessInfo.uid + "\r\n"
+                                + "processName: " + runningAppProcessInfo.processName + "\r\n"
+                                + "pid: " + runningAppProcessInfo.pid)
+                        .append("\r\n");
+                String[] pkgList = runningAppProcessInfo.pkgList;
+                for(int i = 0; i < pkgList.length; i++){
+                    buffer.append("pkg_" + i + ": " + pkgList[i]).append("\r\n");
+                }
+                // 获得该进程占用的内存
+                int[] myMempid = new int[] { runningAppProcessInfo.pid };
+                // 此MemoryInfo位于android.os.Debug.MemoryInfo包中，用来统计进程的内存信息
+                Debug.MemoryInfo[] memoryInfo = activityManager
+                        .getProcessMemoryInfo(myMempid);
+                // 获取进程占内存用信息 kb单位
+                int memSize = memoryInfo[0].dalvikPrivateDirty;
+                buffer.append("占用内存: " + memSize + "kb");
+                buffer.append("\r\n").append("\r\n");
+            }
+            return buffer;
+        }
+
+        @Override
+        protected void onPostExecute(StringBuffer stringBuffer) {
+            super.onPostExecute(stringBuffer);
+            txt_memory.setText(stringBuffer.toString());
+        }
     }
 
     /**

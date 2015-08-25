@@ -15,19 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.adapter.CustomAdAdapter;
+import jone.helper.ui.adapter.CustomAdAdapter;
 import jone.helper.model.customAd.entity.CustomAdInfo;
 import jone.helper.presenter.customAd.CustomAdPresenter;
 import jone.helper.presenter.customAd.impl.JoneWPCustomPresenter;
-import jone.helper.thridAd.JoneBaiduAd;
-import jone.helper.ui.main.MenuActivity;
+import jone.helper.model.customAd.JoneBaiduAd;
+import jone.helper.ui.activities.JoneHelperMainActivity;
 import jone.helper.ui.view.CustomAdView;
-import jone.helper.ui.view.PullToRefreshView;
 
 /**
  * Created by jone.sun on 2015/7/2.
  */
-public class JoneAdListFragment extends BaseFragment<MenuActivity> implements CustomAdView {
+public class JoneAdListFragment extends BaseFragment<JoneHelperMainActivity> implements CustomAdView {
     private static final String TAG = JoneAdListFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private CustomAdAdapter adapter;

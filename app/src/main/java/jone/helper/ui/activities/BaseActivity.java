@@ -1,14 +1,13 @@
 package jone.helper.ui.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 /**
- * Created by jone.sun on 2015/7/2.
+ * Created by jone.sun on 2015/8/24.
  */
-public abstract class BaseFragmentActivity extends FragmentActivity {
-
+public abstract class BaseActivity extends Activity {
     protected abstract int getContentView();
 
     @Override

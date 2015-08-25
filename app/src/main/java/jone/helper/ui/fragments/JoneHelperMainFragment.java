@@ -3,7 +3,6 @@ package jone.helper.ui.fragments;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +31,9 @@ import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
-import jone.helper.thridAd.Jone_AppConnectAd;
-import jone.helper.ui.SelectCityActivity;
-import jone.helper.ui.activities.AppManagerActivity;
-import jone.helper.ui.main.MenuActivity;
+import jone.helper.model.customAd.Jone_AppConnectAd;
+import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.activities.JoneHelperMainActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.ui.widget.circleprogress.ArcProgress;
 import jone.helper.util.AppUtil;
@@ -47,7 +45,7 @@ import jone.helper.util.WeatherUtil;
 /**
  * Created by jone.sun on 2015/8/17.
  */
-public class JoneHelperMainFragment extends BaseFragment<MenuActivity> implements WeatherView {
+public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity> implements WeatherView {
     private static final String TAG = JoneHelperMainFragment.class.getSimpleName();
     private ViewGroup layout_arcProgress, layout_weather;
     private LinearLayout layout_ad;
