@@ -70,13 +70,11 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             News news = getItem(i);
             if(news != null){
                 item.mTextView.setText(news.getTitle());
-                item.mImageView.setDefaultImageResId(R.mipmap.default_news);
-                item.mImageView.setErrorImageResId(R.mipmap.default_news);
-                if(news.getImageUrl() != null && news.getImageUrl().length() > 0){
-                    item.mImageView.setImageUrl(news.getImageUrl(),
-                            imageLoader);
-                }
                 item.from.setText(news.getFrom());
+                item.mTextView.setTag(news);
+                item.from.setTag(news);
+                item.mTextView.setOnClickListener(this);
+                item.from.setOnClickListener(this);
             }
             viewHolder.itemView.setTag(news);
         } else if (viewHolder instanceof VHHeader) {
@@ -134,12 +132,10 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     class VHItem extends RecyclerView.ViewHolder {
         public TextView mTextView, from;
-        public NetworkImageView mImageView;
         public VHItem(View v){
             super(v);
             mTextView = (TextView) v.findViewById(R.id.name);
             from = (TextView) v.findViewById(R.id.from);
-            mImageView = (NetworkImageView) v.findViewById(R.id.pic);
         }
     }
 

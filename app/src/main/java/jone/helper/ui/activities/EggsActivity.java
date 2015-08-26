@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ import jone.helper.lib.model.net.NetResponseCallback;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.lib.volley.Method;
+import jone.helper.ui.view.PullToRefreshView;
 
 public class EggsActivity extends FragmentActivity {
     private static final String TAG = EggsActivity.class.getSimpleName();
@@ -67,6 +69,7 @@ public class EggsActivity extends FragmentActivity {
     public static class EggsFragment extends Fragment {
         private static final String TAG = EggsFragment.class.getSimpleName();
         private static final int loader_id = 0001;
+        private SwipeRefreshLayout swipe_refresh_widget;
         private RecyclerView mRecyclerView;
         private TextView txt_welcome;
         private NewsAdapter newsAdapter;
@@ -119,7 +122,12 @@ public class EggsActivity extends FragmentActivity {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             txt_welcome = (TextView) view.findViewById(R.id.txt_welcome);
+            swipe_refresh_widget = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
             mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+
+            swipe_refresh_widget.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_green_light,
+                    android.R.color.holo_blue_bright, android.R.color.holo_orange_light);
+
             mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
             mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             mRecyclerView.setHasFixedSize(true);
@@ -146,6 +154,13 @@ public class EggsActivity extends FragmentActivity {
                     intent.putExtra("url", news.getUrl());
                     activity.startActivity(intent);
                     activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                }
+            });
+            swipe_refresh_widget.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    getNewsList();
+                    swipe_refresh_widget.setRefreshing(false);
                 }
             });
         }

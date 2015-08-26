@@ -16,9 +16,16 @@
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textSize="17sp"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_widget"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layout_ad"/>
+        android:layout_below="@+id/layout_ad">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layout_ad"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </RelativeLayout>
