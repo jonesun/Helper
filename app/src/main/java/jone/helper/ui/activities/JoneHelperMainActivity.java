@@ -3,6 +3,9 @@ package jone.helper.ui.activities;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +23,8 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.umeng.analytics.MobclickAgent;
+
+import org.michaelevans.colorart.library.ColorArt;
 
 import jone.helper.AppConnect;
 import jone.helper.BuildConfig;
@@ -57,6 +62,10 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
         MobclickAgent.updateOnlineConfig(JoneHelperMainActivity.this);
         UmengUtil.event_open_main(JoneHelperMainActivity.this);
         AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, JoneHelperMainActivity.this); //万普世纪
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.bg01);
+        ColorArt colorArt = new ColorArt(bitmap);
+        BaseFragmentActivity.setStatusBarView(this, colorArt.getBackgroundColor());
     }
 
     private void setFloatingActionButton(){
