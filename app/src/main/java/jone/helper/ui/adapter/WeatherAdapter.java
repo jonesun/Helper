@@ -1,6 +1,10 @@
 package jone.helper.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,8 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+
+import org.michaelevans.colorart.library.ColorArt;
 
 import java.util.Calendar;
 import java.util.List;
@@ -73,6 +79,11 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     item.image_weather_pic.setImageUrl(weatherData.getNightPictureUrl(),
                             imageLoader);
                 }
+                Bitmap bitmap = ((BitmapDrawable) item.image_weather_pic.getDrawable()).getBitmap();
+                ColorArt colorArt = new ColorArt(bitmap);
+
+                item.txt_weather.setTextColor(colorArt.getDetailColor());
+                item.root_view.setBackgroundColor(colorArt.getBackgroundColor());
             }
         } else if (viewHolder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
@@ -126,10 +137,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     class VHItem extends RecyclerView.ViewHolder {
+        public ViewGroup root_view;
         public TextView txt_weather;
         public NetworkImageView image_weather_pic;
         public VHItem(View v){
             super(v);
+            root_view = (ViewGroup) v.findViewById(R.id.root_view);
             txt_weather = (TextView) v.findViewById(R.id.txt_weather);
             image_weather_pic = (NetworkImageView) v.findViewById(R.id.image_weather_pic);
         }

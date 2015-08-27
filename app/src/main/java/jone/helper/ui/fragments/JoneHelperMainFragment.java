@@ -3,6 +3,8 @@ package jone.helper.ui.fragments;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+
+import org.michaelevans.colorart.library.ColorArt;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -192,7 +196,19 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
             UmengUtil.get_weather(getHostActivity(), "url", todayWeatherData.getWeather());
             txt_weather_temperature.setText(todayWeatherData.getTemperature());
             txt_weather_weather.setText(todayWeatherData.getWeather() + "(" + todayWeatherData.getWind() + ")");
-            image_weather.setBackgroundResource(WeatherUtil.getIconResIdByWeather(todayWeatherData.getWeather()));
+            int weatherResId = WeatherUtil.getIconResIdByWeather(todayWeatherData.getWeather());
+            image_weather.setBackgroundResource(weatherResId);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
+                    weatherResId);
+            ColorArt colorArt = new ColorArt(bitmap);
+
+            txt_weather_temperature.setTextColor(colorArt.getDetailColor());
+            txt_weather_weather.setTextColor(colorArt.getDetailColor());
+//
+//                colorArt.getBackgroundColor();
+//                colorArt.getPrimaryColor();
+//                colorArt.getSecondaryColor();
+//                colorArt.getDetailColor();
         }
         StringBuffer weatherStringBuffer = new StringBuffer();
         List<WeatherIndex> weatherIndexList = weather.getIndex();

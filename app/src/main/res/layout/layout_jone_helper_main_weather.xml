@@ -31,14 +31,20 @@
             android:layout_height="wrap_content"
             android:text="20~30"
             android:textSize="22sp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:shadowRadius="5"
+            android:shadowColor="#000000"
+            android:padding="4dp"/>
         <TextView
             android:id="@+id/txt_weather_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="多云(东风微风)"
             android:textSize="18sp"
-            android:textColor="@android:color/white"/>
+            android:textColor="@android:color/white"
+            android:shadowRadius="5"
+            android:shadowColor="#000000"
+            android:padding="4dp"/>
     </LinearLayout>
 
 
