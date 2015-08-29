@@ -1,15 +1,15 @@
-apply plugin: 'com.android.application'
+apply from: '/application.gradle'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+    buildToolsVersion project.BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "jone.helper"
-        minSdkVersion 14
-        targetSdkVersion 22
-        versionCode 8
-        versionName "3.0.3"
+        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName VERSION_NAME
 //        ndk {
 //            moduleName "tp_file"
 //            //stl "stlport_shared"    //对应APP_STL
@@ -68,32 +68,28 @@ android {
         }
     }
 
-    //    //生成不同的APK包，有不同的包名，或者不同的资源
-    productFlavors {
-//        baidumap {
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
-//        }
-        baidu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
-        }
-         _91{
-             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "91助手"]
-        }
-        hiapk {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "安卓市场"]
-        }
-        _163 {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "网易应用"]
-        }
-
-    }
-
     sourceSets {
         main {
             //java.srcDirs = ['src/main/java']
             res.srcDirs = getSrcDirs('src/main/res', 'src/main/res-modules')
         }
     }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v13:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.belerweb:pinyin4j:2.5.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile project(':libraries:Gallery3D')
+    compile project(':libraries:Camera')
+    compile project(':libraries:JoneLib')
+    compile project(':libraries:ZxingScan')
+    testCompile 'junit:junit:4.12'
+    compile project(':yalantiscontextmenu')
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
@@ -111,20 +107,3 @@ def releaseTime() {
     return new Date().format("yyyy_MM_dd")
 }
 
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v13:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.belerweb:pinyin4j:2.5.0'
-    compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
-    compile project(':libraries:Gallery3D')
-    compile project(':libraries:Camera')
-    compile project(':libraries:JoneLib')
-    compile project(':libraries:ZxingScan')
-    compile project(':circularfloatingactionmenu')
-    testCompile 'junit:junit:4.12'
-}

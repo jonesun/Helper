@@ -7,9 +7,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import jone.helper.R;
+import jone.helper.lib.util.SystemBarTintManager;
 
 /**
  * Created by jone.sun on 2015/7/2.

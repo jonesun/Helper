@@ -118,13 +118,12 @@
     <orderEntry type="library" exported="" name="AppOffer_2.4.0_sunr7" level="project" />
     <orderEntry type="library" exported="" name="core-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="baidu_cuid" level="project" />
-    <orderEntry type="library" exported="" name="systembartint-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v13-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="analytics-5.5.3" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.1" level="project" />
+    <orderEntry type="module" module-name="yalantiscontextmenu" exported="" />
     <orderEntry type="module" module-name="JoneLib" exported="" />
     <orderEntry type="module" module-name="Camera" exported="" />
-    <orderEntry type="module" module-name="circularfloatingactionmenu" exported="" />
     <orderEntry type="module" module-name="ZxingScan" exported="" />
     <orderEntry type="module" module-name="Gallery3D" exported="" />
   </component>

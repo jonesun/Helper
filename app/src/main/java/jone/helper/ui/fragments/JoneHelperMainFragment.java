@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,28 +194,27 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
         txt_pm25.setBackgroundResource(WeatherUtil.getPm25BgResId(weather.getPm25()));
         if(weatherDataList != null && weatherDataList.size() > 0){
             WeatherData todayWeatherData = weatherDataList.get(0);
+            Calendar calendar = Calendar.getInstance();
+            String weekDay = FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1);
+            if(!todayWeatherData.getDate().contains(weekDay)){
+                for(WeatherData weatherData : weatherDataList){
+                    if(weatherData.getDate().contains(weekDay)){
+                        todayWeatherData = weatherData;
+                        break;
+                    }
+                }
+            }
             UmengUtil.get_weather(getHostActivity(), "url", todayWeatherData.getWeather());
             txt_weather_temperature.setText(todayWeatherData.getTemperature());
             txt_weather_weather.setText(todayWeatherData.getWeather() + "(" + todayWeatherData.getWind() + ")");
             int weatherResId = WeatherUtil.getIconResIdByWeather(todayWeatherData.getWeather());
             image_weather.setBackgroundResource(weatherResId);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-                    weatherResId);
-            ColorArt colorArt = new ColorArt(bitmap);
-
-            txt_weather_temperature.setTextColor(colorArt.getDetailColor());
-            txt_weather_weather.setTextColor(colorArt.getDetailColor());
-//
-//                colorArt.getBackgroundColor();
-//                colorArt.getPrimaryColor();
-//                colorArt.getSecondaryColor();
-//                colorArt.getDetailColor();
         }
-        StringBuffer weatherStringBuffer = new StringBuffer();
+        StringBuilder weatherStringBuilder = new StringBuilder();
         List<WeatherIndex> weatherIndexList = weather.getIndex();
         if(weatherIndexList != null && weatherIndexList.size() > 0){
             for(WeatherIndex weatherIndex : weatherIndexList){
-                weatherStringBuffer.append("\r\n")
+                weatherStringBuilder.append("\r\n")
                         .append(weatherIndex.getTitle())
                         .append("(").append(weatherIndex.getZs()).append(")").append(": ")
                         .append(weatherIndex.getDes())
@@ -222,7 +222,7 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
             }
         }
         if(txt_weather != null){
-            txt_weather.setText(weatherStringBuffer.toString());
+            txt_weather.setText(weatherStringBuilder.toString());
         }
     }
 
@@ -234,9 +234,13 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
         @Override
         public void onReceiveLocation(BDLocation location) {
             // map view 销毁后不在处理新接收的位置
-            if (location != null && location.getCity() != null){
-                Log.e(TAG, "city: " + location.getCity());
-                getWeatherByCity(location.getCity().replace("市", ""));
+            if (location != null){
+                String city = location.getCity();
+                if(!TextUtils.isEmpty(city)){
+                    Log.e(TAG, "city: " + city);
+                    UmengUtil.get_location(getHostActivity(), "baiduLocation", city);
+                    getWeatherByCity(city.replace("市", ""));
+                }
             }
             if(mLocClient != null){
                 mLocClient.stop();

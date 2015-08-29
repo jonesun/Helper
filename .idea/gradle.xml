@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/libraries/Gallery3D" />
             <option value="$PROJECT_DIR$/libraries/JoneLib" />
             <option value="$PROJECT_DIR$/libraries/ZxingScan" />
+            <option value="$PROJECT_DIR$/yalantiscontextmenu" />
           </set>
         </option>
       </GradleProjectSettings>
