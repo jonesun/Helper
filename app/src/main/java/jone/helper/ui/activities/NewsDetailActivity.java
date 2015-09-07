@@ -3,10 +3,20 @@ package jone.helper.ui.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
+import android.widget.ZoomButtonsController;
+
+import com.google.zxing.common.StringUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import jone.helper.R;
 
@@ -36,6 +46,18 @@ public class NewsDetailActivity extends Activity {
         webView = (WebView) findViewById(R.id.webView);
         if(getIntent().hasExtra("url")){
             webView.loadUrl(getIntent().getStringExtra("url"));
+        }
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultFontSize(15);
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        int sysVersion = Build.VERSION.SDK_INT;
+        if (sysVersion >= 11) {
+            settings.setDisplayZoomControls(false);
+        } else {
+            ZoomButtonsController zbc = new ZoomButtonsController(webView);
+            zbc.getZoomControls().setVisibility(View.GONE);
         }
         Toast.makeText(NewsDetailActivity.this, "努力加载中...", Toast.LENGTH_LONG).show();
     }

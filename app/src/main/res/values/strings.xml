@@ -12,7 +12,7 @@
 
     <string name="menu_item_app_manager">手机管理</string>
     <string name="menu_item_feedback">用户反馈</string>
-    <string name="menu_item_shared">分享</string>
+    <string name="menu_item_shared">便签</string>
 
     <string name="call_phone">拨打电话</string>
     <string name="send_message">发送信息</string>

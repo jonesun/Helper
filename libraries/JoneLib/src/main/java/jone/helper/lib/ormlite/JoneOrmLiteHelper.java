@@ -15,6 +15,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import jone.helper.lib.ormlite.entities.LongTextString;
+import jone.helper.lib.ormlite.entities.NotebookData;
 
 
 /**
@@ -23,7 +24,7 @@ import jone.helper.lib.ormlite.entities.LongTextString;
 public class JoneOrmLiteHelper extends OrmLiteSqliteOpenHelper {
     private static final String TAG = JoneOrmLiteHelper.class.getSimpleName();
     private static final String DATABASE_NAME = "db_jone";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static JoneOrmLiteHelper instance = null;
     
     public static JoneOrmLiteHelper getInstance(Context context){
@@ -40,6 +41,7 @@ public class JoneOrmLiteHelper extends OrmLiteSqliteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource) {
         try {
             TableUtils.createTableIfNotExists(connectionSource, LongTextString.class);
+            TableUtils.createTableIfNotExists(connectionSource, NotebookData.class);
         } catch (SQLException e) {
             Log.e(TAG, "数据表创建失败 ", e);
         }
@@ -49,6 +51,7 @@ public class JoneOrmLiteHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int i, int i2) {
         try {
             TableUtils.dropTable(connectionSource, LongTextString.class, true);
+            TableUtils.dropTable(connectionSource, NotebookData.class, true);
             onCreate(sqLiteDatabase, connectionSource);
         } catch (SQLException e) {
             Log.e(TAG, "更新数据库失败", e);

@@ -14,8 +14,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- 允许应用读取低级别的系统日志文件 -->
@@ -26,19 +26,19 @@
     <uses-feature android:name="android.hardware.camera.flash" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <!-- <uses-permission android:name="android.permission.WAKE_LOCK"/> -->
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activities.JoneHelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.clientActivity" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -84,11 +84,19 @@
         <activity
             android:name=".ui.activities.SelectCityActivity"
             android:theme="@android:style/Theme.Holo.Light" />
-
         <activity
             android:name=".ui.activities.HeartRateMonitorActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.activities.EditNotebookActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.JoneHelperMainActivity"
+            android:theme="@style/AppBaseTheme"/>
+
+        <activity android:name=".ui.activities.NotebookActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme"/>
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
@@ -145,7 +153,7 @@
         <activity
             android:name=".ui.activities.AppManagerActivity"
             android:label="@string/title_section2"
-            android:parentActivityName=".ui.activities.JoneHelperMainActivity">
+            android:parentActivityName=".ui.activities.JoneHelperMainActivity" >
         </activity>
     </application>
 

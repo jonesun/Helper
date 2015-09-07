@@ -1,4 +1,4 @@
-package jone.helper.ui.activities;
+package jone.helper.ui.activities.base;
 
 import android.app.Activity;
 import android.os.Build;
@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-import jone.helper.R;
 import jone.helper.lib.util.SystemBarTintManager;
 
 /**

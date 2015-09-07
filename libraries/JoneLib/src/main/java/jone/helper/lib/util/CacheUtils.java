@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
-import org.apache.http.util.EncodingUtils;
+//import org.apache.http.util.EncodingUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -87,9 +87,9 @@ public class CacheUtils {
      * @param fileName
      * @return
      */
-    public static String getDataFromCache(Context context, String fileName) {
-        return getDataFromCache(context, fileName, String.class);
-    }
+//    public static String getDataFromCache(Context context, String fileName) {
+//        return getDataFromCache(context, fileName, String.class);
+//    }
 
     /***
      * 读取缓存数据
@@ -100,42 +100,42 @@ public class CacheUtils {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getDataFromCache(Context context, String fileName,
-                                         Class<T> clazz) {
-        T data = null;
-        if (context != null && fileName != null) {
-            FileInputStream inStream = null;
-            try {
-                File readFile = getCacheFilePath(context, clazz, fileName);
-                if (readFile != null && readFile.exists()) {
-                    inStream = new FileInputStream(readFile);
-                    if (clazz.getCanonicalName().equals(
-                            String.class.getCanonicalName())) {
-                        int length = inStream.available();
-                        byte[] buffer = new byte[length];
-                        inStream.read(buffer);
-                        data = (T) EncodingUtils.getString(buffer, "UTF-8");
-                    } else if (clazz.getCanonicalName().equals(
-                            Bitmap.class.getCanonicalName())) {
-                        data = (T) BitmapFactory.decodeStream(inStream);
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("CacheUtil", "getDataFromCache", e);
-                return data;
-            } finally {
-                if (inStream != null) {
-                    try {
-                        inStream.close();
-                    } catch (IOException e) {
-                        Log.e("CacheUtil", "getDataFromCache", e);
-                        return data;
-                    }
-                }
-            }
-        }
-        return data;
-    }
+//    public static <T> T getDataFromCache(Context context, String fileName,
+//                                         Class<T> clazz) {
+//        T data = null;
+//        if (context != null && fileName != null) {
+//            FileInputStream inStream = null;
+//            try {
+//                File readFile = getCacheFilePath(context, clazz, fileName);
+//                if (readFile != null && readFile.exists()) {
+//                    inStream = new FileInputStream(readFile);
+//                    if (clazz.getCanonicalName().equals(
+//                            String.class.getCanonicalName())) {
+//                        int length = inStream.available();
+//                        byte[] buffer = new byte[length];
+//                        inStream.read(buffer);
+//                        data = (T) EncodingUtils.getString(buffer, "UTF-8");
+//                    } else if (clazz.getCanonicalName().equals(
+//                            Bitmap.class.getCanonicalName())) {
+//                        data = (T) BitmapFactory.decodeStream(inStream);
+//                    }
+//                }
+//            } catch (Exception e) {
+//                Log.e("CacheUtil", "getDataFromCache", e);
+//                return data;
+//            } finally {
+//                if (inStream != null) {
+//                    try {
+//                        inStream.close();
+//                    } catch (IOException e) {
+//                        Log.e("CacheUtil", "getDataFromCache", e);
+//                        return data;
+//                    }
+//                }
+//            }
+//        }
+//        return data;
+//    }
 
     /***
      * 删除缓存文件

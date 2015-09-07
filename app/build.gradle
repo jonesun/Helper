@@ -49,11 +49,11 @@ android {
             applicationVariants.all { variant ->
                 def productFlavor = variant.productFlavors[0]
                 String versionName = productFlavor.versionName
-                if(versionName == null){
+                if (versionName == null) {
                     versionName = defaultConfig.versionName
                 }
                 String versionCode = productFlavor.versionCode
-                if(versionCode == null){
+                if (versionCode == null) {
                     versionCode = defaultConfig.versionCode
                 }
                 variant.outputs.each { output ->
@@ -78,18 +78,20 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v13:22.2.1'
-    compile 'com.android.support:cardview-v7:22.2.1'
-    compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.belerweb:pinyin4j:2.5.0'
-    compile 'com.umeng.analytics:analytics:latest.integration'
     compile project(':libraries:Gallery3D')
     compile project(':libraries:Camera')
     compile project(':libraries:JoneLib')
     compile project(':libraries:ZxingScan')
     testCompile 'junit:junit:4.12'
     compile project(':yalantiscontextmenu')
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:support-v13:23.0.1'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.belerweb:pinyin4j:2.5.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.android.support:design:23.0.1'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
@@ -106,4 +108,5 @@ def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
 def releaseTime() {
     return new Date().format("yyyy_MM_dd")
 }
+
 

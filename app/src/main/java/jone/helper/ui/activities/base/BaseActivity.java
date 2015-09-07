@@ -1,4 +1,4 @@
-package jone.helper.ui.activities;
+package jone.helper.ui.activities.base;
 
 import android.app.Activity;
 import android.os.Bundle;

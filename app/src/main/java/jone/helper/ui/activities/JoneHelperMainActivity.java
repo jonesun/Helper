@@ -1,7 +1,5 @@
 package jone.helper.ui.activities;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,10 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,11 +35,11 @@ import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.model.Calculator.Calculator;
 import jone.helper.lib.util.Utils;
+import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.fragments.*;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
 import jone.helper.util.ResUtil;
-import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
@@ -202,11 +198,12 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
                     }catch (Exception e){}
                     break;
                 case "menu_item_shared":
-                    try{
-                        SharedToUtil.shareToWeixin(JoneHelperMainActivity.this, "欢迎来到帮手的世界\nhttp://shouji.baidu.com/software/item?docid=7577214&from=as", Utils.getSharedPicFile(JoneHelperMainActivity.this));
-                    }catch (Exception e){
-                        Toast.makeText(JoneHelperMainActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
-                    }
+                    startActivity(new Intent(JoneHelperMainActivity.this, NotebookActivity.class));
+//                    try{
+//                        SharedToUtil.shareToWeixin(JoneHelperMainActivity.this, "欢迎来到帮手的世界\nhttp://shouji.baidu.com/software/item?docid=7577214&from=as", Utils.getSharedPicFile(JoneHelperMainActivity.this));
+//                    }catch (Exception e){
+//                        Toast.makeText(JoneHelperMainActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
+//                    }
                     break;
             }
         }

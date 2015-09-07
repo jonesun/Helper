@@ -1,9 +1,6 @@
 package jone.helper.ui.activities;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.hardware.Camera;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.view.ColorPickerDialog;
 import jone.helper.R;
+import jone.helper.ui.activities.base.BaseActivity;
 
 public class FlashlightActivity extends BaseActivity {
     private static final String TAG = FlashlightActivity.class.getSimpleName();
