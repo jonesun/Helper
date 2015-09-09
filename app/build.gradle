@@ -92,6 +92,7 @@ dependencies {
     compile 'com.belerweb:pinyin4j:2.5.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:palette-v7:23.0.1'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {

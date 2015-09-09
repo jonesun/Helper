@@ -4,15 +4,22 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.camera.Camera;
@@ -24,8 +31,6 @@ import com.yalantis.contextmenu.lib.MenuParams;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener;
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
-import org.michaelevans.colorart.library.ColorArt;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +40,6 @@ import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.model.Calculator.Calculator;
 import jone.helper.lib.util.Utils;
-import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.fragments.*;
 import jone.helper.ui.view.ResideMenu;
 import jone.helper.ui.view.ResideMenuItem;
@@ -43,7 +47,7 @@ import jone.helper.util.ResUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
-public class JoneHelperMainActivity extends FragmentActivity implements View.OnClickListener, OnMenuItemClickListener,
+public class JoneHelperMainActivity extends AppCompatActivity implements View.OnClickListener, OnMenuItemClickListener,
         OnMenuItemLongClickListener {
 
     private ResideMenu resideMenu;
@@ -54,11 +58,19 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
     private boolean isCurrentPageFirst = true;
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
-    private ImageView image_menu;
+    private FloatingActionButton button_floating_action;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
+
+
         Utils.setScreenOrientation(this);
         setContentView(R.layout.menu_main);
         fragmentManager = getSupportFragmentManager();
@@ -70,10 +82,6 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
         MobclickAgent.updateOnlineConfig(JoneHelperMainActivity.this);
         UmengUtil.event_open_main(JoneHelperMainActivity.this);
         AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, JoneHelperMainActivity.this); //万普世纪
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.bg01);
-        ColorArt colorArt = new ColorArt(bitmap);
-        BaseFragmentActivity.setStatusBarView(this, colorArt.getBackgroundColor());
     }
 
     private void initMenuFragment() {
@@ -82,8 +90,8 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
         menuParams.setMenuObjects(getMenuObjects());
         menuParams.setClosableOutside(false);
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
-        image_menu = (ImageView) findViewById(R.id.image_menu);
-        image_menu.setOnClickListener(new View.OnClickListener() {
+        button_floating_action = (FloatingActionButton) findViewById(R.id.button_floating_action);
+        button_floating_action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
@@ -260,7 +268,16 @@ public class JoneHelperMainActivity extends FragmentActivity implements View.OnC
         } else{
             if(isCurrentPageFirst){
                 if((System.currentTimeMillis() - exitTime) > 2000){
-                    Toast.makeText(getApplicationContext(), "再按一次退出程序",Toast.LENGTH_SHORT).show();
+                    final Snackbar mSnackbar = Snackbar.make(button_floating_action, "再按一次退出程序", Snackbar.LENGTH_LONG);
+                    mSnackbar.show();
+                    mSnackbar.setAction("退出", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mSnackbar.dismiss();
+                            finish();
+                            System.exit(0);
+                        }
+                    });
                     exitTime = System.currentTimeMillis();
                 }
                 else{

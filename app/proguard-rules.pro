@@ -65,6 +65,9 @@ public static ** valueOf(java.lang.String);
 public static final android.os.Parcelable$Creator *;
 }
 
+-dontwarn jone.helper.**
+-keep class jone.helper.** { *;}
+
 -keepattributes Signature
 -keep class com.j256.**
 -keepclassmembers class com.j256.** { *; }
@@ -74,7 +77,7 @@ public static final android.os.Parcelable$Creator *;
 -keepclassmembers interface com.j256.** { *; }
 -keep class jone.helper.lib.bean.** { *; }
 -keep class jone.helper.model.weather.entity.** { *; }
-
+-keep class jone.helper.lib.ormlite.entities.** { *; }
 -keep public class cn.waps.** {*;}
 -keep public interface cn.waps.** {*;}
 

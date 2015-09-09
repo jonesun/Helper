@@ -4,17 +4,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-
-import org.michaelevans.colorart.library.ColorArt;
 
 import java.util.Calendar;
 import java.util.List;
@@ -80,10 +81,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             imageLoader);
                 }
                 Bitmap bitmap = ((BitmapDrawable) item.image_weather_pic.getDrawable()).getBitmap();
-                ColorArt colorArt = new ColorArt(bitmap);
+                Palette p = Palette.from(bitmap).generate();
+                item.txt_weather.setTextColor(p.getDarkVibrantColor(mContext.getResources().getColor(android.R.color.black)));
+                item.root_view.setBackgroundColor(p.getLightVibrantColor(mContext.getResources().getColor(android.R.color.white)));
 
-                item.txt_weather.setTextColor(colorArt.getDetailColor());
-                item.root_view.setBackgroundColor(colorArt.getBackgroundColor());
             }
         } else if (viewHolder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.

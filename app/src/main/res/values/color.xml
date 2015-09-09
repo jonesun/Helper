@@ -2,4 +2,36 @@
 <resources>
     <color name="dark_grey">#6f6c6c</color>
     <color name="light_grey">#9b9b9b</color>
+    
+    <!--<color name="jone_style_blue_500">#5677fc</color>-->
+    <color name="jone_style_blue_50">#e7e9fd</color>
+    <color name="jone_style_blue_100">#d0d9ff</color>
+    <color name="jone_style_blue_200">#afbfff</color>
+    <color name="jone_style_blue_300">#91a7ff</color>
+    <color name="jone_style_blue_400">#738ffe</color>
+    <color name="jone_style_blue_500">#5677fc</color>
+    <color name="jone_style_blue_600">#4e6cef</color>
+    <color name="jone_style_blue_700">#455ede</color>
+    <color name="jone_style_blue_800">#3b50ce</color>
+    <color name="jone_style_blue_900">#2a36b1</color>
+    <color name="jone_style_blue_A100">#a6baff</color>
+    <color name="jone_style_blue_A200">#6889ff</color>
+    <color name="jone_style_blue_A400">#4d73ff</color>
+    <color name="jone_style_blue_A700">#4d69ff</color>
+
+    <!--<color name="jone_style_green_500">#259b24</color>-->
+    <color name="jone_style_green_50">#d0f8ce</color>
+    <color name="jone_style_green_100">#a3e9a4</color>
+    <color name="jone_style_green_200">#72d572</color>
+    <color name="jone_style_green_300">#42bd41</color>
+    <color name="jone_style_green_400">#2baf2b</color>
+    <color name="jone_style_green_500">#259b24</color>
+    <color name="jone_style_green_600">#0a8f08</color>
+    <color name="jone_style_green_700">#0a7e07</color>
+    <color name="jone_style_green_800">#056f00</color>
+    <color name="jone_style_green_900">#0d5302</color>
+    <color name="jone_style_green_A100">#a2f78d</color>
+    <color name="jone_style_green_A200">#5af158</color>
+    <color name="jone_style_green_A400">#14e715</color>
+    <color name="jone_style_green_A700">#12c700</color>
 </resources>

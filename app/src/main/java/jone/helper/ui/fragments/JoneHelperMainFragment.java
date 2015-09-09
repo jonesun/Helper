@@ -20,8 +20,6 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
-import org.michaelevans.colorart.library.ColorArt;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -361,13 +359,12 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
                 .append(calendar.get(Calendar.DAY_OF_MONTH)).append("日")
                 .append(" 周").append(FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1))
                 .append("\r\n")
-                .append(" 农历:").append(festivalUtil.getChineseDate()).append(" ");
+                .append("农历:").append(festivalUtil.getChineseDate()).append(" ");
         ArrayList<String> fest = festivalUtil.getFestVals();
         if(fest.size() > 0){
+            stringBuilder.append("今天是: ");
             for(String str:fest){
-                stringBuilder.append("今天是: (")
-                        .append(FestivalUtil.getPinYin(str).trim())
-                        .append(")");
+                stringBuilder.append(str).append(" ");
             }
         }else {
             stringBuilder.append("今天没有节日");

@@ -23,6 +23,7 @@ import jone.helper.lib.ormlite.entities.NotebookData;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.StringUtils;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
+import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.adapter.NotebookAdapter;
 
 /**
@@ -38,6 +39,7 @@ public class NotebookActivity extends BaseAppCompatActivity {
 
     @Override
     protected void findViews() {
+        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(android.R.color.holo_blue_bright));
         initToolbar();
         gridView = findView(R.id.gridView);
     }

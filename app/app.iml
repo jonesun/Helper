@@ -21,7 +21,7 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/src/main/res-modules/calculator;file://$MODULE_DIR$/src/main/res-modules/weather-widget" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res-modules/calculator;file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/src/main/res-modules/weather-widget" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
@@ -115,6 +115,7 @@
     <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="locSDK_5.2" level="project" />
+    <orderEntry type="library" exported="" name="palette-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="design-23.0.1" level="project" />

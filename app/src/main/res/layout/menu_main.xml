@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@mipmap/bg01"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
-
-    <LinearLayout
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <RelativeLayout
+        android:background="@mipmap/bg01"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_top">
-
-        <FrameLayout
-                android:layout_width="fill_parent"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <Button
+                <Button
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:background="@drawable/titlebar_menu_selector"
@@ -23,7 +27,7 @@
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginLeft="10dp"/>
 
-            <TextView
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="7dp"
@@ -32,39 +36,41 @@
                     android:textColor="@android:color/white"
                     android:layout_gravity="center" />
 
-            <Button
+                <Button
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:background="@drawable/titlebar_menu_selector"
                     android:id="@+id/title_bar_right_menu"
                     android:layout_gravity="right|center_vertical"
                     android:layout_marginRight="10dp"/>
-        </FrameLayout>
+            </FrameLayout>
 
-        <ImageView
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@android:color/white"/>
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <FrameLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/main_fragment"
-        android:layout_below="@+id/layout_top">
-    </FrameLayout>
+            android:layout_below="@+id/layout_top">
+        </FrameLayout>
 
-    <ImageView
-        android:id="@+id/image_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:background="@drawable/btn_menu"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="8dp"
-        android:padding="4dp"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/button_floating_action"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:orientation="vertical"
+            app:backgroundTint="@android:color/white"
+            android:src="@android:drawable/ic_menu_add"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="4dp"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

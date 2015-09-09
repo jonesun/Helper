@@ -3,6 +3,7 @@ package jone.helper.ui.activities.base;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 
 /**
  * Created by jone.sun on 2015/9/7.
