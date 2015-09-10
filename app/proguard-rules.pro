@@ -86,3 +86,6 @@ public static final android.os.Parcelable$Creator *;
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}
 -dontwarn com.baidu.**
+
+-dontwarn com.umeng.**
+-keep class com.umeng.** {*;}

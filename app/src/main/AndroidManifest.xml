@@ -34,17 +34,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name=".ui.activities.TestThemeActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue">
-
-        </activity>
         <activity
             android:name=".ui.activities.JoneHelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.clientActivity" >
+            android:theme="@style/Theme.jone.blue.main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,18 +48,6 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
-
-        <!-- <activity -->
-        <!-- android:name=".ui.actionBarTabs.ActionBarTabsActivity" -->
-        <!-- android:label="@string/app_name" -->
-        <!-- android:theme="@style/Theme.clientActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
 
         <activity
             android:name=".ui.activities.FlashlightActivity"
@@ -97,12 +79,20 @@
 
         <activity android:name=".ui.activities.EditNotebookActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activities.JoneHelperMainActivity"
-            android:theme="@style/AppBaseTheme"/>
+            android:theme="@style/Theme.jone.blue"/>
 
         <activity android:name=".ui.activities.NotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme"/>
+            android:theme="@style/Theme.jone.blue"/>
+
+        <activity android:name=".ui.activities.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.jone.blue"/>
+
+        <activity
+            android:name=".ui.activities.AppManagerActivity"
+            android:label="@string/title_section2"
+            android:parentActivityName=".ui.activities.JoneHelperMainActivity" />
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
@@ -140,6 +130,15 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="iSOjn5Bo3w35BuYzKoacWKyf" />
 
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
         <!-- 移动云AppX SDK -->
         <activity android:name="com.baidu.appx.ui.BDInnerBrowser" />
 
@@ -156,11 +155,6 @@
             </intent-filter>
         </receiver>
         <!-- 移动云AppX SDK end -->
-        <activity
-            android:name=".ui.activities.AppManagerActivity"
-            android:label="@string/title_section2"
-            android:parentActivityName=".ui.activities.JoneHelperMainActivity" >
-        </activity>
     </application>
 
 </manifest>

@@ -4,27 +4,27 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.camera.Camera;
 import com.cooliris.media.Gallery;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 import com.yalantis.contextmenu.lib.ContextMenuDialogFragment;
 import com.yalantis.contextmenu.lib.MenuObject;
 import com.yalantis.contextmenu.lib.MenuParams;
@@ -39,49 +39,121 @@ import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.model.Calculator.Calculator;
-import jone.helper.lib.util.Utils;
+import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.fragments.*;
-import jone.helper.ui.view.ResideMenu;
-import jone.helper.ui.view.ResideMenuItem;
-import jone.helper.util.ResUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
-public class JoneHelperMainActivity extends AppCompatActivity implements View.OnClickListener, OnMenuItemClickListener,
+public class JoneHelperMainActivity extends AppCompatActivity implements OnMenuItemClickListener,
         OnMenuItemLongClickListener {
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
-    private ResideMenu resideMenu;
-    private String[] resideMenuItemNames = new String[]{
-            "menu_item_home", "menu_item_weather", "menu_item_recommend",
-            "menu_item_app_manager", "menu_item_feedback", "menu_item_shared"
-    };
-    private boolean isCurrentPageFirst = true;
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
-    private FloatingActionButton button_floating_action;
-
+    private FloatingActionButton floatingActionButton;
+    private boolean isCurrentPageFirst = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-
-
-        Utils.setScreenOrientation(this);
-        setContentView(R.layout.menu_main);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
+        setContentView(R.layout.activity_jone_helper_main);
+        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
         fragmentManager = getSupportFragmentManager();
+        initViews();
+        configViews();
         initMenuFragment();
-        setUpMenu();
-        if( savedInstanceState == null ){
+        if(savedInstanceState == null){
             changeFragment(JoneHelperMainFragment.getInstance());
         }
         MobclickAgent.updateOnlineConfig(JoneHelperMainActivity.this);
         UmengUtil.event_open_main(JoneHelperMainActivity.this);
         AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, JoneHelperMainActivity.this); //万普世纪
+        UmengUpdateAgent.setDefault();
+        UmengUpdateAgent.update(this);
+    }
+
+    private void initViews() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+    }
+
+    private void configViews() {
+        // 设置显示Toolbar
+        setSupportActionBar(toolbar);
+        // 设置Drawerlayout开关指示器，即Toolbar最左边的那个icon
+        ActionBarDrawerToggle mActionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        mActionBarDrawerToggle.syncState();
+        drawerLayout.setDrawerListener(mActionBarDrawerToggle);
+
+        onNavigationViewMenuItemSelected(navigationView);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
+                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
+                }
+            }
+        });
+    }
+
+    private void onNavigationViewMenuItemSelected(NavigationView mNav) {
+        mNav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_menu_item_home:
+                        changeFragment(JoneHelperMainFragment.getInstance());
+                        menuItem.setChecked(true);
+                        break;
+                    case R.id.nav_menu_item_weather:
+                        changeFragment(WeatherFragment.getInstance());
+                        menuItem.setChecked(true);
+                        break;
+                    case R.id.nav_menu_item_note:
+                        startActivity(new Intent(JoneHelperMainActivity.this, NotebookActivity.class));
+                        menuItem.setChecked(false);
+                        break;
+                    case R.id.nav_item_app_manager:
+                        startActivity(new Intent(JoneHelperMainActivity.this, AppManagerActivity.class));
+                        menuItem.setChecked(false);
+                        break;
+                    case R.id.nav_menu_item_recommend:
+                        changeFragment(JoneAdListFragment.getInstance());
+                        menuItem.setChecked(true);
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_jone_helper_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_about) {
+            startActivity(new Intent(JoneHelperMainActivity.this, AboutActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initMenuFragment() {
@@ -90,15 +162,7 @@ public class JoneHelperMainActivity extends AppCompatActivity implements View.On
         menuParams.setMenuObjects(getMenuObjects());
         menuParams.setClosableOutside(false);
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
-        button_floating_action = (FloatingActionButton) findViewById(R.id.button_floating_action);
-        button_floating_action.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (fragmentManager.findFragmentByTag(ContextMenuDialogFragment.TAG) == null) {
-                    mMenuDialogFragment.show(fragmentManager, ContextMenuDialogFragment.TAG);
-                }
-            }
-        });
+
     }
 
     private List<MenuObject> getMenuObjects() {
@@ -130,108 +194,7 @@ public class JoneHelperMainActivity extends AppCompatActivity implements View.On
         return menuObjects;
     }
 
-    private void setUpMenu() {
-
-        // attach to current activity;
-        resideMenu = new ResideMenu(this);
-        resideMenu.setBackground(R.mipmap.bg02);
-        resideMenu.attachToActivity(this);
-        resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip. 
-        resideMenu.setScaleValue(0.6f);
-
-        // create menu items;
-        int index = resideMenuItemNames.length / 2;
-        for(int i = 0; i < resideMenuItemNames.length; i++){
-            int direction;
-            if(i < index){
-                direction = ResideMenu.DIRECTION_LEFT;
-            }else {
-                direction = ResideMenu.DIRECTION_RIGHT;
-            }
-            getResideMenuItem(resideMenuItemNames[i], direction);
-        }
-
-        // You can disable a direction by setting ->
-        // resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
-
-        findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
-            }
-        });
-        findViewById(R.id.title_bar_right_menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_RIGHT);
-            }
-        });
-    }
-
-    private ResideMenuItem getResideMenuItem(String name, int direction){
-        ResideMenuItem menuItem = new ResideMenuItem(this, ResUtil.getMipmapResId(name), ResUtil.getStringResId(name));
-        menuItem.setTag(name);
-        menuItem.setOnClickListener(this);
-        resideMenu.addMenuItem(menuItem, direction);
-        return menuItem;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return resideMenu.dispatchTouchEvent(ev);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Object tag = view.getTag();
-        if(tag != null && tag instanceof String){
-            String name = tag.toString();
-            switch (name){
-                case "menu_item_home":
-                    changeFragment(JoneHelperMainFragment.getInstance());
-                    break;
-                case "menu_item_weather":
-                    changeFragment(WeatherFragment.getInstance());
-                    break;
-                case "menu_item_recommend":
-                    changeFragment(JoneAdListFragment.getInstance());
-                    break;
-                case "menu_item_app_manager":
-                    startActivity(new Intent(JoneHelperMainActivity.this, AppManagerActivity.class));
-                    break;
-                case "menu_item_feedback":
-                    try{
-                        AppConnect.getInstance(JoneHelperMainActivity.this).showFeedback(JoneHelperMainActivity.this);
-                    }catch (Exception e){}
-                    break;
-                case "menu_item_shared":
-                    startActivity(new Intent(JoneHelperMainActivity.this, NotebookActivity.class));
-//                    try{
-//                        SharedToUtil.shareToWeixin(JoneHelperMainActivity.this, "欢迎来到帮手的世界\nhttp://shouji.baidu.com/software/item?docid=7577214&from=as", Utils.getSharedPicFile(JoneHelperMainActivity.this));
-//                    }catch (Exception e){
-//                        Toast.makeText(JoneHelperMainActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
-//                    }
-                    break;
-            }
-        }
-        resideMenu.closeMenu();
-    }
-
-    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
-        @Override
-        public void openMenu() {
-            //Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void closeMenu() {
-            //Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
-        }
-    };
-
     public void changeFragment(Fragment targetFragment){
-        resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment, targetFragment, "fragment")
@@ -244,10 +207,6 @@ public class JoneHelperMainActivity extends AppCompatActivity implements View.On
         }
     }
 
-    // What good method is to access resideMenu？
-    public ResideMenu getResideMenu(){
-        return resideMenu;
-    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -268,7 +227,7 @@ public class JoneHelperMainActivity extends AppCompatActivity implements View.On
         } else{
             if(isCurrentPageFirst){
                 if((System.currentTimeMillis() - exitTime) > 2000){
-                    final Snackbar mSnackbar = Snackbar.make(button_floating_action, "再按一次退出程序", Snackbar.LENGTH_LONG);
+                    final Snackbar mSnackbar = Snackbar.make(floatingActionButton, "再按一次退出程序", Snackbar.LENGTH_LONG);
                     mSnackbar.show();
                     mSnackbar.setAction("退出", new View.OnClickListener() {
                         @Override
@@ -286,7 +245,6 @@ public class JoneHelperMainActivity extends AppCompatActivity implements View.On
                 }
             }else {
                 changeFragment(JoneHelperMainFragment.getInstance());
-                resideMenu.closeMenu();
             }
         }
     }

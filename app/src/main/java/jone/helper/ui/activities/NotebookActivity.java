@@ -39,7 +39,7 @@ public class NotebookActivity extends BaseAppCompatActivity {
 
     @Override
     protected void findViews() {
-        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(android.R.color.holo_blue_bright));
+        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
         initToolbar();
         gridView = findView(R.id.gridView);
     }

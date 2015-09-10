@@ -6,9 +6,8 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@android:color/holo_blue_bright</item>
-        <item name="android:windowBackground">@drawable/window_background</item>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/jone_style_blue_A400</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -30,6 +29,10 @@
     <style name="edit_note_menu_item" parent="edit_note_menu">
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="style_content_text_color">
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
 </resources>
