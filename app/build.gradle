@@ -74,7 +74,15 @@ android {
             res.srcDirs = getSrcDirs('src/main/res', 'src/main/res-modules')
         }
     }
+
+    compileOptions {
+        encoding "UTF-8"
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

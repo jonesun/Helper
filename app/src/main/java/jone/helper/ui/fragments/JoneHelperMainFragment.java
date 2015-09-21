@@ -27,8 +27,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import jone.helper.R;
+import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.SDCardInfo;
+import jone.helper.model.bing.BingPicture;
+import jone.helper.model.bing.BingPictureOperator;
+import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
@@ -153,7 +157,7 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
     };
 
     private LocationClient mLocClient;
-    private MyLocationListenner myListener = new MyLocationListenner();
+    private MyLocationListener myListener = new MyLocationListener();
     private void getLocation(){
         // 定位初始化
         mLocClient = new LocationClient(getHostActivity());
@@ -219,6 +223,7 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
                         .append("\r\n");
             }
         }
+        weatherStringBuilder.append("\r\n\r\n");
         if(txt_weather != null){
             txt_weather.setText(weatherStringBuilder.toString());
         }
@@ -227,7 +232,7 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
     /**
      * 定位SDK监听函数
      */
-    public class MyLocationListenner implements BDLocationListener {
+    public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {

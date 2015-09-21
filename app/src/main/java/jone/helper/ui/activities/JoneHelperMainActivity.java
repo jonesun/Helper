@@ -16,12 +16,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.camera.Camera;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.cooliris.media.Gallery;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -34,11 +39,19 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import jone.helper.App;
 import jone.helper.AppConnect;
+import jone.helper.BitmapCache;
 import jone.helper.BuildConfig;
 import jone.helper.Constants;
 import jone.helper.R;
+import jone.helper.lib.util.GsonUtils;
+import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.model.Calculator.Calculator;
+import jone.helper.model.bing.BingPicture;
+import jone.helper.model.bing.BingPictureMsg;
+import jone.helper.model.bing.BingPictureOperator;
+import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.fragments.*;
 import jone.helper.util.UmengUtil;
@@ -46,9 +59,13 @@ import jone.helper.zxing.scan.CaptureActivity;
 
 public class JoneHelperMainActivity extends AppCompatActivity implements OnMenuItemClickListener,
         OnMenuItemLongClickListener {
+    private static final String TAG = JoneHelperMainActivity.class.getSimpleName();
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
+    private NetworkImageView iv_picture;
+    private TextView tv_title, tv_copyright;
 
     private FragmentManager fragmentManager;
     private DialogFragment mMenuDialogFragment;
@@ -104,6 +121,37 @@ public class JoneHelperMainActivity extends AppCompatActivity implements OnMenuI
                 }
             }
         });
+
+        initNavHeaderView();
+    }
+
+    private void initNavHeaderView(){
+        iv_picture = (NetworkImageView) navigationView.findViewById(R.id.iv_picture);
+        tv_title = (TextView) navigationView.findViewById(R.id.tv_title);
+        tv_copyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
+        iv_picture.setDefaultImageResId(R.mipmap.bg02);
+        iv_picture.setErrorImageResId(R.mipmap.bg02);
+        BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
+            @Override
+            public void onSuccess(BingPicture bingPicture) {
+                Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
+                if(bingPicture != null){
+                    iv_picture.setImageUrl(bingPicture.getUrl(), new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
+                            new BitmapCache()));
+                    List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
+                    if(bingPictureMsgs != null && bingPictureMsgs.size() > 0){
+                        tv_title.setText(bingPictureMsgs.get(0).getText());
+                    }
+                    tv_copyright.setText(bingPicture.getCopyright());
+                }
+            }
+
+            @Override
+            public void onError(String reason) {
+                Log.e(TAG, "reason: " + reason);
+            }
+        });
+
     }
 
     private void onNavigationViewMenuItemSelected(NavigationView mNav) {
@@ -128,8 +176,11 @@ public class JoneHelperMainActivity extends AppCompatActivity implements OnMenuI
                         menuItem.setChecked(false);
                         break;
                     case R.id.nav_menu_item_recommend:
-                        changeFragment(JoneAdListFragment.getInstance());
-                        menuItem.setChecked(true);
+//                        changeFragment(JoneAdListFragment.getInstance());
+//                        menuItem.setChecked(true);
+
+                        startActivity(new Intent(JoneHelperMainActivity.this, KuaiDiSearchActivity.class));
+                        menuItem.setChecked(false);
                         break;
                 }
                 drawerLayout.closeDrawers();

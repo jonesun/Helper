@@ -9,6 +9,7 @@
     <string name="menu_item_home">主页</string>
     <string name="menu_item_weather">天气信息</string>
     <string name="menu_item_recommend">精彩推荐</string>
+    <string name="menu_item_logistics">物流查询</string>
 
     <string name="menu_item_app_manager">手机管理</string>
     <string name="menu_item_feedback">用户反馈</string>
@@ -46,4 +47,5 @@
     <string name="about">关于</string>
     <string name="feedback">意见反馈</string>
     <string name="skin_peeler">更换皮肤</string>
+    <string name="title_activity_kuai_di_search">快递查询</string>
 </resources>

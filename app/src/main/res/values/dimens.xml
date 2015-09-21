@@ -10,4 +10,6 @@
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="card_max_elevation">2dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

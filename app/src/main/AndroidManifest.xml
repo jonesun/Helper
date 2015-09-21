@@ -48,7 +48,6 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activities.FlashlightActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -76,19 +75,18 @@
             android:name=".ui.activities.HeartRateMonitorActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.activities.EditNotebookActivity"
+        <activity
+            android:name=".ui.activities.EditNotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue"/>
-
-        <activity android:name=".ui.activities.NotebookActivity"
+            android:theme="@style/Theme.jone.blue" />
+        <activity
+            android:name=".ui.activities.NotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue"/>
-
-        <activity android:name=".ui.activities.AboutActivity"
+            android:theme="@style/Theme.jone.blue" />
+        <activity
+            android:name=".ui.activities.AboutActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue"/>
-
+            android:theme="@style/Theme.jone.blue" />
         <activity
             android:name=".ui.activities.AppManagerActivity"
             android:label="@string/title_section2"
@@ -134,6 +132,7 @@
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService" >
         </service>
+
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
@@ -155,6 +154,12 @@
             </intent-filter>
         </receiver>
         <!-- 移动云AppX SDK end -->
+        <activity
+            android:name=".ui.activities.KuaiDiSearchActivity"
+            android:label="@string/title_activity_kuai_di_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" >
+        </activity>
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:src="@android:drawable/ic_menu_add"
-            android:layout_margin="4dp"
+            android:layout_margin="8dp"
             app:backgroundTint="@color/main_blue_light"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
