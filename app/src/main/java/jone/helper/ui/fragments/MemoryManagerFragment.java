@@ -7,25 +7,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.ui.activities.AppManagerActivity;
+import jone.helper.ui.activities.JoneAppManagerActivity;
 
 /**
  * Created by jone.sun on 2015/8/17.
  */
-public class MemoryManagerFragment extends BaseFragment<AppManagerActivity> {
+public class MemoryManagerFragment extends BaseFragment<JoneAppManagerActivity> {
     private static final String TAG = MemoryManagerFragment.class.getSimpleName();
     ActivityManager activityManager;
     private TextView txt_memory;

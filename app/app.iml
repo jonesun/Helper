@@ -103,32 +103,33 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="pinyin4j-2.5.0" level="project" />
-    <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
-    <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="locSDK_5.2" level="project" />
+    <orderEntry type="library" exported="" name="Gallery3D-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="palette-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.3" level="project" />
-    <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="baidu_appx_android_2.0.0" level="project" />
+    <orderEntry type="library" exported="" name="com.umeng.fb.5.4.0" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.48" level="project" />
-    <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
-    <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="library-1.0.6" level="project" />
     <orderEntry type="library" exported="" name="AppOffer_2.4.0_sunr7" level="project" />
     <orderEntry type="library" exported="" name="core-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="baidu_cuid" level="project" />
-    <orderEntry type="library" exported="" name="support-v13-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Camera-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="ZxingScan-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
-    <orderEntry type="library" exported="" name="analytics-5.5.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
-    <orderEntry type="module" module-name="yalantiscontextmenu" exported="" />
+    <orderEntry type="library" exported="" name="yalantiscontextmenu-release1.0-" level="project" />
+    <orderEntry type="library" exported="" name="pinyin4j-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
+    <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="locSDK_5.2" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.3" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="design-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="baidu_appx_android_2.0.0" level="project" />
+    <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
+    <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
+    <orderEntry type="library" exported="" name="support-v13-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="analytics-5.5.3" level="project" />
     <orderEntry type="module" module-name="JoneLib" exported="" />
-    <orderEntry type="module" module-name="Camera" exported="" />
-    <orderEntry type="module" module-name="ZxingScan" exported="" />
-    <orderEntry type="module" module-name="Gallery3D" exported="" />
   </component>
 </module>

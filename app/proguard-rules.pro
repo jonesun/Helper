@@ -89,3 +89,12 @@ public static final android.os.Parcelable$Creator *;
 
 -dontwarn com.umeng.**
 -keep class com.umeng.** {*;}
+
+-keepclassmembers class * {
+    public <init>(org.json.JSONObject);
+}
+
+#把[您的应用包名] 替换成您自己的包名，如"com.example.R$*"。
+-keep public class jone.helper.R$*{
+    public static final int *;
+}

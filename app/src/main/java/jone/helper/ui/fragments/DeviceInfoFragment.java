@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -28,7 +30,7 @@ public class DeviceInfoFragment extends Fragment {
     private Map<Integer, String> versionNameMap;
     public List<String> data = new ArrayList<>();
 
-    LinearLayoutManager layoutManager;
+    private RecyclerView.LayoutManager layoutManager;
 
     private static DeviceInfoFragment instance = null;
     public static DeviceInfoFragment getInstance(){
@@ -60,6 +62,24 @@ public class DeviceInfoFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
+//        switch (flag) {
+//            case VERTICAL_LIST:
+//                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//                break;
+//            case HORIZONTAL_LIST:
+//                mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+//                break;
+//            case VERTICAL_GRID:
+//                mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT, GridLayoutManager.VERTICAL, false);
+//                break;
+//            case HORIZONTAL_GRID:
+//                mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT, GridLayoutManager.HORIZONTAL, false);
+//                break;
+//            case STAGGERED_GRID:
+//                mLayoutManager = new StaggeredGridLayoutManager(SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL);
+//                break;
+//        }
+        //layoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         initVersionMap();
         initData();

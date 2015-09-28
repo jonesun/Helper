@@ -38,6 +38,16 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="HelperBaseTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/jone_style_blue_A400</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="HelperBaseTheme.Main" parent="HelperBaseTheme">
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@drawable/window_background</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 

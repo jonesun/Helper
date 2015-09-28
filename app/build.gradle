@@ -1,13 +1,20 @@
 apply from: '/application.gradle'
 
 android {
-    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
-    buildToolsVersion project.BUILD_TOOLS_VERSION
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+//    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+//    buildToolsVersion project.BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "jone.helper"
-        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        MIN_SDK_VERSION=14
+        TARGET_SDK_VERSION=23
+//        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
+//        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        minSdkVersion 14
+        targetSdkVersion 23
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName VERSION_NAME
 //        ndk {
@@ -82,16 +89,26 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+//        dirs rootDir.getPath() + File.separator + 'aars'
+        dirs 'aars'
+    }
+}
 
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':libraries:Gallery3D')
-    compile project(':libraries:Camera')
+    compile(name:'Gallery3D-release1.0', ext:'aar')
+    compile(name:'Camera-release1.0', ext:'aar')
+
+    compile(name:'ZxingScan-release1.0', ext:'aar')
+    compile 'com.google.zxing:core:3.0.1'
+
+    compile(name:'yalantiscontextmenu-release1.0', ext:'aar')
+    compile 'com.nineoldandroids:library:2.4.0'
+
     compile project(':libraries:JoneLib')
-    compile project(':libraries:ZxingScan')
-    testCompile 'junit:junit:4.12'
-    compile project(':yalantiscontextmenu')
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v13:23.0.1'
@@ -101,6 +118,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:palette-v7:23.0.1'
+    testCompile 'junit:junit:4.12'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {

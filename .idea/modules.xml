@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/libraries/Camera/Camera.iml" filepath="$PROJECT_DIR$/libraries/Camera/Camera.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/Gallery3D/Gallery3D.iml" filepath="$PROJECT_DIR$/libraries/Gallery3D/Gallery3D.iml" />
       <module fileurl="file://$PROJECT_DIR$/Helper.iml" filepath="$PROJECT_DIR$/Helper.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" filepath="$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" filepath="$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
-      <module fileurl="file://$PROJECT_DIR$/yalantiscontextmenu/yalantiscontextmenu.iml" filepath="$PROJECT_DIR$/yalantiscontextmenu/yalantiscontextmenu.iml" />
     </modules>
   </component>
 </project>

@@ -1,16 +1,10 @@
-package jone.helper.ui.activities;
+package jone.helper.ui.fragments;
 
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
@@ -26,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import jone.helper.R;
-import jone.helper.ui.fragments.BaseFragment;
+import jone.helper.ui.activities.KuaiDiSearchActivity;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -110,7 +104,7 @@ public class KuaiDiSearchActivityFragment extends BaseFragment<KuaiDiSearchActiv
             }
         });
         //webView_result.loadUrl("http://m.kuaidi100.com/index_all.html?type=yunda&postid=1600836108601#result");
-        webView_result.loadUrl("http://wap.kuaidi100.com/wap_result.jsp?rand=20120517&id=yunda&fromWeb=null&&postid=1600836108601");
+//        webView_result.loadUrl("http://wap.kuaidi100.com/wap_result.jsp?rand=20120517&id=yunda&fromWeb=null&&postid=1600836108601");
     }
 
     private Map<String, String> kuaiDiNameMap = new HashMap<String, String>(){

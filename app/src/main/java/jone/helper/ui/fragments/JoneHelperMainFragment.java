@@ -27,20 +27,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import jone.helper.R;
-import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.SDCardInfo;
-import jone.helper.model.bing.BingPicture;
-import jone.helper.model.bing.BingPictureOperator;
-import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.model.customAd.Jone_AppConnectAd;
+import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.SelectCityActivity;
-import jone.helper.ui.activities.JoneHelperMainActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.ui.widget.circleprogress.ArcProgress;
 import jone.helper.util.AppUtil;
@@ -52,7 +48,7 @@ import jone.helper.util.WeatherUtil;
 /**
  * Created by jone.sun on 2015/8/17.
  */
-public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity> implements WeatherView {
+public class JoneHelperMainFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
     private static final String TAG = JoneHelperMainFragment.class.getSimpleName();
     private ViewGroup layout_arcProgress, layout_weather;
     private LinearLayout layout_ad;
@@ -223,7 +219,6 @@ public class JoneHelperMainFragment extends BaseFragment<JoneHelperMainActivity>
                         .append("\r\n");
             }
         }
-        weatherStringBuilder.append("\r\n\r\n");
         if(txt_weather != null){
             txt_weather.setText(weatherStringBuilder.toString());
         }

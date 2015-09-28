@@ -34,20 +34,23 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".ui.activities.JoneHelperMainActivity"
+            android:name=".ui.activities.HelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue.main" >
+            android:theme="@style/HelperBaseTheme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activities.FlashlightActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -87,10 +90,30 @@
             android:name=".ui.activities.AboutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.jone.blue" />
+
         <activity
-            android:name=".ui.activities.AppManagerActivity"
-            android:label="@string/title_section2"
-            android:parentActivityName=".ui.activities.JoneHelperMainActivity" />
+            android:name=".ui.activities.KuaiDiSearchActivity"
+            android:label="@string/title_activity_kuai_di_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" >
+        </activity>
+        <activity
+            android:name=".ui.activities.JoneAppManagerActivity"
+            android:label="@string/title_activity_jone_app_manager"
+            android:parentActivityName=".ui.activities.HelperMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseTheme" >
+        </activity>
+        <activity
+            android:name=".ui.activities.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light"/>
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
@@ -154,12 +177,6 @@
             </intent-filter>
         </receiver>
         <!-- 移动云AppX SDK end -->
-        <activity
-            android:name=".ui.activities.KuaiDiSearchActivity"
-            android:label="@string/title_activity_kuai_di_search"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme" >
-        </activity>
     </application>
 
 </manifest>
