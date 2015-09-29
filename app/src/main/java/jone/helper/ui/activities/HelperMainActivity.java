@@ -41,10 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.App;
-import jone.helper.AppConnect;
 import jone.helper.BitmapCache;
-import jone.helper.BuildConfig;
-import jone.helper.Constants;
 import jone.helper.R;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
@@ -94,7 +91,6 @@ public class HelperMainActivity extends AppCompatActivity
 
         MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
-        AppConnect.getInstance(Constants.WPSJ_ID, BuildConfig.FLAVOR, HelperMainActivity.this); //万普世纪
         UmengUpdateAgent.setDefault();
         UmengUpdateAgent.update(this);
     }

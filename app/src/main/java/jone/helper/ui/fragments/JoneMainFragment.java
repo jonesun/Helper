@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import jone.helper.AppConnect;
 import jone.helper.R;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
@@ -127,8 +126,6 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
                 festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
                 showDate(rootView); //显示时间
                 showFestival(rootView); //显示节日
-                AppConnect.getInstance(getActivity()).showMiniAd(getActivity(), wp_ad_min_layout, 10);// 10秒刷新一次
-                AppConnect.getInstance(getActivity()).showBannerAd(getActivity(), wp_ad_layout);
             }
         });
     }

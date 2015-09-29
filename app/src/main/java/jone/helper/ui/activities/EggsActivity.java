@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.App;
-import jone.helper.AppConnect;
 import jone.helper.R;
+import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.adapter.NewsAdapter;
 import jone.helper.bean.News;
 import jone.helper.lib.model.net.NetResponseCallback;
@@ -141,11 +141,7 @@ public class EggsActivity extends FragmentActivity {
             }
 
             layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
-            try{
-                AppConnect.getInstance(activity).showBannerAd(activity, layout_ad);
-            }catch (Exception e){
-                Log.e(TAG, e.getMessage(), e);
-            }
+            JoneBaiduAd.showBDBannerAd(activity, layout_ad);
 
             newsAdapter.setOnItemClickListener(new NewsAdapter.OnRecyclerViewItemClickListener() {
                 @Override

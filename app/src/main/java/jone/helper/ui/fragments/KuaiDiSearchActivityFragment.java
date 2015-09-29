@@ -30,7 +30,7 @@ public class KuaiDiSearchActivityFragment extends BaseFragment<KuaiDiSearchActiv
     private Spinner spinner_kuaidi_name;
     private TextInputLayout textInputLayout;
     private EditText editText;
-    private Button btn_scan, btn_search;
+    private Button btn_search;
     private WebView webView_result;
 
     private ArrayAdapter<String> adapter;
@@ -51,7 +51,6 @@ public class KuaiDiSearchActivityFragment extends BaseFragment<KuaiDiSearchActiv
         spinner_kuaidi_name = findView(view, R.id.spinner_kuaidi_name);
         textInputLayout = findView(view, R.id.textInputLayout);
         editText = textInputLayout.getEditText();
-        btn_scan = findView(view, R.id.btn_scan);
         btn_search = findView(view, R.id.btn_search);
         webView_result = findView(view, R.id.webView_result);
         webView_result.getSettings().setJavaScriptEnabled(true);

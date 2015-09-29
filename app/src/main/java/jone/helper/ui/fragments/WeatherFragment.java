@@ -26,6 +26,7 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
+import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.adapter.WeatherAdapter;
@@ -33,7 +34,6 @@ import jone.helper.lib.util.Utils;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.presenter.weather.WeatherPresenter;
-import jone.helper.model.customAd.Jone_AppConnectAd;
 import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.util.FestivalUtil;
@@ -92,7 +92,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
         mRecyclerView.setAdapter(weatherAdapter);
         showDate();
-        Jone_AppConnectAd.showMinAd(getHostActivity(), layout_ad);
+        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         showEggs();
         btn_city.setOnClickListener(new View.OnClickListener() {
             @Override

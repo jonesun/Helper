@@ -9,7 +9,7 @@
     <string name="menu_item_home">主页</string>
     <string name="menu_item_weather">天气</string>
     <string name="menu_item_recommend">精彩推荐</string>
-    <string name="menu_item_logistics">物流查询</string>
+    <string name="menu_item_logistics">快递查询</string>
 
     <string name="menu_item_app_manager">手机管理</string>
     <string name="menu_item_feedback">用户反馈</string>

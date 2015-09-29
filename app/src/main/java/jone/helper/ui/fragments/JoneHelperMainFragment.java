@@ -3,8 +3,6 @@ package jone.helper.ui.fragments;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -29,12 +27,12 @@ import java.util.TimerTask;
 import jone.helper.R;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.SDCardInfo;
+import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.model.weather.entity.WeatherIndex;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
-import jone.helper.model.customAd.Jone_AppConnectAd;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.ui.view.WeatherView;
@@ -113,7 +111,7 @@ public class JoneHelperMainFragment extends BaseFragment<HelperMainActivity> imp
     @Override
     protected void initViews(View view) {
         showDate();
-        Jone_AppConnectAd.showMinAd(getHostActivity(), layout_ad);
+        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         weatherPresenter = new BaiduWeatherPresenter(this);
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");

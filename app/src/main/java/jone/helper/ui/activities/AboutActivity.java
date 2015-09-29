@@ -14,12 +14,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
-import jone.helper.AppConnect;
 import jone.helper.BuildConfig;
 import jone.helper.R;
 import jone.helper.lib.util.GsonUtils;
@@ -101,9 +101,8 @@ public class AboutActivity extends BaseAppCompatActivity {
         findViewById(R.id.layoutFeedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
-                    AppConnect.getInstance(AboutActivity.this).showFeedback(AboutActivity.this);
-                }catch (Exception e){}
+                FeedbackAgent fb = new FeedbackAgent(AboutActivity.this);
+                fb.startFeedbackActivity();
             }
         });
     }
