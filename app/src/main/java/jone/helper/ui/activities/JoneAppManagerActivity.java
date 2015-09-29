@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import jone.helper.R;
 import jone.helper.ui.fragments.AllAppsFragment;
+import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
 import jone.helper.ui.fragments.MemoryManagerFragment;
 
@@ -68,14 +69,14 @@ public class JoneAppManagerActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
     }
 
@@ -118,10 +119,12 @@ public class JoneAppManagerActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position == 0){
-                return AllAppsFragment.getInstance();
-            } else if(position == 1){
-                return MemoryManagerFragment.getInstance();
-            } else if(position == 2){
+                return AppsFragment.newInstance();
+            }
+//            else if(position == 1){
+//                return MemoryManagerFragment.getInstance();
+//            }
+            else if(position == 1){
                 return DeviceInfoFragment.getInstance();
             }
             return PlaceholderFragment.newInstance(position + 1);
@@ -129,8 +132,8 @@ public class JoneAppManagerActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
@@ -138,9 +141,9 @@ public class JoneAppManagerActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
                     return getString(R.string.title_activity_app_manager);
+//                case 1:
+//                    return getString(R.string.title_activity_memory_manager);
                 case 1:
-                    return getString(R.string.title_activity_memory_manager);
-                case 2:
                     return getString(R.string.title_activity_phone_info);
             }
             return null;

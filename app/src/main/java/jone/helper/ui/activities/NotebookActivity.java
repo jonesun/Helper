@@ -2,6 +2,12 @@ package jone.helper.ui.activities;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Color;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
@@ -22,16 +28,19 @@ import jone.helper.lib.ormlite.NotebookDao;
 import jone.helper.lib.ormlite.entities.NotebookData;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.StringUtils;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.activities.base.BaseFragmentActivity;
+import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.adapter.NotebookAdapter;
+import jone.helper.ui.adapter.NotebookRecyclerViewAdapter;
 
 /**
  * Created by jone.sun on 2015/9/7.
  */
-public class NotebookActivity extends BaseAppCompatActivity {
-    private NotebookAdapter adapter;
-    private GridView gridView;
+public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyclerViewAdapter.OnItemClickListener {
+    private NotebookRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
     @Override
     protected int getContentView() {
         return R.layout.activity_notebook;
@@ -41,7 +50,49 @@ public class NotebookActivity extends BaseAppCompatActivity {
     protected void findViews() {
         BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
         initToolbar();
-        gridView = findView(R.id.gridView);
+        recyclerView = findView(R.id.recyclerView);
+    }
+
+    @Override
+    protected void initViews() {
+        super.initViews();
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        adapter = new NotebookRecyclerViewAdapter();
+        adapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+        adapter.setDataList(NotebookDao.getInstance(this).queryList());
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        NotebookData notebookData = adapter.getItem(position);
+        Intent intent = new Intent(NotebookActivity.this, EditNotebookActivity.class);
+        intent.putExtra("notebookData", notebookData);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onItemLongClick(final View view, final int position) {
+        final CardView cardView = (CardView) view;
+        cardView.setCardBackgroundColor(Color.RED);
+        Snackbar snackbar = Snackbar.make(view, "便签", Snackbar.LENGTH_LONG)
+                .setAction("删除", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        NotebookDao.getInstance(NotebookActivity.this).delete(adapter.getItem(position));
+                        adapter.setDataList(NotebookDao.getInstance(NotebookActivity.this).queryList());
+                    }
+                });
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                cardView.setCardBackgroundColor(getResources().getColor(android.R.color.white));
+            }
+        });
+        snackbar.show();
     }
 
     private void initToolbar() {
@@ -57,7 +108,7 @@ public class NotebookActivity extends BaseAppCompatActivity {
                 onBackPressed();
             }
         });
-        mToolBarTextView.setText("便签");
+        mToolBarTextView.setText(getString(R.string.menu_item_note));
     }
 
     @Override
@@ -82,65 +133,5 @@ public class NotebookActivity extends BaseAppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    protected void initViews() {
-        super.initViews();
-        adapter = new NotebookAdapter(NotebookActivity.this);
-        gridView.setAdapter(adapter);
-        adapter.setData(NotebookDao.getInstance(NotebookActivity.this).queryList());
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                NotebookData notebookData = (NotebookData) adapterView.getAdapter().getItem(i);
-                Intent intent = new Intent(NotebookActivity.this, EditNotebookActivity.class);
-                intent.putExtra("notebookData", notebookData);
-                startActivity(intent);
-                finish();
-            }
-        });
-        gridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-        gridView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode actionMode, int i, long l, boolean b) {
-                adapter.checkSelect(actionMode, i, b);
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                MenuInflater inflater = actionMode.getMenuInflater();
-                inflater.inflate(R.menu.menu_notebook_list, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_delete:
-                        List<NotebookData> notebookDatas = adapter.getSelectDeleteData();
-                        if (notebookDatas.size() > 0) {
-                            for (NotebookData notebookData : notebookDatas) {
-                                NotebookDao.getInstance(NotebookActivity.this).delete(notebookData);
-                            }
-                            adapter.setData(NotebookDao.getInstance(NotebookActivity.this).queryList());
-                        }
-                        actionMode.finish();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
-                adapter.unSelectAll(actionMode);
-            }
-        });
     }
 }

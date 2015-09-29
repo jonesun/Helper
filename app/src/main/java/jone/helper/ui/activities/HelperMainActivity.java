@@ -82,6 +82,7 @@ public class HelperMainActivity extends AppCompatActivity
 //            //透明导航栏
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 //        }
+        startActivity(new Intent(this, SplashActivity.class));
         setContentView(R.layout.activity_helper_main);
         BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
         fragmentManager = getSupportFragmentManager();
