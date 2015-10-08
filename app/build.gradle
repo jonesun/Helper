@@ -9,8 +9,6 @@ android {
 
     defaultConfig {
         applicationId "jone.helper"
-        MIN_SDK_VERSION=14
-        TARGET_SDK_VERSION=23
 //        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
 //        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
         minSdkVersion 14

@@ -370,27 +370,26 @@ public class JoneHelperMainFragment extends BaseFragment<HelperMainActivity> imp
         txt_calendar.setText(stringBuilder.toString());
         int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         if(week >= 0 && week < txt_calendars.length){
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
             int chinaDay = festivalUtil.getLday();
-            txt_calendars[week].setText(day + "\r\n" + FestivalUtil.getChinaDayString(chinaDay));
+            txt_calendars[week].setText(calendar.get(Calendar.DAY_OF_MONTH) + "\r\n"
+                    + FestivalUtil.getChinaDayString(chinaDay));
             txt_calendars[week].setBackgroundResource(R.drawable.today_bg);
             int leftWeek = week - 1;
+            Calendar leftCalendar = Calendar.getInstance();
             while (leftWeek >= 0){
-                txt_calendars[leftWeek].setText((day - 1)
-                        + "\r\n"
+                leftCalendar.set(Calendar.DATE, leftCalendar.get(Calendar.DATE) - 1);
+                txt_calendars[leftWeek].setText((leftCalendar.get(Calendar.DAY_OF_MONTH)) + "\r\n"
                         + FestivalUtil.getChinaDayString(chinaDay - 1));
-                day--;
                 chinaDay--;
                 leftWeek --;
             }
-            day = calendar.get(Calendar.DAY_OF_MONTH);
             chinaDay = festivalUtil.getLday();
+            Calendar rightCalendar = Calendar.getInstance();
             int rightWeek = week + 1;
             while (rightWeek < txt_calendars.length){
-                txt_calendars[rightWeek].setText((day + 1)
-                        + "\r\n"
+                rightCalendar.set(Calendar.DATE, rightCalendar.get(Calendar.DATE) + 1);
+                txt_calendars[rightWeek].setText((rightCalendar.get(Calendar.DAY_OF_MONTH)) + "\r\n"
                         + FestivalUtil.getChinaDayString(chinaDay + 1));
-                day++;
                 chinaDay++;
                 rightWeek++;
             }
