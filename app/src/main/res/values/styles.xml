@@ -40,6 +40,7 @@
     </style>
     <style name="HelperBaseTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/jone_style_blue_A400</item>
+        <item name="colorPrimaryDark">@color/jone_style_blue_700</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -50,5 +51,19 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="HelperTheme.blue" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/jone_style_blue_A400</item>
+        <item name="colorPrimaryDark">@color/jone_style_blue_700</item>
+        <item name="colorAccent">@color/jone_style_blue_500</item>
+        <item name="android:windowBackground">@color/jone_style_blue_50</item>
+    </style>
+
+    <style name="HelperTheme.green" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/jone_style_green_A400</item>
+        <item name="colorPrimaryDark">@color/jone_style_green_700</item>
+        <item name="colorAccent">@color/jone_style_green_500</item>
+        <item name="android:windowBackground">@color/jone_style_green_50</item>
+    </style>
 
 </resources>

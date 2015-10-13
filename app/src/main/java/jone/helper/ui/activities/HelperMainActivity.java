@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -51,14 +52,14 @@ import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
-import jone.helper.ui.activities.base.BaseFragmentActivity;
+import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.JoneHelperMainFragment;
 import jone.helper.ui.fragments.WeatherFragment;
 import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
 
-public class HelperMainActivity extends AppCompatActivity
+public class HelperMainActivity extends BaseAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnMenuItemClickListener, OnMenuItemLongClickListener {
     private final String TAG = HelperMainActivity.class.getSimpleName();
@@ -70,24 +71,26 @@ public class HelperMainActivity extends AppCompatActivity
     private TextView tv_title, tv_copyright;
 
     private boolean isCurrentPageFirst;
+
+    @Override
+    protected int getContentView() {
+        startActivity(new Intent(this, SplashActivity.class));
+        return R.layout.activity_helper_main;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            //透明状态栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            //透明导航栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-//        }
-        startActivity(new Intent(this, SplashActivity.class));
-        setContentView(R.layout.activity_helper_main);
-        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
-        fragmentManager = getSupportFragmentManager();
-        initViews();
-
         if(savedInstanceState == null){
             changeFragment(JoneHelperMainFragment.getInstance());
         }
+    }
+
+    @Override
+    protected void findViews() {
+        fragmentManager = getSupportFragmentManager();
+        initViews();
+
 
         MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
@@ -95,7 +98,7 @@ public class HelperMainActivity extends AppCompatActivity
         UmengUpdateAgent.update(this);
     }
 
-    private void initViews() {
+    public void initViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);

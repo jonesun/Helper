@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
     android:layout_width="match_parent" android:layout_height="match_parent"
     tools:openDrawer="start"
-    android:background="@color/jone_style_blue_50">
+    android:background="?android:attr/windowBackground">
 
     <include layout="@layout/app_bar_helper_main" android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -14,6 +14,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_helper_main"
         app:menu="@menu/activity_helper_main_drawer"
-        android:background="@color/jone_style_blue_50"/>
+        android:background="?android:attr/windowBackground" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -78,15 +78,16 @@
         <activity
             android:name=".ui.activities.EditNotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue" />
+            android:theme="@style/HelperTheme.blue" />
         <activity
             android:name=".ui.activities.NotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue" />
+            android:theme="@style/HelperTheme.blue" />
         <activity
             android:name=".ui.activities.AboutActivity"
+            android:label="@string/about"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.jone.blue" />
+            android:theme="@style/HelperTheme.blue" />
         <activity
             android:name=".ui.activities.KuaiDiSearchActivity"
             android:label="@string/title_activity_kuai_di_search"

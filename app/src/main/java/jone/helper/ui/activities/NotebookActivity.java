@@ -26,13 +26,8 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.lib.ormlite.NotebookDao;
 import jone.helper.lib.ormlite.entities.NotebookData;
-import jone.helper.lib.util.GsonUtils;
-import jone.helper.lib.util.StringUtils;
-import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.activities.base.BaseFragmentActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
-import jone.helper.ui.adapter.NotebookAdapter;
 import jone.helper.ui.adapter.NotebookRecyclerViewAdapter;
 
 /**
@@ -48,7 +43,6 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
 
     @Override
     protected void findViews() {
-        BaseFragmentActivity.setStatusBarView(this, getResources().getColor(R.color.jone_style_blue_700));
         initToolbar();
         recyclerView = findView(R.id.recyclerView);
     }

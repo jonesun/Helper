@@ -20,12 +20,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import jone.helper.R;
+import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.AllAppsFragment;
 import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
 import jone.helper.ui.fragments.MemoryManagerFragment;
 
-public class JoneAppManagerActivity extends AppCompatActivity {
+public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -43,10 +44,12 @@ public class JoneAppManagerActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jone_app_manager);
+    protected int getContentView() {
+        return R.layout.activity_jone_app_manager;
+    }
 
+    @Override
+    protected void findViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -77,7 +80,6 @@ public class JoneAppManagerActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
-
     }
 
 

@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/model/customAd/JoneBaiduAd.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/model/customAd/entity/CustomAdInfo.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/ui/view/PullToRefreshView.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/jone/helper/util/SnackbarUtils.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/progress_image.xml" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/jone_helper_main_toolbar.xml" charset="GBK" />
     <file url="file://$PROJECT_DIR$/app/src/main/res/layout/refresh_footer.xml" charset="UTF-8" />
