@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jone.helper" >
+    package="jone.helper">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -33,12 +33,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activities.HelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperBaseTheme.Main" >
+            android:theme="@style/HelperBaseTheme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,18 +52,15 @@
             android:name=".ui.activities.FlashlightActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".model.Calculator.Calculator"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity
             android:name=".ui.activities.EggsActivity"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Holo.Light" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light"></activity>
         <activity
             android:name=".ui.activities.NewsDetailActivity"
             android:launchMode="singleInstance"
@@ -92,33 +89,29 @@
             android:name=".ui.activities.KuaiDiSearchActivity"
             android:label="@string/title_activity_kuai_di_search"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme" >
-        </activity>
+            android:theme="@style/HelperTheme.blue"/>
         <activity
             android:name=".ui.activities.JoneAppManagerActivity"
             android:label="@string/title_activity_jone_app_manager"
             android:parentActivityName=".ui.activities.HelperMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme" >
-        </activity>
+            android:theme="@style/HelperTheme.blue"/>
         <activity
             android:name=".ui.activities.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="com.umeng.fb.ConversationActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light" />
-
-        <activity android:name=".ui.activities.SplashActivity"
+        <activity
+            android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperBaseTheme.Main">
-        </activity>
+            android:theme="@style/HelperTheme.blue"/>
 
         <receiver
             android:name=".ui.weatherWidget.ui.WeatherWidget"
-            android:label="JoneWeather" >
+            android:label="JoneWeather">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="jone.intent.action.update.weather" />
@@ -133,8 +126,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
-        </service>
+            android:process=":remote"></service>
 
         <provider
             android:name=".lib.model.processData.ProcessDataContentProvider"
@@ -154,18 +146,16 @@
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
+            android:process=":DownloadingService"></service>
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <!-- 移动云AppX SDK -->
         <activity android:name="com.baidu.appx.ui.BDInnerBrowser" />
 
-        <receiver android:name="com.baidu.appx.app_download.CompleteReceiver" >
+        <receiver android:name="com.baidu.appx.app_download.CompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
@@ -178,6 +168,9 @@
             </intent-filter>
         </receiver>
         <!-- 移动云AppX SDK end -->
+        <activity
+            android:name=".ui.setting.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

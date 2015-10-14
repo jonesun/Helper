@@ -5,15 +5,162 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/jone_style_blue_A400</item>
-        <!-- Customize your theme here. -->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.clientActivity" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="HelperBaseTheme" parent="AppTheme.NoActionBar">
+        <!--   your app branding color for the app bar -->
+        <item name="colorPrimary">@color/blue_500</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/blue_600</item>
+        <!--   theme UI controls like checkboxes and text fields -->
+        <item name="colorAccent">@color/blue_700</item>
+        <!--正常状态下字体颜色和icon颜色-->
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
+
+    <style name="HelperBaseTheme.Main" parent="HelperBaseTheme">
+        <!-- 窗口的背景颜色 -->
         <item name="android:windowBackground">@drawable/window_background</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
+    <style name="HelperTheme.red" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryDark">@color/red_600</item>
+        <item name="colorAccent">@color/red_700</item>
+        <item name="android:windowBackground">@color/red_50</item>
+    </style>
+
+    <style name="HelperTheme.pink" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorPrimaryDark">@color/pink_600</item>
+        <item name="colorAccent">@color/pink_700</item>
+        <item name="android:windowBackground">@color/pink_50</item>
+    </style>
+
+    <style name="HelperTheme.purple" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryDark">@color/purple_600</item>
+        <item name="colorAccent">@color/purple_700</item>
+        <item name="android:windowBackground">@color/purple_50</item>
+    </style>
+
+    <style name="HelperTheme.deep_purple" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/deep_purple_500</item>
+        <item name="colorPrimaryDark">@color/deep_purple_600</item>
+        <item name="colorAccent">@color/deep_purple_700</item>
+        <item name="android:windowBackground">@color/deep_purple_50</item>
+    </style>
+
+    <style name="HelperTheme.indigo" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/indigo_500</item>
+        <item name="colorPrimaryDark">@color/indigo_600</item>
+        <item name="colorAccent">@color/indigo_700</item>
+        <item name="android:windowBackground">@color/indigo_50</item>
+    </style>
+
+    <style name="HelperTheme.blue" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryDark">@color/blue_600</item>
+        <item name="colorAccent">@color/blue_700</item>
+        <item name="android:windowBackground">@color/blue_50</item>
+    </style>
+
+    <style name="HelperTheme.light_blue" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/light_blue_500</item>
+        <item name="colorPrimaryDark">@color/light_blue_600</item>
+        <item name="colorAccent">@color/light_blue_700</item>
+        <item name="android:windowBackground">@color/light_blue_50</item>
+    </style>
+
+    <style name="HelperTheme.cyan" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/cyan_500</item>
+        <item name="colorPrimaryDark">@color/cyan_600</item>
+        <item name="colorAccent">@color/cyan_700</item>
+        <item name="android:windowBackground">@color/cyan_50</item>
+    </style>
+
+    <style name="HelperTheme.teal" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/teal_500</item>
+        <item name="colorPrimaryDark">@color/teal_600</item>
+        <item name="colorAccent">@color/teal_700</item>
+        <item name="android:windowBackground">@color/teal_50</item>
+    </style>
+
+    <style name="HelperTheme.light_green" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/light_green_500</item>
+        <item name="colorPrimaryDark">@color/light_green_600</item>
+        <item name="colorAccent">@color/light_green_700</item>
+        <item name="android:windowBackground">@color/light_green_50</item>
+    </style>
+
+    <style name="HelperTheme.green" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryDark">@color/green_600</item>
+        <item name="colorAccent">@color/green_700</item>
+        <item name="android:windowBackground">@color/green_50</item>
+    </style>
+
+    <style name="HelperTheme.lime" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/lime_500</item>
+        <item name="colorPrimaryDark">@color/lime_600</item>
+        <item name="colorAccent">@color/lime_700</item>
+        <item name="android:windowBackground">@color/lime_50</item>
+    </style>
+
+    <style name="HelperTheme.yellow" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/yellow_500</item>
+        <item name="colorPrimaryDark">@color/yellow_600</item>
+        <item name="colorAccent">@color/yellow_700</item>
+        <item name="android:windowBackground">@color/yellow_50</item>
+    </style>
+
+    <style name="HelperTheme.amber" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/amber_500</item>
+        <item name="colorPrimaryDark">@color/amber_600</item>
+        <item name="colorAccent">@color/amber_700</item>
+        <item name="android:windowBackground">@color/amber_50</item>
+    </style>
+
+    <style name="HelperTheme.orange" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/orange_500</item>
+        <item name="colorPrimaryDark">@color/orange_600</item>
+        <item name="colorAccent">@color/orange_700</item>
+        <item name="android:windowBackground">@color/orange_50</item>
+    </style>
+
+    <style name="HelperTheme.deep_orange" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/deep_orange_500</item>
+        <item name="colorPrimaryDark">@color/deep_orange_600</item>
+        <item name="colorAccent">@color/deep_orange_700</item>
+        <item name="android:windowBackground">@color/deep_orange_50</item>
+    </style>
+
+    <style name="HelperTheme.brown" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/brown_500</item>
+        <item name="colorPrimaryDark">@color/brown_600</item>
+        <item name="colorAccent">@color/brown_700</item>
+        <item name="android:windowBackground">@color/brown_50</item>
+    </style>
+
+    <style name="HelperTheme.grey" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/grey_500</item>
+        <item name="colorPrimaryDark">@color/grey_600</item>
+        <item name="colorAccent">@color/grey_700</item>
+        <item name="android:windowBackground">@color/grey_50</item>
+    </style>
+
+    <style name="HelperTheme.blue_grey" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/blue_grey_500</item>
+        <item name="colorPrimaryDark">@color/blue_grey_600</item>
+        <item name="colorAccent">@color/blue_grey_700</item>
+        <item name="android:windowBackground">@color/blue_grey_50</item>
     </style>
 
     <style name="fragment_text">
@@ -33,37 +180,6 @@
 
     <style name="style_content_text_color">
         <item name="android:textColor">@color/dark_grey</item>
-    </style>
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    <style name="HelperBaseTheme" parent="AppTheme.NoActionBar">
-        <item name="colorPrimary">@color/jone_style_blue_A400</item>
-        <item name="colorPrimaryDark">@color/jone_style_blue_700</item>
-        <!-- Customize your theme here. -->
-    </style>
-
-    <style name="HelperBaseTheme.Main" parent="HelperBaseTheme">
-        <!-- 窗口的背景颜色 -->
-        <item name="android:windowBackground">@drawable/window_background</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="HelperTheme.blue" parent="HelperBaseTheme">
-        <item name="colorPrimary">@color/jone_style_blue_A400</item>
-        <item name="colorPrimaryDark">@color/jone_style_blue_700</item>
-        <item name="colorAccent">@color/jone_style_blue_500</item>
-        <item name="android:windowBackground">@color/jone_style_blue_50</item>
-    </style>
-
-    <style name="HelperTheme.green" parent="HelperBaseTheme">
-        <item name="colorPrimary">@color/jone_style_green_A400</item>
-        <item name="colorPrimaryDark">@color/jone_style_green_700</item>
-        <item name="colorAccent">@color/jone_style_green_500</item>
-        <item name="android:windowBackground">@color/jone_style_green_50</item>
     </style>
 
 </resources>

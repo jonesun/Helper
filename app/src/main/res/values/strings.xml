@@ -25,7 +25,7 @@
     <string name="flashlight">手电筒</string>
     <string name="bluetooth_chat">蓝牙聊天</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_news">NewsActivity</string>
     <string name="no_data">No data</string>
@@ -145,4 +145,55 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">基本设置</string>
+
+    <string name="pref_title_theme_setting">更换皮肤</string>
+
+    <string-array name="pref_theme_setting_list_titles">
+        <item>blue</item>
+        <item>amber</item>
+        <item>red</item>
+        <item>blue_grey</item>
+        <item>brown</item>
+        <item>cyan</item>
+        <item>deep_orange</item>
+        <item>deep_purple</item>
+        <item>green</item>
+        <item>grey</item>
+        <item>indigo</item>
+        <item>orange</item>
+        <item>teal</item>
+        <item>yellow</item>
+        <item>lime</item>
+        <item>light_blue</item>
+        <item>light_green</item>
+        <item>pink</item>
+        <item>purple</item>
+    </string-array>
+    <string-array name="pref_theme_setting_list_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+    </string-array>
 </resources>

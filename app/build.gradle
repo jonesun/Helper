@@ -97,16 +97,17 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile(name:'Gallery3D-release1.0', ext:'aar')
-    compile(name:'Camera-release1.0', ext:'aar')
+    compile(name: 'Gallery3D-release1.0', ext: 'aar')
+    compile(name: 'Camera-release1.0', ext: 'aar')
 
-    compile(name:'ZxingScan-release1.0', ext:'aar')
-    compile 'com.google.zxing:core:3.0.1'
+    compile(name: 'ZxingScan-release1.0', ext: 'aar')
 
-    compile(name:'yalantiscontextmenu-release1.0', ext:'aar')
-    compile 'com.nineoldandroids:library:2.4.0'
+    compile(name: 'yalantiscontextmenu-release1.0', ext: 'aar')
 
     compile project(':libraries:JoneLib')
+    testCompile 'junit:junit:4.12'
+    compile 'com.google.zxing:core:3.0.1'
+    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v13:23.0.1'
@@ -116,7 +117,6 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:palette-v7:23.0.1'
-    testCompile 'junit:junit:4.12'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
@@ -133,5 +133,6 @@ def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
 def releaseTime() {
     return new Date().format("yyyy_MM_dd")
 }
+
 
 

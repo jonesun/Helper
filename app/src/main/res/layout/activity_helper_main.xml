@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/drawer_layout"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    tools:openDrawer="start"
-    android:background="?android:attr/windowBackground">
+    tools:openDrawer="start">
 
     <include layout="@layout/app_bar_helper_main" android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -13,7 +12,6 @@
         android:layout_width="wrap_content" android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header_helper_main"
-        app:menu="@menu/activity_helper_main_drawer"
-        android:background="?android:attr/windowBackground" />
+        app:menu="@menu/activity_helper_main_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

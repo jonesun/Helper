@@ -55,6 +55,7 @@ import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.JoneHelperMainFragment;
 import jone.helper.ui.fragments.WeatherFragment;
+import jone.helper.ui.setting.SettingsActivity;
 import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.CaptureActivity;
@@ -228,10 +229,10 @@ public class HelperMainActivity extends BaseAppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-        if (id == R.id.action_about) {
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(HelperMainActivity.this, SettingsActivity.class));
+            return true;
+        }else if (id == R.id.action_about) {
             startActivity(new Intent(HelperMainActivity.this, AboutActivity.class));
             return true;
         }
@@ -300,16 +301,13 @@ public class HelperMainActivity extends BaseAppCompatActivity
         menu_gallery.setResource(android.R.drawable.ic_menu_gallery);
 
         MenuObject menu_calculator = new MenuObject(getString(R.string.calculator));
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_menu_default);
-        menu_calculator.setBitmap(b);
+        menu_calculator.setResource(R.mipmap.ic_menu_emoticons);
 
         MenuObject menu_scan = new MenuObject(getString(R.string.scan));
-        BitmapDrawable bd = new BitmapDrawable(getResources(),
-                BitmapFactory.decodeResource(getResources(), R.drawable.ic_menu_scan));
-        menu_scan.setDrawable(bd);
+        menu_scan.setResource(R.mipmap.ic_menu_find);
 
         MenuObject menu_flashlight = new MenuObject(getString(R.string.flashlight));
-        menu_flashlight.setResource(R.drawable.ic_menu_default);
+        menu_flashlight.setResource(R.mipmap.ic_menu_paste);
 
         menuObjects.add(menu_camera);
         menuObjects.add(menu_gallery);
