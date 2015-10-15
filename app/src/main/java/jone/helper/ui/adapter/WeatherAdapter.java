@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -20,8 +19,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.Calendar;
 import java.util.List;
 
-import jone.helper.App;
-import jone.helper.BitmapCache;
 import jone.helper.R;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
@@ -43,8 +40,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public WeatherAdapter(Context context , List<WeatherData> weatherDataList){
         this.mContext = context;
         this.weatherDataList = weatherDataList;
-        imageLoader = new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
-                new BitmapCache());
+        imageLoader = VolleyCommon.getImageLoader();
     }
 
     @Override

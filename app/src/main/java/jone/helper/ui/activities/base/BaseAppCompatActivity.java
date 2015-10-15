@@ -30,21 +30,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             R.style.HelperTheme_light_green, R.style.HelperTheme_pink,
             R.style.HelperTheme_purple
     };
+    private int themeIndex = 0;
     protected abstract int getContentView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int themeIndex = 0;
-        try {
-            themeIndex = Integer.parseInt( PreferenceManager
-                    .getDefaultSharedPreferences(this).getString("theme_setting", "0"));
-        }catch (Exception e){
-            themeIndex = 0;
-        }
-        if(themeIndex < 0 || themeIndex > themeIds.length){
-            themeIndex = 0;
-        }
-        setTheme(themeIds[themeIndex]);
+        setPageTheme(savedInstanceState);
         super.onCreate(savedInstanceState);
         //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            //透明状态栏
@@ -65,6 +56,38 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     protected <T extends View> T findView(int id) {
         return (T) findViewById(id);
+    }
+
+    private void setPageTheme(Bundle savedInstanceState){
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("themeIndex")) {
+                themeIndex = savedInstanceState.getInt("themeIndex");
+            }
+        }else {
+            try {
+                themeIndex = Integer.parseInt(PreferenceManager
+                        .getDefaultSharedPreferences(this).getString("theme_setting", "0"));
+            }catch (Exception e){
+                themeIndex = 0;
+            }
+        }
+        if(themeIndex < 0 || themeIndex > themeIds.length){
+            themeIndex = 0;
+        }
+        setTheme(themeIds[themeIndex]);  //设置主题皮肤
+    }
+
+    public void onTheme(int themeIndex){
+        this.themeIndex = themeIndex;
+        PreferenceManager
+                .getDefaultSharedPreferences(this).edit().putString("theme_setting", themeIndex + "").apply();
+        this.recreate();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("themeIndex", themeIndex);
     }
 
     public int getColorPrimary(){

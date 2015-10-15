@@ -87,4 +87,5 @@
     <!-- Menu item text to clear the calculation history. -->
     <string name="clear_history">Clear history</string>
     <string name="no_notebook">还没有便签</string>
+    <string name="menu_item_theme">主题皮肤</string>
 </resources>

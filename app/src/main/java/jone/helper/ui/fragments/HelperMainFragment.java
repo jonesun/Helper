@@ -46,8 +46,8 @@ import jone.helper.util.WeatherUtil;
 /**
  * Created by jone.sun on 2015/8/17.
  */
-public class JoneHelperMainFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
-    private static final String TAG = JoneHelperMainFragment.class.getSimpleName();
+public class HelperMainFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
+    private static final String TAG = HelperMainFragment.class.getSimpleName();
     private ViewGroup layout_arcProgress, layout_weather;
     private LinearLayout layout_ad;
     private TextView txt_calendar, txt_pm25, txt_weather_temperature, txt_weather_weather, txtCapacity, txt_weather;
@@ -69,14 +69,14 @@ public class JoneHelperMainFragment extends BaseFragment<HelperMainActivity> imp
     private Timer timer;
     private Timer timer2;
 
-    private static JoneHelperMainFragment instance = null;
-    public static JoneHelperMainFragment getInstance(){
+    private static HelperMainFragment instance = null;
+    public static HelperMainFragment getInstance(){
         if(instance == null){
-            instance = new JoneHelperMainFragment();
+            instance = new HelperMainFragment();
         }
         return instance;
     }
-    public JoneHelperMainFragment() {
+    public HelperMainFragment() {
     }
 
     @Override

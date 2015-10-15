@@ -1,9 +1,6 @@
 package jone.helper.ui.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,13 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.camera.Camera;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.cooliris.media.Gallery;
 import com.umeng.analytics.MobclickAgent;
@@ -40,9 +34,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import jone.helper.App;
-import jone.helper.BitmapCache;
 import jone.helper.R;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
@@ -53,7 +46,7 @@ import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.fragments.JoneHelperMainFragment;
+import jone.helper.ui.fragments.HelperMainFragment;
 import jone.helper.ui.fragments.WeatherFragment;
 import jone.helper.ui.setting.SettingsActivity;
 import jone.helper.util.SharedToUtil;
@@ -75,7 +68,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
 
     @Override
     protected int getContentView() {
-        startActivity(new Intent(this, SplashActivity.class));
         return R.layout.activity_helper_main;
     }
 
@@ -83,8 +75,19 @@ public class HelperMainActivity extends BaseAppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState == null){
-            changeFragment(JoneHelperMainFragment.getInstance());
+            startActivity(new Intent(this, SplashActivity.class));
+            changeFragment(HelperMainFragment.getInstance());
+        } else {
+            if(savedInstanceState.containsKey("isCurrentPageFirst")){
+                isCurrentPageFirst = savedInstanceState.getBoolean("isCurrentPageFirst");
+            }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("isCurrentPageFirst", isCurrentPageFirst);
     }
 
     @Override
@@ -128,15 +131,14 @@ public class HelperMainActivity extends BaseAppCompatActivity
         iv_picture = (NetworkImageView) navigationView.findViewById(R.id.iv_picture);
         tv_title = (TextView) navigationView.findViewById(R.id.tv_title);
         tv_copyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
-        iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
-        iv_picture.setErrorImageResId(R.drawable.side_nav_bar);
+//        iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
+//        iv_picture.setErrorImageResId(R.drawable.side_nav_bar);
         BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
             @Override
             public void onSuccess(BingPicture bingPicture) {
                 Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
                 if (bingPicture != null) {
-                    iv_picture.setImageUrl(bingPicture.getUrl(), new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
-                            new BitmapCache()));
+                    iv_picture.setImageUrl(bingPicture.getUrl(), VolleyCommon.getImageLoader());
                     List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
                     if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
                         tv_title.setText(bingPictureMsgs.get(0).getText());
@@ -159,7 +161,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                 .replace(R.id.content_helper_main, targetFragment, "fragment")
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
-        if(targetFragment instanceof JoneHelperMainFragment){
+        if(targetFragment instanceof HelperMainFragment){
             isCurrentPageFirst = true;
         }else {
             isCurrentPageFirst = false;
@@ -198,7 +200,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                 System.exit(0);
             }
         }else {
-            changeFragment(JoneHelperMainFragment.getInstance());
+            changeFragment(HelperMainFragment.getInstance());
         }
     }
 
@@ -246,7 +248,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.nav_menu_item_home:
-                changeFragment(JoneHelperMainFragment.getInstance());
+                changeFragment(HelperMainFragment.getInstance());
                 break;
             case R.id.nav_menu_item_weather:
                 changeFragment(WeatherFragment.getInstance());
@@ -275,6 +277,9 @@ public class HelperMainActivity extends BaseAppCompatActivity
             case R.id.nav_menu_item_feedback:
                 FeedbackAgent fb = new FeedbackAgent(HelperMainActivity.this);
                 fb.startFeedbackActivity();
+                break;
+            case R.id.nav_menu_item_theme:
+                onTheme(new Random().nextInt(10));
                 break;
         }
 

@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,8 +24,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -33,11 +37,13 @@ import java.util.List;
 import java.util.Locale;
 
 import jone.helper.R;
+import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.util.FestivalUtil;
+import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
 
 public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitListener{
@@ -77,6 +83,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         }
     };
 
+    private BaiduLocationTool baiduLocationTool;
     private static JoneMainFragment instance = null;
     public static JoneMainFragment getInstance(){
         if(instance == null){
@@ -89,6 +96,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         super.onCreate(savedInstanceState);
         currentNewsIndex = (int)(Math.random()*news.length);
         textToSpeech = new TextToSpeech(getActivity(), this);
+        baiduLocationTool = new BaiduLocationTool();
     }
 
     @Override
@@ -232,20 +240,34 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             imWeatherIcon.setVisibility(View.INVISIBLE);
             txtLocation.setText("loading...");
             txtWeather.setText("");
-            WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
+            baiduLocationTool.getLocation(getContext(), new BDLocationListener() {
                 @Override
-                public void onResponse(Weather weatherInfo) {
-                    if(weatherInfo != null){
-                        System.out.println("weatherInfo: " + weatherInfo.getCurrentCity());
-                        Message message = new Message();
-                        message.what = 0;
-                        message.obj = weatherInfo;
-                        handler.sendMessage(message);
-                    }else {
-                        txtLocation.setText("天气获取失败");
-                        txtWeather.setText("");
+                public void onReceiveLocation(BDLocation bdLocation) {
+                    if (bdLocation != null) {
+                        String city = bdLocation.getCity();
+                        if (!TextUtils.isEmpty(city)) {
+                            Log.e(TAG, "city: " + city);
+                            UmengUtil.get_location(getContext(), "baiduLocation", city);
+                            WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
+                                @Override
+                                public void onResponse(Weather weatherInfo) {
+                                    if (weatherInfo != null) {
+                                        System.out.println("weatherInfo: " + weatherInfo.getCurrentCity());
+                                        Message message = new Message();
+                                        message.what = 0;
+                                        message.obj = weatherInfo;
+                                        handler.sendMessage(message);
+                                    } else {
+                                        txtLocation.setText("天气获取失败");
+                                        txtWeather.setText("");
+                                    }
+                                }
+                            });
+                        }
                     }
-
+                    if(baiduLocationTool != null){
+                        baiduLocationTool.close();
+                    }
                 }
             });
         }else {
@@ -284,6 +306,9 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
         }
         BitmapUtil.recycleBitmap(weatherBitmap);
         unBindBroadcast();
+        if(baiduLocationTool != null){
+            baiduLocationTool.close();
+        }
     }
 
     @Override

@@ -46,8 +46,13 @@ public class WeatherUtil {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
                     String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
-                    final String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
-                    System.out.println("getLocationAddressFromBaidu:" + city);
+                    Log.e("sss", "getLocationAddressFromBaidu:" + address);
+                    String city = null;
+                    if(address.contains("省") && address.contains("市")){
+                        city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
+                        System.out.println("getLocationAddressFromBaidu:" + city);
+                    }
+
                     locationListener.onExecute(city);
                 } catch (JSONException e) {
 //                            e.printStackTrace();

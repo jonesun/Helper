@@ -17,6 +17,9 @@
         <item android:id="@+id/nav_menu_item_logistics"
             android:icon="@mipmap/menu_item_logistics"
             android:title="@string/menu_item_logistics" />
+        <item android:id="@+id/nav_menu_item_theme"
+            android:icon="@mipmap/menu_item_recommend"
+            android:title="@string/menu_item_theme"/>
     </group>
 
     <item android:title="Other">

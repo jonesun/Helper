@@ -10,11 +10,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -28,6 +34,7 @@ import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.util.Utils;
 import jone.helper.ui.weatherWidget.ui.WeatherWidget;
 import jone.helper.util.Lunar;
+import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
 
 /**
@@ -128,23 +135,55 @@ public class AppWidgetService extends Service{
         }
     }
 
+    private LocationClient mLocClient;
     private Runnable runnableGetWeather = new Runnable() {
         @Override
         public void run() {
             Log.d(TAG, "getWeatherRunnable");
             if(Utils.isNetworkAlive(AppWidgetService.this)){
-                WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
-                    @Override
-                    public void onResponse(Weather weatherInfo) {
-                        if(weatherInfo != null){
-                            updateWeather(weatherInfo);
-                        }else {
-                            Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                if(mLocClient == null){
+                    // 定位初始化
+                    mLocClient = new LocationClient(AppWidgetService.this);
+                    mLocClient.registerLocationListener(bdLocationListener);
+                    LocationClientOption option = new LocationClientOption();
+                    //option.setOpenGps(true);// 打开gps
+                    option.setIsNeedAddress(true);
+                    option.setNeedDeviceDirect(true);
+                    option.setCoorType("bd09ll"); //返回的定位结果是百度经纬度,默认值gcj02
+//        option.setScanSpan(1000); //设置发起定位请求的间隔时间为5000ms
+                    mLocClient.setLocOption(option);
+                }
+                mLocClient.start();
             }else {
                 Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+    private BDLocationListener bdLocationListener = new BDLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            // map view 销毁后不在处理新接收的位置
+            if (bdLocation != null){
+                String city = bdLocation.getCity();
+                if(!TextUtils.isEmpty(city)){
+                    Log.e(TAG, "city: " + city);
+                    UmengUtil.get_location(AppWidgetService.this, "baiduLocation", city);
+                    WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
+                        @Override
+                        public void onResponse(Weather weatherInfo) {
+                            if(weatherInfo != null){
+                                updateWeather(weatherInfo);
+                            }else {
+                                Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+            if(mLocClient != null){
+                mLocClient.stop();
+                mLocClient.unRegisterLocationListener(this);
             }
         }
     };
@@ -170,5 +209,9 @@ public class AppWidgetService extends Service{
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+        if(mLocClient != null){
+            mLocClient.stop();
+            mLocClient.unRegisterLocationListener(bdLocationListener);
+        }
     }
 }

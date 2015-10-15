@@ -1,28 +1,32 @@
 package jone.helper.ui.adapter;
 
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import jone.helper.App;
-import jone.helper.BitmapCache;
 import jone.helper.R;
 import jone.helper.bean.News;
+import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.util.FestivalUtil;
+import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
 
 /**
@@ -41,8 +45,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public NewsAdapter(EggsActivity eggsActivity, List<News> newsList){
         this.eggsActivity = eggsActivity;
         this.newsList = newsList;
-        imageLoader = new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
-                new BitmapCache());
+        imageLoader = VolleyCommon.getImageLoader();
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -177,27 +180,43 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
+    private BaiduLocationTool baiduLocationTool;
     private void showWeatherInfo(final TextView txt_weather){
         if(weatherStringBuffer == null){
             if(SystemUtil.isNetworkAlive(eggsActivity)){
                 txt_weather.setText("loading...");
                 txt_weather.setSelected(true);
-                WeatherUtil.getLocationCityWeatherInfo(new WeatherUtil.WeatherInfoListener() {
+                baiduLocationTool = new BaiduLocationTool();
+                baiduLocationTool.getLocation(eggsActivity, new BDLocationListener() {
                     @Override
-                    public void onResponse(Weather weatherInfo) {
-                        if (weatherInfo != null) {
-                            weatherStringBuffer = new StringBuffer();
-                            weatherStringBuffer.append("当前城市: " + weatherInfo.getCurrentCity()).append("\t");
-                            List<WeatherData> weatherDatas = weatherInfo.getWeather_data();
-                            if(weatherDatas != null && weatherDatas.size() > 0){
-                                WeatherData weatherData = weatherDatas.get(0);
-                                weatherStringBuffer.append("温度: " + weatherData.getTemperature() + "\t"
-                                        + "天气: " + weatherData.getWeather() + "(" + weatherData.getWind() + ")\t"
-                                        + "发布时间: " + weatherData.getDate());
+                    public void onReceiveLocation(BDLocation bdLocation) {
+                        if (bdLocation != null) {
+                            String city = bdLocation.getCity();
+                            if (!TextUtils.isEmpty(city)) {
+                                UmengUtil.get_location(eggsActivity, "baiduLocation", city);
+                                WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
+                                    @Override
+                                    public void onResponse(Weather weatherInfo) {
+                                        if (weatherInfo != null) {
+                                            weatherStringBuffer = new StringBuffer();
+                                            weatherStringBuffer.append("当前城市: " + weatherInfo.getCurrentCity()).append("\t");
+                                            List<WeatherData> weatherDatas = weatherInfo.getWeather_data();
+                                            if (weatherDatas != null && weatherDatas.size() > 0) {
+                                                WeatherData weatherData = weatherDatas.get(0);
+                                                weatherStringBuffer.append("温度: " + weatherData.getTemperature() + "\t"
+                                                        + "天气: " + weatherData.getWeather() + "(" + weatherData.getWind() + ")\t"
+                                                        + "发布时间: " + weatherData.getDate());
+                                            }
+                                            txt_weather.setText(weatherStringBuffer.toString());
+                                        } else {
+                                            txt_weather.setText("天气获取失败");
+                                        }
+                                    }
+                                });
                             }
-                            txt_weather.setText(weatherStringBuffer.toString());
-                        } else {
-                            txt_weather.setText("天气获取失败");
+                        }
+                        if (baiduLocationTool != null) {
+                            baiduLocationTool.close();
                         }
                     }
                 });
@@ -209,7 +228,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    public static interface OnRecyclerViewItemClickListener {
+    public interface OnRecyclerViewItemClickListener {
         void onClick(View view , News news);
     }
 }

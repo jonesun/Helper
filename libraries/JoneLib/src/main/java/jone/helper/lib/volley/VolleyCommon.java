@@ -1,5 +1,6 @@
 package jone.helper.lib.volley;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -35,11 +37,16 @@ public class VolleyCommon {
         return instance;
     }
 
-    private RequestQueue mRequestQueue;
+    private static ImageLoader imageLoader;
+    private static RequestQueue mRequestQueue;
     private VolleyCommon(Context context) {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(context);
         }
+        int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+        // Use 1/8th of the available memory for this memory cache.
+        int cacheSize = 1024 * 1024 * memClass / 8;
+        imageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(cacheSize));
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
@@ -105,5 +112,11 @@ public class VolleyCommon {
         return mRequestQueue;
     }
 
+    public static void setmImageLoader(ImageLoader imageLoader) {
+        VolleyCommon.imageLoader = imageLoader;
+    }
 
+    public static ImageLoader getImageLoader() {
+        return imageLoader;
+    }
 }

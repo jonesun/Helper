@@ -7,15 +7,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
-import jone.helper.App;
-import jone.helper.BitmapCache;
 import jone.helper.R;
-import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.lib.volley.VolleyCommon;
@@ -56,8 +52,7 @@ public class SplashActivity extends AppCompatActivity {
                         }catch (Exception e){
                             url = bingPicture.getUrl();
                         }
-                        iv_picture.setImageUrl(url, new ImageLoader(VolleyCommon.getInstance(App.getInstance()).getmRequestQueue(),
-                                new BitmapCache()));
+                        iv_picture.setImageUrl(url, VolleyCommon.getImageLoader());
                         List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
                         if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
                             tv_title.setText(bingPictureMsgs.get(0).getText());
