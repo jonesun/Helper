@@ -1,4 +1,4 @@
-package jone.helper.lib.ormlite;
+package jone.helper.lib.model.ormlite;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,20 +10,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoneOrmLiteBaseDao<T> {
-	 private static final String TAG = JoneOrmLiteBaseDao.class.getSimpleName();
-	    private Class<T> entityClass;
-	    private Dao<T, Integer> dao;
-	    @SuppressWarnings("unchecked")
-		protected JoneOrmLiteBaseDao(Context context){
-	        entityClass = (Class<T>) ((ParameterizedType) getClass()
-	                .getGenericSuperclass()).getActualTypeArguments()[0];
-	        try {
-	            dao = JoneOrmLiteHelper.getInstance(context).getDao(entityClass);
-	        } catch (Exception e) {
-	            Log.e(TAG, entityClass + "  dao获取失败", e);
-	        }
-	    }
+public abstract class JoneBaseOrmLiteDao<T> {
+	private static final String TAG = JoneBaseOrmLiteDao.class.getSimpleName();
+	private Context context;
+	private Class<T> entityClass;
+	private Dao<T, Integer> dao;
+	@SuppressWarnings("unchecked")
+	protected JoneBaseOrmLiteDao(Context context){
+		this.context = context;
+		entityClass = (Class<T>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
+		try {
+			dao = getOrmLiteHelper().getDao(entityClass);
+		} catch (Exception e) {
+			Log.e(TAG, entityClass + "  dao获取失败", e);
+		}
+	}
+
+	public abstract JoneBaseOrmLiteHelper getOrmLiteHelper();
 
 
 	public int create(T t){
@@ -144,5 +148,9 @@ public class JoneOrmLiteBaseDao<T> {
 			Log.e("intToLong", "转换失败", e);
 		}
 		return l;
+	}
+
+	public Context getContext() {
+		return context;
 	}
 }

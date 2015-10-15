@@ -1,4 +1,4 @@
-package jone.helper.lib.ormlite.entities;
+package jone.helper.bean;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

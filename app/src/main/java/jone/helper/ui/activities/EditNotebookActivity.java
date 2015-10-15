@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jone.helper.R;
-import jone.helper.lib.ormlite.NotebookDao;
-import jone.helper.lib.ormlite.entities.NotebookData;
+import jone.helper.bean.NotebookData;
+import jone.helper.dao.NotebookDao;
 import jone.helper.lib.util.StringUtils;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.util.KJAnimations;

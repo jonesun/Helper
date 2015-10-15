@@ -11,25 +11,19 @@ import android.os.Build;
 
 import java.util.Map;
 
-import jone.helper.lib.ormlite.LongTextStringDao;
-
 public class ProcessDataContentProvider extends ContentProvider {
     private static final String TAG = ProcessDataContentProvider.class.getSimpleName();
     private static final String SP_NAME = "sp_process";
     private static final String AUTHORITY = "jone.helper.lib.ProcessDataContentProvider";
     private final static int SP = 1;
-    private final static int DB = 2;
     private static final UriMatcher URI_MATCHER;
     static {
         URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
         URI_MATCHER.addURI(AUTHORITY, "sp/#", SP);
-        URI_MATCHER.addURI(AUTHORITY, "db/#", DB);
     }
     public static final Uri SP_URI = Uri.parse("content://" + AUTHORITY + "/sp/1");
-    public static final Uri DB_URI = Uri.parse("content://" + AUTHORITY + "/db/1");
 
     private SharedPreferences sharedPreferences;
-    private LongTextStringDao longTextStringDao;
 
     public ProcessDataContentProvider() {
     }
@@ -37,7 +31,6 @@ public class ProcessDataContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         sharedPreferences = getContext().getSharedPreferences(SP_NAME, getContext().MODE_PRIVATE);
-        longTextStringDao = LongTextStringDao.getInstance(getContext());
         return false;
     }
 
@@ -64,19 +57,6 @@ public class ProcessDataContentProvider extends ContentProvider {
                 }
                 editor.commit();
                 break;
-            case DB:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                    for (Map.Entry<String, Object> item : values.valueSet()) {
-                        String key = item.getKey(); // getting key
-                        Object value = item.getValue(); // getting value
-                        longTextStringDao.save(key, String.valueOf(value));
-                    }
-                }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    for (String key : values.keySet()) {
-                        longTextStringDao.save(key, String.valueOf(values.get(key)));
-                    }
-                }
-                break;
         }
         return uri;
     }
@@ -92,11 +72,6 @@ public class ProcessDataContentProvider extends ContentProvider {
                     result = sharedPreferences.edit().remove(selection).commit() ? 1: 0;
                 }
                 break;
-            case DB:
-                if(selection != null){
-                    result = longTextStringDao.delValueByKey(selection);
-                }
-                break;
         }
         return result;
     }
@@ -107,8 +82,6 @@ public class ProcessDataContentProvider extends ContentProvider {
         switch (flag) {
             case SP:
                 return "vnd.android.cursor.item/jone.helper.lib.sp";
-            case DB:
-                return "vnd.android.cursor.item/jone.helper.lib.db";
         }
         return null;
     }
@@ -144,15 +117,6 @@ public class ProcessDataContentProvider extends ContentProvider {
                 }
                 cursor.addRow(values);
                 break;
-            case DB:
-                if(selection != null){
-                    String result = longTextStringDao.getValueByKey(selection);
-                    if(result != null){
-                        values = new String[]{result};
-                    }
-                }
-                cursor.addRow(values);
-                break;
         }
         return cursor;
     }
@@ -165,8 +129,6 @@ public class ProcessDataContentProvider extends ContentProvider {
         int result = -1;
         switch (flag){
             case SP:
-                break;
-            case DB:
                 break;
         }
         return result;

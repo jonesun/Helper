@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import jone.helper.R;
-import jone.helper.lib.ormlite.entities.NotebookData;
+import jone.helper.bean.NotebookData;
 import jone.helper.ui.activities.EditNotebookActivity;
 
 /**

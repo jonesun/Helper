@@ -1,4 +1,4 @@
-package jone.helper.lib.ormlite;
+package jone.helper.dao;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,14 +6,14 @@ import android.util.Log;
 import com.j256.ormlite.dao.GenericRawResults;
 
 import java.sql.SQLException;
-import java.util.List;
 
-import jone.helper.lib.ormlite.entities.NotebookData;
+import jone.helper.bean.NotebookData;
+import jone.helper.model.db.HelperOrmLiteDao;
 
 /**
  * Created by jone.sun on 2015/9/7.
  */
-public class NotebookDao extends JoneOrmLiteBaseDao<NotebookData> {
+public class NotebookDao extends HelperOrmLiteDao<NotebookData> {
     private static NotebookDao instance;
     public static NotebookDao getInstance(Context context){
         if(instance == null){

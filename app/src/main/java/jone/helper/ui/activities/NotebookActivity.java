@@ -1,31 +1,26 @@
 package jone.helper.ui.activities;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.view.ViewStub;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.lib.ormlite.NotebookDao;
-import jone.helper.lib.ormlite.entities.NotebookData;
+import jone.helper.bean.NotebookData;
+import jone.helper.dao.NotebookDao;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.adapter.NotebookRecyclerViewAdapter;
@@ -55,7 +50,18 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter.setDataList(NotebookDao.getInstance(this).queryList());
+        List<NotebookData> notebookDatas = NotebookDao.getInstance(this).queryList();
+        adapter.setDataList(notebookDatas);
+        if(notebookDatas.size() == 0){
+            setNoData();
+        }
+    }
+
+    private void setNoData(){
+        ViewStub stub = (ViewStub) findViewById(R.id.vs_no_notebook);
+        stub.inflate();
+        TextView text = (TextView) findViewById(R.id.tv_no_data);
+        text.setText("您还没有写过便签");
     }
 
     @Override
@@ -76,7 +82,7 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
                     @Override
                     public void onClick(View view) {
                         NotebookDao.getInstance(NotebookActivity.this).delete(adapter.getItem(position));
-                        adapter.setDataList(NotebookDao.getInstance(NotebookActivity.this).queryList());
+                        adapter.removeData(position);
                     }
                 });
         snackbar.setCallback(new Snackbar.Callback() {

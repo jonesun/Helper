@@ -1,15 +1,12 @@
 package jone.helper.ui.adapter;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.lib.ormlite.entities.NotebookData;
+import jone.helper.bean.NotebookData;
 import jone.helper.ui.activities.EditNotebookActivity;
 
 /**

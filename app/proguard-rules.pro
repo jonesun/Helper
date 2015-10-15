@@ -39,7 +39,7 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService
--keep public class jone.helper.bean.**{*;}
+-keep class jone.helper.bean.**{*;}
 -keepclasseswithmembernames class * {
 native <methods>;
 }

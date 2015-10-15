@@ -52,7 +52,20 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
             dataList = new ArrayList<>();
         }
         dataList.add(data);
-        notifyDataSetChanged();
+        notifyItemInserted(dataList.size() - 1);
+    }
+
+    public void addData(int position, T data) {
+        if(dataList == null){
+            dataList = new ArrayList<>();
+        }
+        dataList.add(position, data);
+        notifyItemInserted(position);
+    }
+
+    public void removeData(int position) {
+        dataList.remove(position);
+        notifyItemRemoved(position);
     }
 
 
