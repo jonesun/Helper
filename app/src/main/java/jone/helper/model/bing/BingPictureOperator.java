@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import jone.helper.App;
@@ -17,7 +19,7 @@ import jone.helper.lib.volley.Method;
 /**http://www.bing.com/HPImageArchive.aspx?format=xml&idx=1&n=1&mkt=en-US
  * format：接口返回格式，已知可选项xml,js
  * idx:日期表示0为当天，-1为明天，1为昨天，2为后天，依次类推，已知可选项-1 ~ 18
- * n:未知含义
+ * n: 个数
  * mkt:地区编号(可选项)，不同地区会获得不同壁纸。已知可选项en-US, zh-CN, ja-JP, en-AU, de-DE, en-NZ, en-CA
  * Created by jone.sun on 2015/9/21.
  */
@@ -62,6 +64,44 @@ public class BingPictureOperator {
                 Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + error);
                 if(onBingPictureListener != null){
                     onBingPictureListener.onError(error);
+                }
+            }
+        });
+    }
+
+    public void getPictureUrls(int count, final OnBingPicturesListener onBingPicturesListener){
+        StringBuilder url = new StringBuilder("http://www.bing.com/HPImageArchive.aspx");
+        url.append("?").append("format=").append("js")
+                .append("&").append("n=").append(count);
+        App.getNetJsonOperator().request(Method.GET, url.toString(), null, new NetResponseCallback<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                Log.e("getDailyPictureUrl", "response: " + response.toString());
+                List<BingPicture> bingPictureList = new ArrayList<>();
+                try {
+                    if (response.has("images")) {
+                        JSONArray results = response.getJSONArray("images");
+                        if (results != null && results.length() > 0) {
+                            for(int i = 0; i < results.length(); i++){
+                                String data = results.get(i).toString();
+                                bingPictureList.add(new Gson().fromJson(data, BingPicture.class));
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.e("getDailyPictureUrl", "onSuccess", e);
+                } finally {
+                    if(onBingPicturesListener != null){
+                        onBingPicturesListener.onSuccess(bingPictureList);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + error);
+                if(onBingPicturesListener != null){
+                    onBingPicturesListener.onError(error);
                 }
             }
         });

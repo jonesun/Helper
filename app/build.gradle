@@ -1,27 +1,16 @@
 apply from: '/application.gradle'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
     buildToolsVersion "23.0.1"
-
-//    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
 //    buildToolsVersion project.BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "jone.helper"
-//        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
-//        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName VERSION_NAME
-//        ndk {
-//            moduleName "tp_file"
-//            //stl "stlport_shared"    //对应APP_STL
-//            ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
-//            //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
-//        }
-
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG"]
     }
     //打包签名
@@ -31,10 +20,6 @@ android {
             storePassword 'sunjianan22'
             keyAlias 'jonesun'
             keyPassword 'sunjianan22'
-//            storeFile file(System.getenv("KEYSTORE"))
-//            storePassword System.getenv("KEYSTORE_PASSWORD")
-//            keyAlias System.getenv("KEY_ALIAS")
-//            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
 
@@ -44,10 +29,11 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -99,9 +85,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'Gallery3D-release1.0', ext: 'aar')
     compile(name: 'Camera-release1.0', ext: 'aar')
-
     compile(name: 'ZxingScan-release1.0', ext: 'aar')
-
     compile(name: 'yalantiscontextmenu-release1.0', ext: 'aar')
 
     compile project(':libraries:JoneLib')
@@ -117,6 +101,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:palette-v7:23.0.1'
+    compile 'cn.lightsky.infiniteindicator:library:1.0.3'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {

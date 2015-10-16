@@ -20,13 +20,20 @@ import com.baidu.location.LocationClientOption;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.R;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.SDCardInfo;
+import jone.helper.model.bing.BingPicture;
+import jone.helper.model.bing.BingPictureOperator;
+import jone.helper.model.bing.OnBingPicturesListener;
 import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
@@ -63,6 +70,8 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     private ArcProgress arcStore, arcProcess;
 
     private Dialog loadingDialog;
+
+    private InfiniteIndicatorLayout indicator_circle;
 
     private WeatherPresenter weatherPresenter;
 
@@ -106,12 +115,14 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         for(int i = 0; i < txt_calendar_ids.length; i++){
             txt_calendars[i] = findView(view, txt_calendar_ids[i]);
         }
+
+        indicator_circle = findView(view, R.id.indicator_circle);
     }
 
     @Override
     protected void initViews(View view) {
         showDate();
-        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
+//        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         weatherPresenter = new BaiduWeatherPresenter(this);
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
@@ -130,6 +141,39 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
+            }
+        });
+        initIndicator();
+    }
+
+    private void initIndicator(){
+        BingPictureOperator.getInstance().getPictureUrls(4, new OnBingPicturesListener() {
+            @Override
+            public void onSuccess(List<BingPicture> bingPictureList) {
+                for (BingPicture bingPicture : bingPictureList) {
+                    DefaultSliderView textSliderView = new DefaultSliderView(getContext());
+                    textSliderView
+                            .image(bingPicture.getUrl())
+                            .setScaleType(BaseSliderView.ScaleType.Fit)
+                            .showImageResForEmpty(R.drawable.side_nav_bar)
+                            .showImageResForError(R.drawable.side_nav_bar)
+                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(BaseSliderView slider) {
+                                    Log.e(TAG, "slider: " + slider.getUrl());
+                                }
+                            });
+                    textSliderView.getBundle()
+                            .putString("extra", bingPicture.getUrl());
+                    indicator_circle.addSlider(textSliderView);
+                }
+                indicator_circle.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+                indicator_circle.startAutoScroll();
+            }
+
+            @Override
+            public void onError(String reason) {
+
             }
         });
     }

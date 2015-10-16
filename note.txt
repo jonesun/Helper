@@ -99,6 +99,13 @@ android {
         versionCode 1
         versionName "1.0"
 
+        //        ndk {
+        //            moduleName "tp_file"
+        //            //stl "stlport_shared"    //对应APP_STL
+        //            ldLibs "log", "z", "m"  //链接时使用到的库，对应LOCAL_LDLIBS
+        //            //cFlags 编译gcc的flag，对应LOCAL_CFLAGS
+        //        }
+
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
