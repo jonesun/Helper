@@ -48,6 +48,8 @@ public final class CaptureActivityHandler extends Handler {
   private final DecodeThread decodeThread;
   private State state;
 
+    private boolean isResult;
+
   private enum State {
     PREVIEW,
     SUCCESS,
@@ -55,8 +57,9 @@ public final class CaptureActivityHandler extends Handler {
   }
 
   public CaptureActivityHandler(CaptureActivity activity, Vector<BarcodeFormat> decodeFormats,
-      String characterSet) {
+      String characterSet, boolean isResult) {
     this.activity = activity;
+      this.isResult = isResult;
     decodeThread = new DecodeThread(activity, decodeFormats, characterSet,
         new ViewfinderResultPointCallback(activity.getViewfinderView()));
     decodeThread.start();
@@ -83,10 +86,17 @@ public final class CaptureActivityHandler extends Handler {
       } else if (message.what == R.id.decode_succeeded) {
           Log.d(TAG, "Got decode succeeded message");
           state = State.SUCCESS;
-          Bundle bundle = message.getData();
-          Bitmap barcode = bundle == null ? null :
-                  (Bitmap) bundle.getParcelable(DecodeThread.BARCODE_BITMAP);
-          activity.handleDecode((Result) message.obj, barcode);
+          if(isResult){
+              Intent intent = activity.getIntent();
+              intent.putExtra("result", ((Result) message.obj).getText());
+              activity.setResult(Activity.RESULT_OK, intent);
+              activity.finish();
+          }else {
+              Bundle bundle = message.getData();
+              Bitmap barcode = bundle == null ? null :
+                      (Bitmap) bundle.getParcelable(DecodeThread.BARCODE_BITMAP);
+              activity.handleDecode((Result) message.obj, barcode);
+          }
 
       } else if (message.what == R.id.decode_failed) {// We're decoding as fast as possible, so when one decode fails, start another.
           state = State.PREVIEW;

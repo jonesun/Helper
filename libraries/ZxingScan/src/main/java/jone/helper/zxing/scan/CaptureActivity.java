@@ -7,6 +7,8 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
@@ -39,11 +41,16 @@ public class CaptureActivity extends Activity implements Callback {
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
 
+    private boolean isResult = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
+        if(getIntent().hasExtra("isResult")){
+            isResult = getIntent().getBooleanExtra("isResult", false);
+        }
         //初始化 CameraManager
         CameraManager.init(getApplication());
 
@@ -102,7 +109,7 @@ public class CaptureActivity extends Activity implements Callback {
         }
         if (handler == null) {
             handler = new CaptureActivityHandler(this, decodeFormats,
-                    characterSet);
+                    characterSet, isResult);
         }
     }
 
@@ -192,5 +199,12 @@ public class CaptureActivity extends Activity implements Callback {
             mediaPlayer.seekTo(0);
         }
     };
+
+    public static void openForResult(Activity activity){
+        Intent intent = new Intent(activity, CaptureActivity.class);
+        intent.putExtra("isResult", true);
+        activity.startActivityForResult(intent, 1001);
+
+    }
 
 }

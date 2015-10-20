@@ -20,6 +20,7 @@
 -dontoptimize
 -dontpreverify
 
+-dontwarn android.databinding.**
 -dontwarn com.**
 -dontwarn org.**
 -dontwarn net.**

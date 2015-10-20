@@ -1,4 +1,5 @@
 apply from: '/application.gradle'
+apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
@@ -12,6 +13,9 @@ android {
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName VERSION_NAME
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG"]
+
+        multiDexEnabled = true
+        multiDexKeepProguard file('multi-dex-keep.txt')
     }
     //打包签名
     signingConfigs {
@@ -85,9 +89,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'Gallery3D-release1.0', ext: 'aar')
     compile(name: 'Camera-release1.0', ext: 'aar')
-    compile(name: 'ZxingScan-release1.0', ext: 'aar')
+    //    compile(name: 'ZxingScan-release1.0', ext: 'aar')
     compile(name: 'yalantiscontextmenu-release1.0', ext: 'aar')
-
     compile project(':libraries:JoneLib')
     testCompile 'junit:junit:4.12'
     compile 'com.google.zxing:core:3.0.1'
@@ -102,6 +105,7 @@ dependencies {
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:palette-v7:23.0.1'
     compile 'cn.lightsky.infiniteindicator:library:1.0.3'
+    compile project(':libraries:ZxingScan')
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {

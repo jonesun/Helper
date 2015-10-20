@@ -6,5 +6,5 @@
     android:padding="2dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_helper_main"
-    tools:context="jone.helper.ui.activities.HelperMainActivity">
+    tools:context=".ui.activities.HelperMainActivity">
 </FrameLayout>

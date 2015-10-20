@@ -18,6 +18,7 @@ import java.util.List;
 
 import jone.helper.R;
 import jone.helper.ui.activities.JoneAppManagerActivity;
+import jone.helper.ui.fragments.base.BaseFragment;
 
 /**
  * Created by jone.sun on 2015/8/17.

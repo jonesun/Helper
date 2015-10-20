@@ -1,7 +1,10 @@
-package jone.helper.ui.fragments;
+package jone.helper.ui.fragments.base;
 
 import android.app.Activity;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by jone.sun on 2015/7/2.
+ * Created by jone.sun on 2015/10/19.
  */
-public abstract class BaseFragment<T extends FragmentActivity> extends Fragment {
+public abstract class DataBindingBaseFragment<T extends FragmentActivity, V extends ViewDataBinding> extends Fragment {
 
     private T hostActivity;
-
+    private V viewDataBinding;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,26 +36,24 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(getContentView(), container, false);
+        viewDataBinding = DataBindingUtil.inflate(inflater, getContentView(), container, false);
+        return viewDataBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        findViews(view);
-        initViews(view);
+        initViews(viewDataBinding);
     }
 
-    protected abstract void findViews(View view);
+    public void initViews(V viewDataBinding){}
 
-    protected void initViews(View view){}
-
-    public <T extends View> T findView(View view, int id) {
-        return (T) view.findViewById(id);
-    }
 
     public T getHostActivity() {
         return hostActivity;
+    }
+
+    public V getViewDataBinding() {
+        return viewDataBinding;
     }
 }

@@ -35,6 +35,7 @@ import jone.helper.model.weather.entity.Weather;
 import jone.helper.model.weather.entity.WeatherData;
 import jone.helper.presenter.weather.WeatherPresenter;
 import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.ui.view.WeatherView;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;

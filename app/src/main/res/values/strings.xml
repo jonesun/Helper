@@ -29,7 +29,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_news">NewsActivity</string>
     <string name="no_data">No data</string>
-    <string name="search">search</string>
+    <string name="search">查询</string>
 
     <string name="pull_to_refresh_pull_label">下拉刷新</string>
     <string name="pull_to_refresh_release_label">松开后刷新</string>

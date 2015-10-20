@@ -1,6 +1,6 @@
 include ':app',
         ':libraries:JoneLib'
-//include ':libraries:ZxingScan',
-//        ':libraries:Gallery3D',
+include ':libraries:ZxingScan'
+//include ':libraries:Gallery3D',
 //        ':libraries:Camera',
 //        ':yalantiscontextmenu'

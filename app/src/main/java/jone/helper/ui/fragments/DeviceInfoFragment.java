@@ -1,19 +1,16 @@
 package jone.helper.ui.fragments;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 
@@ -22,13 +19,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jone.helper.BR;
 import jone.helper.R;
+import jone.helper.bean.DeviceInfo;
+import jone.helper.databinding.FragmentDeviceInfoBinding;
 import jone.helper.lib.util.SystemUtil;
+import jone.helper.ui.activities.JoneAppManagerActivity;
+import jone.helper.ui.fragments.base.DataBindingBaseFragment;
 
-public class DeviceInfoFragment extends Fragment {
+public class DeviceInfoFragment extends DataBindingBaseFragment<JoneAppManagerActivity, FragmentDeviceInfoBinding> {
     private static final String TAG = DeviceInfoFragment.class.getSimpleName();
+
     private Map<Integer, String> versionNameMap;
-    public List<String> data = new ArrayList<>();
+    public List<DeviceInfo> data = new ArrayList<>();
 
     private RecyclerView.LayoutManager layoutManager;
 
@@ -45,21 +48,14 @@ public class DeviceInfoFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected int getContentView() {
+        return R.layout.fragment_device_info;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_device_info, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+    public void initViews(FragmentDeviceInfoBinding viewDataBinding) {
+        super.initViews(viewDataBinding);
+        RecyclerView recyclerView = viewDataBinding.recyclerView;
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
 //        switch (flag) {
@@ -136,7 +132,7 @@ public class DeviceInfoFragment extends Fragment {
     }
 
     private void addItemView(String txtName, String buildInfo){
-        data.add(txtName + ": " + buildInfo);
+        data.add(new DeviceInfo(txtName, buildInfo));
     }
 
     private void initVersionMap(){
@@ -164,23 +160,25 @@ public class DeviceInfoFragment extends Fragment {
     }
 
     private static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private List<String> data;
+        private List<DeviceInfo> data;
 
-        public MyAdapter(List<String> data) {
+        public MyAdapter(List<DeviceInfo> data) {
             this.data = data;
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            // 加载Item的布局.布局中用到的真正的CardView.
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_device_info_layout, viewGroup, false);
-            // ViewHolder参数一定要是Item的Root节点.
-            return new ViewHolder(view);
+            ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater
+                    .from(viewGroup.getContext()), R.layout.item_device_info_layout, viewGroup, false);
+            ViewHolder holder = new ViewHolder(binding.getRoot());
+            holder.setBinding(binding);
+            return holder;
         }
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
-            viewHolder.text.setText(data.get(i));
+            viewHolder.getBinding().setVariable(BR.deviceInfo, data.get(i));
+            viewHolder.getBinding().executePendingBindings();
         }
 
         @Override
@@ -189,12 +187,19 @@ public class DeviceInfoFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView text;
+            private ViewDataBinding binding;
 
             public ViewHolder(View itemView) {
                 // super这个参数一定要注意,必须为Item的根节点.否则会出现莫名的FC.
                 super(itemView);
-                text = (TextView) itemView.findViewById(R.id.text);
+            }
+
+            public void setBinding(ViewDataBinding binding) {
+                this.binding = binding;
+            }
+
+            public ViewDataBinding getBinding() {
+                return this.binding;
             }
         }
     }

@@ -1,9 +1,6 @@
 package jone.helper.ui.activities;
 
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -21,10 +18,8 @@ import android.widget.TextView;
 
 import jone.helper.R;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.fragments.AllAppsFragment;
 import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
-import jone.helper.ui.fragments.MemoryManagerFragment;
 
 public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
