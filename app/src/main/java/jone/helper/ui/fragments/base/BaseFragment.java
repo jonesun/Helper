@@ -16,6 +16,7 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
 
     private T hostActivity;
     private View rootView;
+    private boolean hasRootView = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,9 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
         // Inflate the layout for this fragment
         if (rootView == null) {
             rootView = inflater.inflate(getContentView(), container, false);
+            hasRootView = false;
+        } else {
+            hasRootView = true;
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -49,8 +53,14 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        findViews(view);
-        initViews(view);
+        if(!hasRootView || refreshOnReCreateView()){
+            findViews(view);
+            initViews(view);
+        }
+        if(!hasRootView){
+            findViews(view);
+            initViews(view);
+        }
     }
 
     protected abstract void findViews(View view);
@@ -63,5 +73,13 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
 
     public T getHostActivity() {
         return hostActivity;
+    }
+
+    /***
+     * 再次到onCreateView时，是否刷新view
+     * @return
+     */
+    public boolean refreshOnReCreateView(){
+        return false;
     }
 }

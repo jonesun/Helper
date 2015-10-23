@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public abstract class DataBindingBaseFragment<T extends FragmentActivity, V exte
     private T hostActivity;
     private V viewDataBinding;
     private View rootView;
+    private boolean hasRootView = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,9 @@ public abstract class DataBindingBaseFragment<T extends FragmentActivity, V exte
         }
         if (rootView == null) {
             rootView = viewDataBinding.getRoot();
+            hasRootView = false;
+        } else {
+            hasRootView = true;
         }
         // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
         ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -54,7 +59,9 @@ public abstract class DataBindingBaseFragment<T extends FragmentActivity, V exte
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews(viewDataBinding);
+        if(!hasRootView || refreshOnReCreateView()){
+            initViews(viewDataBinding);
+        }
     }
 
     public void initViews(V viewDataBinding){}
@@ -66,5 +73,13 @@ public abstract class DataBindingBaseFragment<T extends FragmentActivity, V exte
 
     public V getViewDataBinding() {
         return viewDataBinding;
+    }
+
+    /***
+     * 再次到onCreateView时，是否刷新view
+     * @return
+     */
+    public boolean refreshOnReCreateView(){
+        return false;
     }
 }

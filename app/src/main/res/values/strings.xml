@@ -6,6 +6,13 @@
     <string name="action_settings">设置</string>
     <string name="action_change_bg">更换背景</string>
 
+    <string name="main_tab_name_news">综合</string>
+    <string name="main_tab_name_tweet">动弹</string>
+    <string name="main_tab_name_quick">快速</string>
+    <string name="main_tab_name_question">问答</string>
+    <string name="main_tab_name_my">我</string>
+    <string name="main_tab_name_explore">发现</string>
+
     <string name="menu_item_home">主页</string>
     <string name="menu_item_weather">天气</string>
     <string name="menu_item_recommend">精彩推荐</string>
