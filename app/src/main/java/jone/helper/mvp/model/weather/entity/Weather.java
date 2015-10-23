@@ -1,4 +1,4 @@
-package jone.helper.model.weather.entity;
+package jone.helper.mvp.model.weather.entity;
 
 import java.io.Serializable;
 import java.util.List;

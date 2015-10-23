@@ -1,6 +1,6 @@
-package jone.helper.ui.view;
+package jone.helper.mvp.view.weather;
 
-import jone.helper.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.entity.Weather;
 
 /**
  * Created by jone.sun on 2015/7/2.

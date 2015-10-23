@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment<T extends FragmentActivity> extends Fragment {
 
     private T hostActivity;
+    private View rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,15 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(getContentView(), container, false);
+        if (rootView == null) {
+            rootView = inflater.inflate(getContentView(), container, false);
+        }
+        // 缓存的rootView需要判断是否已经被加过parent，如果有parent需要从parent删除，要不然会发生这个rootview已经有parent的错误。
+        ViewGroup parent = (ViewGroup) rootView.getParent();
+        if (parent != null) {
+            parent.removeView(rootView);
+        }
+        return rootView;
     }
 
     @Override

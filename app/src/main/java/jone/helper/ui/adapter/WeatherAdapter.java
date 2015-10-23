@@ -2,11 +2,8 @@ package jone.helper.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +17,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.model.weather.entity.Weather;
-import jone.helper.model.weather.entity.WeatherData;
+import jone.helper.mvp.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.volley.VolleyCommon;
-import jone.helper.model.weather.entity.WeatherIndex;
+import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.util.WeatherUtil;
 
 /**

@@ -1,13 +1,13 @@
-package jone.helper.presenter.weather.impl;
+package jone.helper.mvp.presenter.weather.impl;
 
 import android.content.Context;
 
-import jone.helper.model.weather.OnWeatherListener;
-import jone.helper.model.weather.WeatherModel;
-import jone.helper.model.weather.entity.Weather;
-import jone.helper.model.weather.impl.BaiduWeatherModel;
-import jone.helper.presenter.weather.WeatherPresenter;
-import jone.helper.ui.view.WeatherView;
+import jone.helper.mvp.model.weather.OnWeatherListener;
+import jone.helper.mvp.model.weather.WeatherModel;
+import jone.helper.mvp.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.impl.BaiduWeatherModel;
+import jone.helper.mvp.presenter.weather.WeatherPresenter;
+import jone.helper.mvp.view.weather.WeatherView;
 
 /**
  * Created by jone.sun on 2015/7/2.

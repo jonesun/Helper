@@ -1,9 +1,7 @@
 package jone.helper.ui.adapter;
 
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +18,8 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.bean.News;
 import jone.helper.model.BaiduLocationTool;
-import jone.helper.model.weather.entity.Weather;
-import jone.helper.model.weather.entity.WeatherData;
+import jone.helper.mvp.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.activities.EggsActivity;

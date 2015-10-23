@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.baidu.location.BDLocation;
@@ -38,8 +37,8 @@ import java.util.Locale;
 
 import jone.helper.R;
 import jone.helper.model.BaiduLocationTool;
-import jone.helper.model.weather.entity.Weather;
-import jone.helper.model.weather.entity.WeatherData;
+import jone.helper.mvp.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.util.BitmapUtil;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.util.FestivalUtil;

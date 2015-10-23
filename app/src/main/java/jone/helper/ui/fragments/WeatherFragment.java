@@ -10,15 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,36 +21,35 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
+import jone.helper.databinding.FragmentWeatherBinding;
+import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.adapter.WeatherAdapter;
 import jone.helper.lib.util.Utils;
-import jone.helper.model.weather.entity.Weather;
-import jone.helper.model.weather.entity.WeatherData;
-import jone.helper.presenter.weather.WeatherPresenter;
+import jone.helper.mvp.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.entity.WeatherData;
+import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.ui.activities.SelectCityActivity;
-import jone.helper.ui.fragments.base.BaseFragment;
-import jone.helper.ui.view.WeatherView;
+import jone.helper.mvp.view.weather.WeatherView;
+import jone.helper.ui.fragments.base.DataBindingBaseFragment;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
-import jone.helper.presenter.weather.impl.BaiduWeatherPresenter;
+import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 
 /**
  * Created by jone.sun on 2015/7/2.
  */
-public class WeatherFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
+public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity, FragmentWeatherBinding> implements WeatherView {
     private static final String TAG = WeatherFragment.class.getSimpleName();
-    private LinearLayout layout_top, layout_ad;
-    private TextView txt_date, txt_festival;
-    private Button btn_city;
-    private RecyclerView mRecyclerView;
     private WeatherAdapter weatherAdapter;
     private Dialog loadingDialog;
 
     private WeatherPresenter weatherPresenter;
 
     private List<WeatherData> weatherDataList = new ArrayList<>();
+    private BaiduLocationTool baiduLocationTool;
 
     public static final int resultCode = 10001;
     private static WeatherFragment instance = null;
@@ -74,28 +68,20 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         return R.layout.fragment_weather;
     }
 
-    @Override
-    protected void findViews(View view) {
-        layout_top = findView(view, R.id.layout_top);
-        btn_city = findView(view, R.id.btn_city);
-        txt_date = findView(view, R.id.txt_date);
-        txt_festival = findView(view, R.id.txt_festival);
-        mRecyclerView = findView(view, R.id.weather_list);
-        layout_ad = findView(view, R.id.layout_ad);
-    }
 
     @Override
-    protected void initViews(View view) {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getHostActivity()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setHasFixedSize(true);
+    public void initViews(FragmentWeatherBinding viewDataBinding) {
+        RecyclerView rvWeather = viewDataBinding.rvWeather;
+        rvWeather.setLayoutManager(new LinearLayoutManager(getHostActivity()));
+        rvWeather.setItemAnimator(new DefaultItemAnimator());
+        rvWeather.setHasFixedSize(true);
 
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
-        mRecyclerView.setAdapter(weatherAdapter);
+        rvWeather.setAdapter(weatherAdapter);
         showDate();
-        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
+        JoneBaiduAd.showBDBannerAd(getHostActivity(), viewDataBinding.layoutAd);
         showEggs();
-        btn_city.setOnClickListener(new View.OnClickListener() {
+        viewDataBinding.btnCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
@@ -105,47 +91,23 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         weatherPresenter = new BaiduWeatherPresenter(this); //传入WeatherView
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
-
+        baiduLocationTool = new BaiduLocationTool();
         if(Utils.isNetworkAlive(getHostActivity())){
-            // 定位初始化
-            getLocation();
+            baiduLocationTool.getLocation(getHostActivity(), new BDLocationListener() {
+                @Override
+                public void onReceiveLocation(BDLocation bdLocation) {
+                    // map view 销毁后不在处理新接收的位置
+                    if (bdLocation != null && bdLocation.getCity() != null) {
+                        Log.e("sss", "city: " + bdLocation.getCity());
+                        getWeatherByCity(bdLocation.getCity().replace("市", ""));
+                    }
+                    if (baiduLocationTool != null) {
+                        baiduLocationTool.close();
+                    }
+                }
+            });
         }else {
-            btn_city.setText("网络连接失败");
-        }
-    }
-
-    private LocationClient mLocClient;
-    private MyLocationListenner myListener = new MyLocationListenner();
-    private void getLocation(){
-        // 定位初始化
-        mLocClient = new LocationClient(getHostActivity());
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
-        //option.setOpenGps(true);// 打开gps
-        option.setIsNeedAddress(true);
-        option.setNeedDeviceDirect(true);
-        option.setCoorType("bd09ll"); //返回的定位结果是百度经纬度,默认值gcj02
-//        option.setScanSpan(1000); //设置发起定位请求的间隔时间为5000ms
-        mLocClient.setLocOption(option);
-        mLocClient.start();
-    }
-
-    /**
-     * 定位SDK监听函数
-     */
-    public class MyLocationListenner implements BDLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            // map view 销毁后不在处理新接收的位置
-            if (location != null && location.getCity() != null){
-                Log.e("sss", "city: " + location.getCity());
-                getWeatherByCity(location.getCity().replace("市", ""));
-            }
-            if(mLocClient != null){
-                mLocClient.stop();
-                mLocClient.unRegisterLocationListener(this);
-            }
+            viewDataBinding.btnCity.setText("网络连接失败");
         }
     }
 
@@ -153,8 +115,8 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     public void onDestroy() {
         super.onDestroy();
         // 退出时销毁定位
-        if(mLocClient != null){
-            mLocClient.stop();
+        if(baiduLocationTool != null){
+            baiduLocationTool.close();
         }
     }
 
@@ -164,14 +126,14 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
-            btn_city.setText("网络连接失败");
+            getViewDataBinding().btnCity.setText("网络连接失败");
         }
     }
 
     long[] mHits = new long[3];
     private void showEggs(){
-        if(layout_top!= null){
-            layout_top.setOnClickListener(new View.OnClickListener() {
+        if(getViewDataBinding().layoutTop != null){
+            getViewDataBinding().layoutTop.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
@@ -191,8 +153,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     private void showDate(){
         Calendar calendar = Calendar.getInstance();
         FestivalUtil festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
-
-        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
+        getViewDataBinding().txtDate.setText(calendar.get(Calendar.YEAR) + "年" +
                 (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
         ArrayList<String> fest = festivalUtil.getFestVals();
         StringBuilder festival = new StringBuilder();
@@ -201,9 +162,9 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
                 festival.append(str).append("(").append(FestivalUtil.getPinYin(str).trim()).append(")").append(" ");
                 System.out.println(str + "(" + FestivalUtil.getPinYin(str, "_").trim() + ")");
             }
-            txt_festival.setText("今天是: " + festival);
+            getViewDataBinding().txtFestival.setText("今天是: " + festival);
         }else {
-            txt_festival.setText("今天没有节日");
+            getViewDataBinding().txtFestival.setText("今天没有节日");
         }
     }
 
@@ -228,9 +189,8 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
 
     @Override
     public void showError(String reason) {
-        //Do something
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
-        btn_city.setText("网络连接失败");
+        getViewDataBinding().btnCity.setText("网络连接失败");
     }
 
     @Override
@@ -244,8 +204,8 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         }
 
         String city = weather.getCurrentCity();
-        if(btn_city != null){
-            btn_city.setText(Html.fromHtml("<u>" + city + "</u>"));
+        if(getViewDataBinding().btnCity != null){
+            getViewDataBinding().btnCity.setText(Html.fromHtml("<u>" + city + "</u>"));
         }
     }
 }

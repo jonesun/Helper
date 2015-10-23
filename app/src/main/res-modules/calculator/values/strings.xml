@@ -88,4 +88,14 @@
     <string name="clear_history">Clear history</string>
     <string name="no_notebook">还没有便签</string>
     <string name="menu_item_theme">主题皮肤</string>
+    <string name="arc_store">存储空间</string>
+    <string name="arc_process">内存</string>
+    <string name="loading">加载中...</string>
+    <string name="week_0">日</string>
+    <string name="week_1">一</string>
+    <string name="week_2">二</string>
+    <string name="week_3">三</string>
+    <string name="week_4">四</string>
+    <string name="week_5">五</string>
+    <string name="week_6">六</string>
 </resources>

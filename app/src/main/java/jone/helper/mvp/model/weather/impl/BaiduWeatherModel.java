@@ -1,4 +1,4 @@
-package jone.helper.model.weather.impl;
+package jone.helper.mvp.model.weather.impl;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -23,12 +23,11 @@ import java.net.URLEncoder;
 import jone.helper.App;
 import jone.helper.Constants;
 import jone.helper.lib.model.net.NetResponseCallback;
-import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.volley.Method;
-import jone.helper.model.weather.OnLocationListener;
-import jone.helper.model.weather.OnWeatherListener;
-import jone.helper.model.weather.WeatherModel;
-import jone.helper.model.weather.entity.Weather;
+import jone.helper.mvp.model.weather.OnLocationListener;
+import jone.helper.mvp.model.weather.OnWeatherListener;
+import jone.helper.mvp.model.weather.WeatherModel;
+import jone.helper.mvp.model.weather.entity.Weather;
 
 /**
  * Created by jone.sun on 2015/7/2.
