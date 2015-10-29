@@ -39,7 +39,13 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
     }
 
     public T getItem(int position) {
-        return dataList == null ? null : dataList.get(position);
+        if(dataList == null){
+            return null;
+        }
+        if (position >= getItemCount()) {
+            return dataList.get(position - 1);
+        }
+        return dataList.get(position);
     }
 
     public void setDataList(List<T> dataList){
@@ -47,25 +53,33 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
         notifyDataSetChanged();
     }
 
-    public void addData(T data){
+    public void addDataToFirst(T data){
         if(dataList == null){
             dataList = new ArrayList<>();
         }
-        dataList.add(data);
-        notifyItemInserted(dataList.size() - 1);
+        addData(0, data);
+    }
+
+    public void addDataToEnd(T data){
+        if(dataList == null){
+            dataList = new ArrayList<>();
+        }
+        addData(dataList.size() - 1, data);
     }
 
     public void addData(int position, T data) {
         if(dataList == null){
             dataList = new ArrayList<>();
         }
-        dataList.add(position, data);
         notifyItemInserted(position);
+        dataList.add(position, data);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
     public void removeData(int position) {
-        dataList.remove(position);
         notifyItemRemoved(position);
+        dataList.remove(position);
+        notifyItemRangeChanged(position, getItemCount());
     }
 
 

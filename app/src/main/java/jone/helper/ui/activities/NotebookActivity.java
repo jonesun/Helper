@@ -58,8 +58,6 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
     private void setNoData(){
         ViewStub stub = (ViewStub) findViewById(R.id.vs_no_notebook);
         stub.inflate();
-        TextView text = (TextView) findViewById(R.id.tv_no_data);
-        text.setText("您还没有写过便签");
     }
 
     @Override
@@ -75,8 +73,8 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
     public void onItemLongClick(final View view, final int position) {
         final CardView cardView = (CardView) view;
         cardView.setCardBackgroundColor(Color.RED);
-        Snackbar snackbar = Snackbar.make(view, "便签", Snackbar.LENGTH_LONG)
-                .setAction("删除", new View.OnClickListener() {
+        Snackbar snackbar = Snackbar.make(view, getString(R.string.menu_item_note), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.delete), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         NotebookDao.getInstance(NotebookActivity.this).delete(adapter.getItem(position));

@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- grayscale -->
+    <color name="white"     >#FFFFFF</color>
+    <color name="gray_light">#DBDBDB</color>
+    <color name="gray"      >#939393</color>
+    <color name="gray_dark" >#5F5F5F</color>
+    <color name="black"     >#323232</color>
+
+    <!-- basic colors -->
+    <color name="green">#27D34D</color>
+    <color name="blue">#2A91BD</color>
+    <color name="orange">#FF9D2F</color>
+    <color name="red">#FF432F</color>
+
     <color name="dark_grey">#6f6c6c</color>
     <color name="light_grey">#9b9b9b</color>
 

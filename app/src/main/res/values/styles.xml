@@ -182,4 +182,9 @@
         <item name="android:textColor">@color/dark_grey</item>
     </style>
 
+    <style name="ContentText">
+        <item name="android:textSize">@dimen/font_normal</item>
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
 </resources>

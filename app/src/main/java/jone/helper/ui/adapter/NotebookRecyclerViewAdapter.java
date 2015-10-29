@@ -11,6 +11,7 @@ import jone.helper.ui.activities.EditNotebookActivity;
  * Created by jone.sun on 2015/9/29.
  */
 public class NotebookRecyclerViewAdapter extends BaseRecyclerViewAdapter<NotebookRecyclerViewHolder, NotebookData> {
+
     @Override
     public NotebookRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NotebookRecyclerViewHolder(LayoutInflater.from(parent.getContext())

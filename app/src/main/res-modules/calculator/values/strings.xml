@@ -86,7 +86,7 @@
     <string name="advanced">Advanced panel</string>
     <!-- Menu item text to clear the calculation history. -->
     <string name="clear_history">Clear history</string>
-    <string name="no_notebook">还没有便签</string>
+    <string name="no_notebook">您还没有写过便签\r\n小护士: 长按可删除便签</string>
     <string name="menu_item_theme">主题皮肤</string>
     <string name="arc_store">存储空间</string>
     <string name="arc_process">内存</string>
