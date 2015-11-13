@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.WindowManager;
 
 import jone.helper.R;
@@ -14,14 +15,14 @@ import jone.helper.lib.util.SystemBarTintManager;
  */
 public class ThemeTool {
     public static final int[] themeIds = new int[]{
-            R.style.HelperTheme_blue, R.style.HelperTheme_amber,
+            R.style.HelperTheme_light_blue, R.style.HelperTheme_amber,
             R.style.HelperTheme_red, R.style.HelperTheme_blue_grey,
             R.style.HelperTheme_brown, R.style.HelperTheme_cyan,
             R.style.HelperTheme_deep_orange, R.style.HelperTheme_deep_purple,
             R.style.HelperTheme_green, R.style.HelperTheme_grey,
             R.style.HelperTheme_indigo, R.style.HelperTheme_orange,
             R.style.HelperTheme_teal, R.style.HelperTheme_yellow,
-            R.style.HelperTheme_lime, R.style.HelperTheme_light_blue,
+            R.style.HelperTheme_lime, R.style.HelperTheme_blue,
             R.style.HelperTheme_light_green, R.style.HelperTheme_pink,
             R.style.HelperTheme_purple
     };
@@ -67,6 +68,9 @@ public class ThemeTool {
         outState.putInt("themeIndex", themeIndex);
     }
 
+    public void setStatusBarView(Activity activity) {
+        setStatusBarView(activity, getDarkColorPrimary(activity));
+    }
     /**
      * 设置状态栏的颜色，目前只是在4.4上面有效
      */
@@ -79,5 +83,17 @@ public class ThemeTool {
             tintManager.setNavigationBarTintEnabled(false);
             tintManager.setTintColor(color);
         }
+    }
+
+    public int getColorPrimary(Activity activity){
+        TypedValue typedValue = new  TypedValue();
+        activity.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        return typedValue.data;
+    }
+
+    public int getDarkColorPrimary(Activity activity){
+        TypedValue typedValue = new TypedValue();
+        activity.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        return typedValue.data;
     }
 }

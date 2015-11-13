@@ -5,6 +5,9 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
+
+import com.umeng.analytics.MobclickAgent;
+
 import jone.helper.R;
 
 /**
@@ -29,7 +32,7 @@ public abstract class DataBindingBaseAppCompatActivity<V extends ViewDataBinding
         viewDataBinding = DataBindingUtil
                 .setContentView(this, getContentView());
 
-        themeTool.setStatusBarView(this, getDarkColorPrimary());
+        themeTool.setStatusBarView(this);
         initViews();
     }
 
@@ -41,19 +44,19 @@ public abstract class DataBindingBaseAppCompatActivity<V extends ViewDataBinding
         themeTool.onSaveInstanceState(outState);
     }
 
-    public int getColorPrimary(){
-        TypedValue typedValue = new  TypedValue();
-        getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        return typedValue.data;
-    }
-
-    public int getDarkColorPrimary(){
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-        return typedValue.data;
-    }
-
     public V getViewDataBinding() {
         return viewDataBinding;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

@@ -3,7 +3,9 @@ package jone.helper.ui.fragments;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +27,9 @@ import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
+import jone.helper.bean.HomeMainCalendarBean;
 import jone.helper.databinding.FragmentJoneHelperMainBinding;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.MemoryStoreProgressTool;
@@ -37,8 +41,10 @@ import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
+import jone.helper.ui.activities.ZoomImageViewActivity;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.adapter.MainCalendarAdapter;
 import jone.helper.ui.fragments.base.DataBindingBaseFragment;
 import jone.helper.mvp.view.weather.WeatherView;
 import jone.helper.util.FestivalUtil;
@@ -52,7 +58,7 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
     private static final String TAG = HelperMainFragment.class.getSimpleName();
     private ViewGroup layout_weather;
     private LinearLayout layout_ad;
-    private TextView txt_pm25, txt_weather_temperature, txt_weather_weather;
+    private TextView txt_calendar, txt_pm25, txt_weather_temperature, txt_weather_weather;
     private Button btn_city;
     private ImageView image_weather;
     public static final int resultCode = 10001;
@@ -83,6 +89,7 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
     }
 
     protected void findViews(View view) {
+        txt_calendar = findView(view, R.id.txt_calendar);
         btn_city = findView(view, R.id.btn_city);
         image_weather = findView(view, R.id.image_weather);
         txt_pm25 = findView(view, R.id.txt_pm25);
@@ -97,7 +104,24 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
     @Override
     public void initViews(FragmentJoneHelperMainBinding viewDataBinding) {
         findViews(viewDataBinding.getRoot());
-        viewDataBinding.setDateInfo(getDateInfo());
+        DateInfo dateInfo = getDateInfo();
+        txt_calendar.setText(dateInfo.getDataStr());
+        MainCalendarAdapter mainCalendarAdapter = new MainCalendarAdapter();
+        List<HomeMainCalendarBean> homeMainCalendarBeanList = new ArrayList<>();
+        for(int i = 0; i < 7; i++){
+            HomeMainCalendarBean homeMainCalendarBean = new HomeMainCalendarBean();
+            homeMainCalendarBean.setLabel(FestivalUtil.getWeekDay(i));
+            homeMainCalendarBean.setCalendar(dateInfo.getCalendars()[i]);
+            if(dateInfo.getTodayIndex() == i){
+                homeMainCalendarBean.setIsToday(true);
+            }
+            homeMainCalendarBeanList.add(homeMainCalendarBean);
+        }
+        mainCalendarAdapter.setDataList(homeMainCalendarBeanList);
+        viewDataBinding.recyclerViewCalendar.setAdapter(mainCalendarAdapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        viewDataBinding.recyclerViewCalendar.setLayoutManager(mLayoutManager);
+        viewDataBinding.recyclerViewCalendar.setFocusableInTouchMode(false);
 //        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         weatherPresenter = new BaiduWeatherPresenter(this);
         loadingDialog = new ProgressDialog(getHostActivity());
@@ -139,6 +163,8 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
                                 @Override
                                 public void onSliderClick(BaseSliderView slider) {
                                     Log.e(TAG, "slider: " + slider.getUrl());
+                                    ZoomImageViewActivity.open(getActivity(),
+                                            BingPictureOperator.getFullImageUrl(getActivity(), slider.getUrl()));
                                 }
                             });
                     textSliderView.getBundle()

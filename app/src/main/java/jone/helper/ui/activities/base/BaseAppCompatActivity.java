@@ -1,41 +1,22 @@
 package jone.helper.ui.activities.base;
 
-import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowManager;
 
-import java.util.Random;
-
-import jone.helper.R;
-import jone.helper.lib.util.SystemBarTintManager;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by jone.sun on 2015/9/7.
  */
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
-    public static final int[] themeIds = new int[]{
-            R.style.HelperTheme_blue, R.style.HelperTheme_amber,
-            R.style.HelperTheme_red, R.style.HelperTheme_blue_grey,
-            R.style.HelperTheme_brown, R.style.HelperTheme_cyan,
-            R.style.HelperTheme_deep_orange, R.style.HelperTheme_deep_purple,
-            R.style.HelperTheme_green, R.style.HelperTheme_grey,
-            R.style.HelperTheme_indigo, R.style.HelperTheme_orange,
-            R.style.HelperTheme_teal, R.style.HelperTheme_yellow,
-            R.style.HelperTheme_lime, R.style.HelperTheme_light_blue,
-            R.style.HelperTheme_light_green, R.style.HelperTheme_pink,
-            R.style.HelperTheme_purple
-    };
-    private int themeIndex = 0;
+    private ThemeTool themeTool;
     protected abstract int getContentView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setPageTheme(savedInstanceState);
+        themeTool = ThemeTool.getInstance();
+        themeTool.setPageTheme(this, savedInstanceState);
         super.onCreate(savedInstanceState);
         //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            //透明状态栏
@@ -45,7 +26,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 //        }
 
         setContentView(getContentView());
-        setStatusBarView(this, getDarkColorPrimary());
+        themeTool.setStatusBarView(this);
         findViews();
         initViews();
     }
@@ -58,62 +39,31 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         return (T) findViewById(id);
     }
 
-    private void setPageTheme(Bundle savedInstanceState){
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey("themeIndex")) {
-                themeIndex = savedInstanceState.getInt("themeIndex");
-            }
-        }else {
-            try {
-                themeIndex = Integer.parseInt(PreferenceManager
-                        .getDefaultSharedPreferences(this).getString("theme_setting", "0"));
-            }catch (Exception e){
-                themeIndex = 0;
-            }
-        }
-        if(themeIndex < 0 || themeIndex > themeIds.length){
-            themeIndex = 0;
-        }
-        setTheme(themeIds[themeIndex]);  //设置主题皮肤
-    }
-
     public void onTheme(int themeIndex){
-        this.themeIndex = themeIndex;
-        PreferenceManager
-                .getDefaultSharedPreferences(this).edit().putString("theme_setting", themeIndex + "").apply();
-        this.recreate();
+        if(themeTool != null){
+            themeTool.onTheme(this, themeIndex);
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("themeIndex", themeIndex);
+        themeTool.onSaveInstanceState(outState);
     }
 
-    public int getColorPrimary(){
-        TypedValue typedValue = new  TypedValue();
-        getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        return typedValue.data;
+    public ThemeTool getThemeTool() {
+        return themeTool;
     }
 
-    public int getDarkColorPrimary(){
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-        return typedValue.data;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 
-    /**
-     * 设置状态栏的颜色，目前只是在4.4上面有效
-     */
-    public static void setStatusBarView(Activity activity, int color) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
-            tintManager.setStatusBarTintEnabled(true);
-            tintManager.setNavigationBarTintEnabled(false);
-            tintManager.setTintColor(color);
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
-
 }

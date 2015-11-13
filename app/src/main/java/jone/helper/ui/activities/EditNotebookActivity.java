@@ -128,27 +128,27 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
             case R.id.note_detail_img_green:
                 notebookData.setColor(0);
                 mToolbar.setBackgroundColor(sTitleBackGrounds[0]);
-                setStatusBarView(this, sTitleBackGrounds[0]);
+                getThemeTool().setStatusBarView(this, sTitleBackGrounds[0]);
                 break;
             case R.id.note_detail_img_blue:
                 notebookData.setColor(3);
                 mToolbar.setBackgroundColor(sTitleBackGrounds[4]);
-                setStatusBarView(this, sTitleBackGrounds[3]);
+                getThemeTool().setStatusBarView(this, sTitleBackGrounds[3]);
                 break;
             case R.id.note_detail_img_purple:
                 notebookData.setColor(4);
                 mToolbar.setBackgroundColor(sTitleBackGrounds[4]);
-                setStatusBarView(this, sTitleBackGrounds[4]);
+                getThemeTool().setStatusBarView(this, sTitleBackGrounds[4]);
                 break;
             case R.id.note_detail_img_yellow:
                 notebookData.setColor(1);
                 mToolbar.setBackgroundColor(sTitleBackGrounds[1]);
-                setStatusBarView(this, sTitleBackGrounds[1]);
+                getThemeTool().setStatusBarView(this, sTitleBackGrounds[1]);
                 break;
             case R.id.note_detail_img_red:
                 notebookData.setColor(2);
                 mToolbar.setBackgroundColor(sTitleBackGrounds[2]);
-                setStatusBarView(this, sTitleBackGrounds[2]);
+                getThemeTool().setStatusBarView(this, sTitleBackGrounds[2]);
                 break;
         }
         mImgThumbtack.setImageResource(sThumbtackImgs[notebookData.getColor()]);
@@ -199,7 +199,7 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
         mTvDate.setText(notebookData.getDate());
 
         mToolbar.setBackgroundColor(sTitleBackGrounds[notebookData.getColor()]);
-        setStatusBarView(this, sTitleBackGrounds[notebookData.getColor()]);
+        getThemeTool().setStatusBarView(this, sTitleBackGrounds[notebookData.getColor()]);
 
         mEtContent.setBackgroundColor(sBackGrounds[notebookData.getColor()]);
         mLayoutTitle.setBackgroundColor(sTitleBackGrounds[notebookData.getColor()]);

@@ -1,13 +1,20 @@
 package jone.helper.ui.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -46,6 +53,7 @@ import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
+import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.fragments.HelperMainFragment;
 import jone.helper.ui.fragments.WeatherFragment;
 import jone.helper.ui.setting.SettingsActivity;
@@ -103,8 +111,20 @@ public class HelperMainActivity extends BaseAppCompatActivity
     }
 
     public void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(
+                R.id.collapsing_toolbar_layout);
+        collapsingToolbar.setTitle(getString(R.string.app_name));
+        collapsingToolbar.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white)); //设置收缩后Toolbar上字体的颜色
+        collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent)); //设置还没收缩时状态下字体颜色
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,29 +147,43 @@ public class HelperMainActivity extends BaseAppCompatActivity
         initMenuFragment();
     }
 
-    private void initNavHeaderView(NavigationView navigationView){
-        iv_picture = (NetworkImageView) navigationView.findViewById(R.id.iv_picture);
-        tv_title = (TextView) navigationView.findViewById(R.id.tv_title);
-        tv_copyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
+    private void initNavHeaderView(final NavigationView navigationView){
+        //解决23.1.0的bug
+        navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                navigationView.removeOnLayoutChangeListener(this);
+                iv_picture = (NetworkImageView) navigationView.findViewById(R.id.iv_picture);
+                tv_title = (TextView) navigationView.findViewById(R.id.tv_title);
+                tv_copyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
 //        iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
 //        iv_picture.setErrorImageResId(R.drawable.side_nav_bar);
-        BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
-            @Override
-            public void onSuccess(BingPicture bingPicture) {
-                Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
-                if (bingPicture != null) {
-                    iv_picture.setImageUrl(bingPicture.getUrl(), VolleyCommon.getImageLoader());
-                    List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
-                    if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
-                        tv_title.setText(bingPictureMsgs.get(0).getText());
+                BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
+                    @Override
+                    public void onSuccess(final BingPicture bingPicture) {
+                        Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
+                        if (bingPicture != null && iv_picture != null) {
+                            iv_picture.setImageUrl(bingPicture.getUrl(), VolleyCommon.getImageLoader());
+                            iv_picture.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    ZoomImageViewActivity.open(HelperMainActivity.this,
+                                            BingPictureOperator.getFullImageUrl(HelperMainActivity.this, bingPicture.getUrl()));
+                                }
+                            });
+                            List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
+                            if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
+                                tv_title.setText(bingPictureMsgs.get(0).getText());
+                            }
+                            tv_copyright.setText(bingPicture.getCopyright());
+                        }
                     }
-                    tv_copyright.setText(bingPicture.getCopyright());
-                }
-            }
 
-            @Override
-            public void onError(String reason) {
-                Log.e(TAG, "reason: " + reason);
+                    @Override
+                    public void onError(String reason) {
+                        Log.e(TAG, "reason: " + reason);
+                    }
+                });
             }
         });
 

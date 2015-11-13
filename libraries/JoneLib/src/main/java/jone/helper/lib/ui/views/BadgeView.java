@@ -1,4 +1,4 @@
-package com.change.unlock.common.ui.views;
+package jone.helper.lib.ui.views;
 
 import android.content.Context;
 import android.content.res.Resources;

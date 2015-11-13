@@ -1,5 +1,7 @@
 package jone.helper.model.bing;
 
+import android.app.Activity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -14,6 +16,7 @@ import java.util.Random;
 
 import jone.helper.App;
 import jone.helper.lib.model.net.NetResponseCallback;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.volley.Method;
 
 /**http://www.bing.com/HPImageArchive.aspx?format=xml&idx=1&n=1&mkt=en-US
@@ -105,6 +108,20 @@ public class BingPictureOperator {
                 }
             }
         });
+    }
+
+    public static String getFullImageUrl(Activity activity, String imageUrl){
+        String url = imageUrl;
+        DisplayMetrics displayMetrics = SystemUtil.getDisplayMetrics(activity);
+        String suffix = url.substring(url.lastIndexOf("."));
+        try{
+            url = url.substring(0, url.lastIndexOf("_") + 1);
+            //http://s.cn.bing.net/az/hprichbg/rb/IxtapaJellyfish_ZH-CN9411866711_480x800.jpg
+            url = url + displayMetrics.widthPixels + "x" + displayMetrics.heightPixels + suffix;
+        }catch (Exception e){
+            url = imageUrl;
+        }
+        return url;
     }
 
 //    {

@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.umeng.analytics.MobclickAgent;
+
 /**
  * Created by jone.sun on 2015/7/2.
  */
@@ -81,5 +83,18 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
      */
     public boolean refreshOnReCreateView(){
         return false;
+    }
+
+    public void onResume() {
+        super.onResume();
+        if(hostActivity != null){
+            MobclickAgent.onPageStart(hostActivity.getClass().getSimpleName()); //统计页面
+        }
+    }
+    public void onPause() {
+        super.onPause();
+        if(hostActivity != null){
+            MobclickAgent.onPageEnd(hostActivity.getClass().getSimpleName());
+        }
     }
 }

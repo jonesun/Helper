@@ -27,7 +27,7 @@
 
     <style name="HelperBaseTheme.Main" parent="HelperBaseTheme">
         <!-- 窗口的背景颜色 -->
-        <item name="android:windowBackground">@drawable/window_background</item>
+        <item name="android:windowBackground">@drawable/window_bg</item>
     </style>
 
     <style name="HelperTheme.red" parent="HelperBaseTheme">
@@ -185,6 +185,18 @@
     <style name="ContentText">
         <item name="android:textSize">@dimen/font_normal</item>
         <item name="android:textColor">@color/dark_grey</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
     </style>
 
 </resources>

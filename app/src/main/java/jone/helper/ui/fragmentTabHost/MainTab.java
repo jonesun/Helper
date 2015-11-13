@@ -7,14 +7,14 @@ import jone.helper.ui.fragments.WeatherFragment;
 
 public enum MainTab {
 
-	NEWS(0, R.string.main_tab_name_news, R.drawable.tab_icon_new,
-			WeatherFragment.class),
+	NEWS(0, R.string.main_tab_name_home, R.drawable.tab_icon_new,
+			HelperMainFragment.class),
 
-	TWEET(1, R.string.main_tab_name_tweet, R.drawable.tab_icon_tweet,
-			AppsFragment.class),
+	TWEET(1, R.string.main_tab_name_weather, R.drawable.tab_icon_tweet,
+			WeatherFragment.class),
 
 	QUICK(2, R.string.main_tab_name_quick, R.drawable.tab_icon_new,
-			WeatherFragment.class),
+			AppsFragment.class),
 
 	EXPLORE(3, R.string.main_tab_name_explore, R.drawable.tab_icon_explore,
 			AppsFragment.class),
