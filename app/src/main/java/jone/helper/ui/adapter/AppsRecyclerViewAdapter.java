@@ -23,6 +23,7 @@ public class AppsRecyclerViewAdapter extends BaseRecyclerViewAdapter<AppsRecycle
 
 
     public AppsRecyclerViewAdapter(Context context) {
+        super(context);
         packageManager = context.getPackageManager();
     }
 

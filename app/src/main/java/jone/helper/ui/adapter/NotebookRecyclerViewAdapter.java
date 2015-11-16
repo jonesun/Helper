@@ -1,5 +1,6 @@
 package jone.helper.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,6 +12,10 @@ import jone.helper.ui.activities.EditNotebookActivity;
  * Created by jone.sun on 2015/9/29.
  */
 public class NotebookRecyclerViewAdapter extends BaseRecyclerViewAdapter<NotebookRecyclerViewHolder, NotebookData> {
+
+    public NotebookRecyclerViewAdapter(Context context) {
+        super(context);
+    }
 
     @Override
     public NotebookRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

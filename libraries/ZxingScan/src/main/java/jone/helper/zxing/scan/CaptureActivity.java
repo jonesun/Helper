@@ -7,20 +7,27 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import jone.helper.zxing.scan.camera.CameraManager;
 import jone.helper.zxing.scan.decoding.CaptureActivityHandler;
@@ -43,6 +50,7 @@ public class CaptureActivity extends Activity implements Callback {
 
     private boolean isResult = false;
 
+    private String url;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,44 @@ public class CaptureActivity extends Activity implements Callback {
         txtResult = (TextView) findViewById(R.id.txtResult);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
+        txtResult.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaptureActivity.this);
+                builder.setTitle("扫描结果");
+                url = txtResult.getText().toString();
+                url = url.substring(url.indexOf("http"));
+                builder.setMessage(url);
+                builder.setPositiveButton("打开", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri uri = Uri.parse(url);
+                        Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(it);
+                        finish();
+                    }
+                });
+                builder.setNeutralButton("复制", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ClipboardManager cmb = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                        // Creates a new text clip to put on the clipboard
+                        ClipData clip = ClipData.newPlainText("simple text",
+                                url);
+                        // Set the clipboard's primary clip.
+                        cmb.setPrimaryClip(clip);
+                        Toast.makeText(CaptureActivity.this, "已复制到剪切板", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
     @Override

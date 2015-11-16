@@ -25,6 +25,7 @@ import java.util.List;
 import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
 import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
+import jone.helper.App;
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
 import jone.helper.bean.HomeMainCalendarBean;
@@ -36,11 +37,13 @@ import jone.helper.model.MemoryStoreProgressTool;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPicturesListener;
+import jone.helper.model.calendar.CalendarActivity;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
+import jone.helper.ui.activities.JoneAppManagerActivity;
 import jone.helper.ui.activities.ZoomImageViewActivity;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.SelectCityActivity;
@@ -106,7 +109,7 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
         findViews(viewDataBinding.getRoot());
         DateInfo dateInfo = getDateInfo();
         txt_calendar.setText(dateInfo.getDataStr());
-        MainCalendarAdapter mainCalendarAdapter = new MainCalendarAdapter();
+        MainCalendarAdapter mainCalendarAdapter = new MainCalendarAdapter(getHostActivity());
         List<HomeMainCalendarBean> homeMainCalendarBeanList = new ArrayList<>();
         for(int i = 0; i < 7; i++){
             HomeMainCalendarBean homeMainCalendarBean = new HomeMainCalendarBean();
@@ -145,39 +148,28 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
                 startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
             }
         });
-        initIndicator();
-    }
 
-    private void initIndicator(){
-        BingPictureOperator.getInstance().getPictureUrls(4, new OnBingPicturesListener() {
+        viewDataBinding.txtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(List<BingPicture> bingPictureList) {
-                for (BingPicture bingPicture : bingPictureList) {
-                    DefaultSliderView textSliderView = new DefaultSliderView(getContext());
-                    textSliderView
-                            .image(bingPicture.getUrl())
-                            .setScaleType(BaseSliderView.ScaleType.Fit)
-                            .showImageResForEmpty(R.drawable.side_nav_bar)
-                            .showImageResForError(R.drawable.side_nav_bar)
-                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                                @Override
-                                public void onSliderClick(BaseSliderView slider) {
-                                    Log.e(TAG, "slider: " + slider.getUrl());
-                                    ZoomImageViewActivity.open(getActivity(),
-                                            BingPictureOperator.getFullImageUrl(getActivity(), slider.getUrl()));
-                                }
-                            });
-                    textSliderView.getBundle()
-                            .putString("extra", bingPicture.getUrl());
-                    getViewDataBinding().indicatorCircle.addSlider(textSliderView);
-                }
-                getViewDataBinding().indicatorCircle.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-                getViewDataBinding().indicatorCircle.startAutoScroll();
+            public void onClick(View v) {
+                startActivity(new Intent(getHostActivity(), CalendarActivity.class));
             }
+        });
 
+        getViewDataBinding().arcProcess.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(String reason) {
-
+            public void onClick(View v) {
+                Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
+                intent.putExtra("currentIndex", 2);
+                startActivity(intent);
+            }
+        });
+        getViewDataBinding().arcStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
+                intent.putExtra("currentIndex", 0);
+                startActivity(intent);
             }
         });
     }

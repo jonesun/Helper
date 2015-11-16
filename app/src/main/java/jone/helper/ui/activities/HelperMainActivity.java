@@ -16,6 +16,7 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
+import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
+import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.R;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
@@ -52,6 +56,7 @@ import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
+import jone.helper.model.bing.OnBingPicturesListener;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.fragments.HelperMainFragment;
@@ -69,6 +74,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private DialogFragment mMenuDialogFragment;
     private FloatingActionButton fab;
 
+    private InfiniteIndicatorLayout infinite_indicator_layout;
     private NetworkImageView iv_picture;
     private TextView tv_title, tv_copyright;
 
@@ -102,7 +108,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     protected void findViews() {
         fragmentManager = getSupportFragmentManager();
         initViews();
-
+        initIndicator();
 
         MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
@@ -121,8 +127,8 @@ public class HelperMainActivity extends BaseAppCompatActivity
                 R.id.collapsing_toolbar_layout);
         collapsingToolbar.setTitle(getString(R.string.app_name));
         collapsingToolbar.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white)); //设置收缩后Toolbar上字体的颜色
-        collapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent)); //设置还没收缩时状态下字体颜色
-
+        collapsingToolbar.setExpandedTitleColor(getThemeTool().getColorPrimary(HelperMainActivity.this)); //设置还没收缩时状态下字体颜色
+        collapsingToolbar.setExpandedTitleGravity(Gravity.RIGHT);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -167,8 +173,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                             iv_picture.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    ZoomImageViewActivity.open(HelperMainActivity.this,
-                                            BingPictureOperator.getFullImageUrl(HelperMainActivity.this, bingPicture.getUrl()));
+                                    BingPicDetailActivity.open(HelperMainActivity.this, bingPicture);
                                 }
                             });
                             List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
@@ -187,6 +192,46 @@ public class HelperMainActivity extends BaseAppCompatActivity
             }
         });
 
+    }
+
+    private void initIndicator(){
+        infinite_indicator_layout = findView(R.id.infinite_indicator_layout);
+        BingPictureOperator.getInstance().getPictureUrls(4, new OnBingPicturesListener() {
+            @Override
+            public void onSuccess(List<BingPicture> bingPictureList) {
+                for (final BingPicture bingPicture : bingPictureList) {
+                    DefaultSliderView textSliderView = new DefaultSliderView(HelperMainActivity.this);
+                    textSliderView
+                            .image(bingPicture.getUrl())
+                            .setScaleType(BaseSliderView.ScaleType.Fit)
+                            .showImageResForEmpty(R.drawable.side_nav_bar)
+                            .showImageResForError(R.drawable.side_nav_bar)
+                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                                @Override
+                                public void onSliderClick(BaseSliderView slider) {
+                                    Bundle bundle = slider.getBundle();
+                                    if(bundle.containsKey("bingPicture")){
+                                        BingPicDetailActivity.open(HelperMainActivity.this, (BingPicture) bundle.getSerializable("bingPicture"));
+                                    }else {
+                                        ZoomImageViewActivity.open(HelperMainActivity.this,
+                                                BingPictureOperator.getFullImageUrl(HelperMainActivity.this, slider.getUrl()));
+                                    }
+                                }
+                            });
+                    textSliderView.getBundle()
+                            .putString("extra", bingPicture.getUrl());
+                    textSliderView.getBundle().putSerializable("bingPicture", bingPicture);
+                    infinite_indicator_layout.addSlider(textSliderView);
+                }
+                infinite_indicator_layout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+                infinite_indicator_layout.startAutoScroll();
+            }
+
+            @Override
+            public void onError(String reason) {
+
+            }
+        });
     }
 
     public void changeFragment(Fragment targetFragment){

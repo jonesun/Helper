@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -40,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
             tv_copyright = (TextView) findViewById(R.id.tv_copyright);
             BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
                 @Override
-                public void onSuccess(BingPicture bingPicture) {
+                public void onSuccess(final BingPicture bingPicture) {
                     if (bingPicture != null) {
                         String url = bingPicture.getUrl();
                         DisplayMetrics displayMetrics = SystemUtil.getDisplayMetrics(SplashActivity.this);
@@ -53,6 +54,13 @@ public class SplashActivity extends AppCompatActivity {
                             url = bingPicture.getUrl();
                         }
                         iv_picture.setImageUrl(url, VolleyCommon.getImageLoader());
+                        iv_picture.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                BingPicDetailActivity.open(SplashActivity.this, bingPicture);
+                                closePage();
+                            }
+                        });
                         List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
                         if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
                             tv_title.setText(bingPictureMsgs.get(0).getText());

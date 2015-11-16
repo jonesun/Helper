@@ -1,5 +1,6 @@
 package jone.helper.ui.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -11,7 +12,10 @@ import java.util.List;
  */
 public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder, T> extends RecyclerView.Adapter<H> {
     private List<T> dataList = new ArrayList<>();
-
+    private Context context;
+    public BaseRecyclerViewAdapter(Context context){
+        this.context = context;
+    }
     @Override
     public void onBindViewHolder(final H holder, final int position) {
         if (mOnItemClickListener != null) {
@@ -82,6 +86,9 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
         notifyItemRangeChanged(position, getItemCount());
     }
 
+    public List<T> getDataList() {
+        return dataList;
+    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -93,5 +100,9 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

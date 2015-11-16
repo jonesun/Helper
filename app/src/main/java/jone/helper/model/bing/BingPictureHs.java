@@ -1,9 +1,11 @@
 package jone.helper.model.bing;
 
+import java.io.Serializable;
+
 /**
  * Created by jone.sun on 2015/9/21.
  */
-public class BingPictureHs {
+public class BingPictureHs implements Serializable{
     private String desc;
     private String link;
     private String query;

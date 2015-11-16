@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:autoLink="all"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:textIsSelectable="true"/>
 
 </FrameLayout>

@@ -46,6 +46,7 @@
     <string name="title_activity_app_manager">应用管理</string>
     <string name="title_activity_memory_manager">内存管理</string>
     <string name="title_activity_phone_info">设备信息</string>
+    <string name="memory_clean">内存清理</string>
 
     <string name="open">打开</string>
     <string name="close">关闭</string>
@@ -161,7 +162,7 @@
     <string name="pref_title_theme_setting">更换皮肤</string>
 
     <string-array name="pref_theme_setting_list_titles">
-        <item>blue</item>
+        <item>light_blue</item>
         <item>amber</item>
         <item>red</item>
         <item>blue_grey</item>
@@ -176,7 +177,7 @@
         <item>teal</item>
         <item>yellow</item>
         <item>lime</item>
-        <item>light_blue</item>
+        <item>blue</item>
         <item>light_green</item>
         <item>pink</item>
         <item>purple</item>
@@ -206,4 +207,7 @@
     <string name="title_activity_photo_view_fullscreen">PhotoViewFullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="bing_copyright">copyright: %1$s</string>
+    <string name="clean">清理</string>
 </resources>

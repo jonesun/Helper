@@ -20,6 +20,7 @@ import jone.helper.R;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
+import jone.helper.ui.fragments.MemoryCleanFragment;
 
 public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
@@ -37,6 +38,7 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private int currentIndex = 0;
 
     @Override
     protected int getContentView() {
@@ -66,6 +68,11 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        if(getIntent().hasExtra("currentIndex")){
+            currentIndex = getIntent().getIntExtra("currentIndex", 0);
+        }
+        mViewPager.setCurrentItem(currentIndex);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +130,8 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
 //            }
             else if(position == 1){
                 return DeviceInfoFragment.getInstance();
+            } else if(position == 2){
+                return MemoryCleanFragment.newInstance();
             }
             return PlaceholderFragment.newInstance(position + 1);
         }
@@ -130,7 +139,7 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -142,6 +151,8 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
 //                    return getString(R.string.title_activity_memory_manager);
                 case 1:
                     return getString(R.string.title_activity_phone_info);
+                case 2:
+                    return getString(R.string.memory_clean);
             }
             return null;
         }

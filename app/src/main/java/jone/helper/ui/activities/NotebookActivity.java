@@ -44,7 +44,7 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
     protected void initViews() {
         super.initViews();
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
-        adapter = new NotebookRecyclerViewAdapter();
+        adapter = new NotebookRecyclerViewAdapter(NotebookActivity.this);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(mLayoutManager);

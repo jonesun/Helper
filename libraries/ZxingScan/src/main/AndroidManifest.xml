@@ -7,7 +7,7 @@
             android:name=".CaptureActivity"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
     </application>

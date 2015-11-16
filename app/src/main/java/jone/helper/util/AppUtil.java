@@ -462,6 +462,31 @@ public class AppUtil {
         return null;
     }
 
+    public static void killBackgroundProcesses(Activity activity, String processName) {
+        // mIsScanning = true;
+        ActivityManager activityManager = (ActivityManager)
+                activity.getSystemService(Context.ACTIVITY_SERVICE);
+        String packageName = null;
+        try {
+            if (processName.indexOf(":") == -1) {
+                packageName = processName;
+            } else {
+                packageName = processName.split(":")[0];
+            }
+
+            activityManager.killBackgroundProcesses(packageName);
+
+            //
+            Method forceStopPackage = activityManager.getClass()
+                    .getDeclaredMethod("forceStopPackage", String.class);
+            forceStopPackage.setAccessible(true);
+            forceStopPackage.invoke(activityManager, packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * 描述：kill进程.
      *

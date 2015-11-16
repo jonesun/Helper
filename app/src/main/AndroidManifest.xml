@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
 
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+
     <!-- baidu location -->
     <!-- 这个权限用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -75,27 +77,27 @@
         <activity
             android:name=".ui.activities.EditNotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.NotebookActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.AboutActivity"
             android:label="@string/about"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.KuaiDiSearchActivity"
             android:label="@string/title_activity_kuai_di_search"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.JoneAppManagerActivity"
             android:label="@string/title_activity_jone_app_manager"
             android:parentActivityName=".ui.activities.HelperMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.ScrollingActivity"
             android:label="@string/title_activity_scrolling"
@@ -107,7 +109,7 @@
         <activity
             android:name=".ui.activities.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.ZoomImageViewActivity"
             android:screenOrientation="portrait"
@@ -181,7 +183,15 @@
 
         <activity android:name=".ui.activities.TestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.blue"/>
+            android:theme="@style/HelperTheme.light_blue"/>
+
+        <activity android:name=".model.calendar.CalendarActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HelperTheme.light_blue"/>
+
+        <activity android:name=".ui.activities.BingPicDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HelperTheme.light_blue"/>
     </application>
 
 </manifest>

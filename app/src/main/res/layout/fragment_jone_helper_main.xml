@@ -32,23 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="@dimen/card_elevation"
-                app:cardMaxElevation="@dimen/card_max_elevation"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
-                <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
-                    android:id="@+id/indicator_circle"
-                    app:indicator_type="indicator_anim_circle"
-                    android:layout_height="150dp"
-                    android:layout_width="match_parent"/>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/card_elevation"
@@ -80,7 +65,7 @@
                             style="@style/style_content_text_color"
                             android:drawableLeft="@mipmap/icon_search_location"
                             android:padding="8dp"
-                            android:background="@android:color/transparent"/>
+                            android:background="@android:color/transparent" />
 
                         <View
                             android:id="@+id/view_top_line"
@@ -94,8 +79,7 @@
                         android:id="@+id/recyclerViewCalendar"
                         android:layout_height="80dp"
                         android:layout_width="match_parent"
-                        android:scrollbars="none"
-                        android:focusable="false" />
+                        android:scrollbars="none" />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -108,6 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/card_elevation"
@@ -173,6 +159,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="@dimen/card_corner_radius"
                 app:cardElevation="@dimen/card_elevation"
