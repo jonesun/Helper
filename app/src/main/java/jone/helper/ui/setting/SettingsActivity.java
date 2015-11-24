@@ -13,13 +13,16 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 
+import jone.helper.App;
 import jone.helper.R;
 
 import java.util.List;
@@ -61,6 +64,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
+            }
+            Log.e("setting", "key: " + preference.getKey());
+            if(preference.getKey().equals("theme_setting")){
+                LocalBroadcastManager.getInstance(App.getInstance())
+                        .sendBroadcast(new Intent("jone.helper.activity.recreate"));
             }
             return true;
         }

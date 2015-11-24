@@ -1,36 +1,19 @@
 package jone.helper.ui.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import jone.helper.R;
-import jone.helper.databinding.ActivityKuaiDiSearchBinding;
-import jone.helper.databinding.FragmentKuaiDiSearchBinding;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.activities.base.DataBindingBaseAppCompatActivity;
+import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 import jone.helper.ui.fragments.KuaiDiSearchActivityFragment;
-import jone.helper.ui.fragments.base.DataBindingBaseFragment;
 import jone.helper.zxing.scan.CaptureActivity;
 
-public class KuaiDiSearchActivity extends DataBindingBaseAppCompatActivity<ActivityKuaiDiSearchBinding> {
+public class KuaiDiSearchActivity extends BaseAppCompatActivity {
 
     @Override
     protected int getContentView() {
@@ -38,9 +21,8 @@ public class KuaiDiSearchActivity extends DataBindingBaseAppCompatActivity<Activ
     }
 
     @Override
-    protected void initViews() {
-        super.initViews();
-        Toolbar toolbar = getViewDataBinding().toolbar;
+    protected void findViews() {
+        Toolbar toolbar = findView(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

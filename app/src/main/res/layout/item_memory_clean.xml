@@ -7,6 +7,7 @@
     android:layout_marginBottom="2dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +30,6 @@
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
                 android:gravity="center"
                 android:textSize="@dimen/font_normal"
                 android:singleLine="true"

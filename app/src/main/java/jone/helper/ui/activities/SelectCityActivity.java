@@ -40,6 +40,9 @@ public class SelectCityActivity extends ListActivity{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         search_view = (SearchView) findViewById(R.id.search_view);
+        search_view.setIconifiedByDefault(false);
+        search_view.requestFocus();
+        search_view.setFocusable(true);
         search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

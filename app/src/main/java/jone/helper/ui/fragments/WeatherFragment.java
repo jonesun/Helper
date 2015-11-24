@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -21,7 +24,6 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
-import jone.helper.databinding.FragmentWeatherBinding;
 import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.activities.EggsActivity;
@@ -33,7 +35,7 @@ import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.mvp.view.weather.WeatherView;
-import jone.helper.ui.fragments.base.DataBindingBaseFragment;
+import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
@@ -41,10 +43,15 @@ import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 /**
  * Created by jone.sun on 2015/7/2.
  */
-public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity, FragmentWeatherBinding> implements WeatherView {
+public class WeatherFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
     private static final String TAG = WeatherFragment.class.getSimpleName();
     private WeatherAdapter weatherAdapter;
     private Dialog loadingDialog;
+
+    private LinearLayout layout_ad, layout_top;
+    private TextView txt_date, txt_festival;
+    private Button btn_city;
+    private RecyclerView rv_weather;
 
     private WeatherPresenter weatherPresenter;
 
@@ -68,20 +75,25 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
         return R.layout.fragment_weather;
     }
 
-
     @Override
-    public void initViews(FragmentWeatherBinding viewDataBinding) {
-        RecyclerView rvWeather = viewDataBinding.rvWeather;
-        rvWeather.setLayoutManager(new LinearLayoutManager(getHostActivity()));
-        rvWeather.setItemAnimator(new DefaultItemAnimator());
-        rvWeather.setHasFixedSize(true);
+    protected void findViews(View view) {
+        layout_ad = findView(view, R.id.layout_ad);
+        layout_top = findView(view, R.id.layout_top);
+        txt_date = findView(view, R.id.txt_date);
+        txt_festival = findView(view, R.id.txt_festival);
+
+        btn_city = findView(view, R.id.btn_city);
+        rv_weather= findView(view, R.id.rv_weather);
+        rv_weather.setLayoutManager(new LinearLayoutManager(getHostActivity()));
+        rv_weather.setItemAnimator(new DefaultItemAnimator());
+        rv_weather.setHasFixedSize(true);
 
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
-        rvWeather.setAdapter(weatherAdapter);
+        rv_weather.setAdapter(weatherAdapter);
         showDate();
-        JoneBaiduAd.showBDBannerAd(getHostActivity(), viewDataBinding.layoutAd);
+        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         showEggs();
-        viewDataBinding.btnCity.setOnClickListener(new View.OnClickListener() {
+        btn_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
@@ -107,7 +119,7 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
                 }
             });
         }else {
-            viewDataBinding.btnCity.setText("网络连接失败");
+            btn_city.setText("网络连接失败");
         }
     }
 
@@ -126,14 +138,14 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
-            getViewDataBinding().btnCity.setText("网络连接失败");
+            btn_city.setText("网络连接失败");
         }
     }
 
     long[] mHits = new long[3];
     private void showEggs(){
-        if(getViewDataBinding().layoutTop != null){
-            getViewDataBinding().layoutTop.setOnClickListener(new View.OnClickListener() {
+        if(layout_top != null){
+            layout_top.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
@@ -153,18 +165,17 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
     private void showDate(){
         Calendar calendar = Calendar.getInstance();
         FestivalUtil festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
-        getViewDataBinding().txtDate.setText(calendar.get(Calendar.YEAR) + "年" +
+        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
                 (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
         ArrayList<String> fest = festivalUtil.getFestVals();
         StringBuilder festival = new StringBuilder();
         if(fest.size() > 0){
             for(String str:fest){
-                festival.append(str).append("(").append(FestivalUtil.getPinYin(str).trim()).append(")").append(" ");
-                System.out.println(str + "(" + FestivalUtil.getPinYin(str, "_").trim() + ")");
+                festival.append(str).append(" ");
             }
-            getViewDataBinding().txtFestival.setText("今天是: " + festival);
+            txt_festival.setText("今天是: " + festival);
         }else {
-            getViewDataBinding().txtFestival.setText("今天没有节日");
+            txt_festival.setText("今天没有节日");
         }
     }
 
@@ -190,7 +201,7 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
     @Override
     public void showError(String reason) {
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
-        getViewDataBinding().btnCity.setText("网络连接失败");
+        btn_city.setText("网络连接失败");
     }
 
     @Override
@@ -204,8 +215,8 @@ public class WeatherFragment extends DataBindingBaseFragment<HelperMainActivity,
         }
 
         String city = weather.getCurrentCity();
-        if(getViewDataBinding().btnCity != null){
-            getViewDataBinding().btnCity.setText(Html.fromHtml("<u>" + city + "</u>"));
+        if(btn_city != null){
+            btn_city.setText(Html.fromHtml("<u>" + city + "</u>"));
         }
     }
 }

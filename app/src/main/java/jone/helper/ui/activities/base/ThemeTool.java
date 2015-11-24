@@ -1,12 +1,15 @@
 package jone.helper.ui.activities.base;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import jone.helper.App;
 import jone.helper.R;
 import jone.helper.lib.util.SystemBarTintManager;
 
@@ -38,6 +41,7 @@ public class ThemeTool {
     }
 
     public void setPageTheme(Activity activity, Bundle savedInstanceState){
+        boolean night_theme = isThemeNight(activity);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("themeIndex")) {
                 themeIndex = savedInstanceState.getInt("themeIndex");
@@ -53,7 +57,23 @@ public class ThemeTool {
         if(themeIndex < 0 || themeIndex > themeIds.length){
             themeIndex = 0;
         }
-        activity.setTheme(themeIds[themeIndex]);  //设置主题皮肤
+        if(night_theme){
+            activity.setTheme(R.style.HelperTheme_night);
+        }else {
+            activity.setTheme(themeIds[themeIndex]);  //设置主题皮肤
+        }
+    }
+
+    public boolean isThemeNight(Activity activity){
+        return PreferenceManager.getDefaultSharedPreferences(activity)
+                .getBoolean("night_theme", false);
+    }
+
+    public void setThemeNight(Activity activity, boolean night){
+        PreferenceManager
+                .getDefaultSharedPreferences(activity).edit()
+                .putBoolean("night_theme", night).apply();
+        activity.recreate();
     }
 
     public void onTheme(Activity activity, int themeIndex){
@@ -66,6 +86,16 @@ public class ThemeTool {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("themeIndex", themeIndex);
+    }
+
+    public void refreshTheme(Activity activity){
+        try {
+            themeIndex = Integer.parseInt(PreferenceManager
+                    .getDefaultSharedPreferences(activity).getString("theme_setting", "0"));
+        }catch (Exception e){
+            themeIndex = 0;
+        }
+        activity.recreate();
     }
 
     public void setStatusBarView(Activity activity) {

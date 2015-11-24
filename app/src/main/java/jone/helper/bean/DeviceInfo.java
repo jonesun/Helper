@@ -1,14 +1,12 @@
 package jone.helper.bean;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 
-import jone.helper.BR;
+import java.io.Serializable;
 
 /**
  * Created by jone.sun on 2015/10/19.
  */
-public class DeviceInfo extends BaseObservable {
+public class DeviceInfo implements Serializable {
     String name;
     String value;
 
@@ -17,24 +15,19 @@ public class DeviceInfo extends BaseObservable {
         this.value = value;
     }
 
-
-    @Bindable
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-        notifyPropertyChanged(BR.name);
     }
 
-    @Bindable
     public String getValue() {
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
-        notifyPropertyChanged(BR.value);
     }
 }

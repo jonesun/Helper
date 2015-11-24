@@ -21,16 +21,19 @@ import java.util.List;
 import java.util.Map;
 
 import jone.helper.R;
-import jone.helper.databinding.FragmentKuaiDiSearchBinding;
 import jone.helper.ui.activities.KuaiDiSearchActivity;
-import jone.helper.ui.fragments.base.DataBindingBaseFragment;
+import jone.helper.ui.fragments.base.BaseFragment;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDiSearchActivity, FragmentKuaiDiSearchBinding> {
+public class KuaiDiSearchActivityFragment extends BaseFragment<KuaiDiSearchActivity> {
     private String TAG = KuaiDiSearchActivityFragment.class.getSimpleName();
 
+    private Spinner spinner_kuaidi_name;
+    private TextInputLayout text_input_layout;
+    private WebView webView_result;
+    private Button btn_search;
     private ArrayAdapter<String> adapter;
     private List<String> kuaiDiNameList = new ArrayList<>();
 
@@ -42,8 +45,12 @@ public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDi
     }
 
     @Override
-    public void initViews(final FragmentKuaiDiSearchBinding viewDataBinding) {
-        viewDataBinding.webViewResult.getSettings().setJavaScriptEnabled(true);
+    protected void findViews(View view) {
+        spinner_kuaidi_name = findView(view, R.id.spinner_kuaidi_name);
+        text_input_layout = findView(view, R.id.text_input_layout);
+        webView_result = findView(view, R.id.webView_result);
+        btn_search = findView(view, R.id.btn_search);
+        webView_result.getSettings().setJavaScriptEnabled(true);
         Iterator<String> iterator = kuaiDiNameMap.keySet().iterator();
         while (iterator.hasNext()){
             kuaiDiNameList.add(iterator.next());
@@ -51,8 +58,8 @@ public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDi
         adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, kuaiDiNameList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        viewDataBinding.spinnerKuaidiName.setAdapter(adapter);
-        viewDataBinding.spinnerKuaidiName.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+        spinner_kuaidi_name.setAdapter(adapter);
+        spinner_kuaidi_name.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Log.e(TAG, "您选择的是：" + adapter.getItem(arg2));
 //                textInputLayout.getEditText().setText("1600836108601");
@@ -64,17 +71,17 @@ public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDi
                 arg0.setVisibility(View.VISIBLE);
             }
         });
-        viewDataBinding.textInputLayout.setHint("快递单号");
-        viewDataBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
+        text_input_layout.setHint("快递单号");
+        btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                kuaiDiId = viewDataBinding.textInputLayout.getEditText().getText().toString();
+                kuaiDiId = text_input_layout.getEditText().getText().toString();
                 if (TextUtils.isEmpty(kuaiDiId)) {
-                    viewDataBinding.textInputLayout.setError("快递单号不能为空");
+                    text_input_layout.setError("快递单号不能为空");
                 } else {
                     StringBuffer url = new StringBuffer("http://m.kuaidi100.com/index_all.html");
                     url.append("?")
-                            .append("type=").append(kuaiDiNameMap.get(viewDataBinding.spinnerKuaidiName.getSelectedItem().toString()))
+                            .append("type=").append(kuaiDiNameMap.get(spinner_kuaidi_name.getSelectedItem().toString()))
                             .append("&").append("postid=").append(kuaiDiId)
                             .append("#result");
                     Log.e(TAG, "快递查询: " + url.toString());
@@ -82,7 +89,7 @@ public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDi
                         InputMethodManager inputmanger = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
-                    viewDataBinding.webViewResult.loadUrl(url.toString());
+                    webView_result.loadUrl(url.toString());
                 }
 
             }
@@ -92,10 +99,10 @@ public class KuaiDiSearchActivityFragment extends DataBindingBaseFragment<KuaiDi
     }
 
     public void search(String value){
-        getViewDataBinding().textInputLayout.getEditText().setText(value);
-        getViewDataBinding().textInputLayout.getEditText().setSelection(value.length());
+        text_input_layout.getEditText().setText(value);
+        text_input_layout.getEditText().setSelection(value.length());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            getViewDataBinding().btnSearch.callOnClick();
+            btn_search.callOnClick();
         }
     }
 

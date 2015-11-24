@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="@dimen/card_elevation"
     app:cardMaxElevation="@dimen/card_max_elevation"
@@ -33,11 +33,11 @@
                 android:id="@+id/txt_pm25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/style_content_text_color"
                 android:textSize="18sp"
-                android:padding="4dp" />
-                <!--android:shadowRadius="5"-->
-                <!--android:shadowColor="#000000"-->
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                android:shadowRadius="5"
+                android:shadowColor="@android:color/black"/>
 
 
             <TextView
@@ -45,7 +45,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20~30"
-                style="@style/style_content_text_color"
                 android:textSize="22sp"
                 android:padding="4dp"/>
             <TextView
@@ -53,7 +52,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="多云(东风微风)"
-                style="@style/style_content_text_color"
                 android:textSize="18sp"
                 android:padding="4dp"/>
         </LinearLayout>

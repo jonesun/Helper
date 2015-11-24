@@ -13,16 +13,14 @@
             android:id="@+id/tv_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            style="@style/style_content_text_color"/>
+            android:gravity="center" />
         <TextView
             android:id="@+id/tv_calendar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:lineSpacingExtra="2dp"
-            android:gravity="center"
-            style="@style/style_content_text_color"/>
+            android:gravity="center" />
     </LinearLayout>
 
 </RelativeLayout>

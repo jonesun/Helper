@@ -29,7 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/clean"
-        android:textColor="@android:color/white"
         android:background="?attr/colorPrimaryDark"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

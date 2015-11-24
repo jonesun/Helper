@@ -29,16 +29,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="weekName">
-        <item name="android:layout_width">0.0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/dark_grey</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -52,6 +42,8 @@
         <item name="colorAccent">@color/blue_700</item>
         <!--正常状态下字体颜色和icon颜色-->
         <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColor">@color/gray_dark</item>
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
 
     <style name="HelperBaseTheme.Main" parent="HelperBaseTheme">
@@ -192,6 +184,16 @@
         <item name="android:windowBackground">@color/blue_grey_50</item>
     </style>
 
+    <style name="HelperTheme.night" parent="HelperBaseTheme">
+        <item name="colorPrimary">@color/grey_800</item>
+        <item name="colorPrimaryDark">@color/grey_900</item>
+        <item name="colorAccent">@color/grey_900</item>
+        <item name="cardBackgroundColor">@color/cardview_dark_background</item>
+        <item name="android:windowBackground">@color/grey_700</item>
+        <item name="android:textColorPrimary">@color/grey_300</item>
+        <item name="android:textColor">@color/grey_300</item>
+    </style>
+
     <style name="fragment_text">
         <item name="android:textColor">#ffacacac</item>
         <item name="android:textSize">25sp</item>
@@ -207,25 +209,29 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
-    <style name="style_content_text_color">
-        <item name="android:textColor">@drawable/selector_text_color</item>
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <!--<item name="tabMaxWidth">@dimen/tab_max_width</item>-->
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+    <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="textAllCaps">true</item>
     </style>
 
-    <style name="ContentText">
-        <item name="android:textSize">@dimen/font_normal</item>
+    <style name="weekName">
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">16sp</item>
     </style>
-
-    <style name="FullscreenTheme" parent="AppTheme">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
-    </style>
-
-    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/black_overlay</item>
-    </style>
-
 </resources>

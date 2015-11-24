@@ -52,6 +52,9 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     public ThemeTool getThemeTool() {
+        if(themeTool == null){
+            themeTool = ThemeTool.getInstance();
+        }
         return themeTool;
     }
 

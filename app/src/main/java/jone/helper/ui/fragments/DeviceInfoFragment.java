@@ -1,8 +1,6 @@
 package jone.helper.ui.fragments;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,23 +9,20 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.umeng.analytics.MobclickAgent;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jone.helper.BR;
 import jone.helper.R;
 import jone.helper.bean.DeviceInfo;
-import jone.helper.databinding.FragmentDeviceInfoBinding;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.activities.JoneAppManagerActivity;
-import jone.helper.ui.fragments.base.DataBindingBaseFragment;
+import jone.helper.ui.fragments.base.BaseFragment;
 
-public class DeviceInfoFragment extends DataBindingBaseFragment<JoneAppManagerActivity, FragmentDeviceInfoBinding> {
+public class DeviceInfoFragment extends BaseFragment<JoneAppManagerActivity> {
     private static final String TAG = DeviceInfoFragment.class.getSimpleName();
 
     private Map<Integer, String> versionNameMap;
@@ -53,9 +48,8 @@ public class DeviceInfoFragment extends DataBindingBaseFragment<JoneAppManagerAc
     }
 
     @Override
-    public void initViews(FragmentDeviceInfoBinding viewDataBinding) {
-        super.initViews(viewDataBinding);
-        RecyclerView recyclerView = viewDataBinding.recyclerView;
+    protected void findViews(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
 //        switch (flag) {
@@ -168,17 +162,14 @@ public class DeviceInfoFragment extends DataBindingBaseFragment<JoneAppManagerAc
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater
-                    .from(viewGroup.getContext()), R.layout.item_device_info_layout, viewGroup, false);
-            ViewHolder holder = new ViewHolder(binding.getRoot());
-            holder.setBinding(binding);
+            ViewHolder holder = new ViewHolder(LayoutInflater
+                    .from(viewGroup.getContext()).inflate(R.layout.item_device_info_layout, viewGroup, false));
             return holder;
         }
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
-            viewHolder.getBinding().setVariable(BR.deviceInfo, data.get(i));
-            viewHolder.getBinding().executePendingBindings();
+            viewHolder.text.setText(data.get(i).getName() + ":  " + data.get(i).getValue());
         }
 
         @Override
@@ -187,31 +178,13 @@ public class DeviceInfoFragment extends DataBindingBaseFragment<JoneAppManagerAc
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            private ViewDataBinding binding;
+            private TextView text;
 
             public ViewHolder(View itemView) {
                 // super这个参数一定要注意,必须为Item的根节点.否则会出现莫名的FC.
                 super(itemView);
-            }
-
-            public void setBinding(ViewDataBinding binding) {
-                this.binding = binding;
-            }
-
-            public ViewDataBinding getBinding() {
-                return this.binding;
+                text = (TextView) itemView.findViewById(R.id.text);
             }
         }
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(TAG); //统计页面
-    }
-    public void onPause() {
-        super.onPause();
-        MobclickAgent.onPageEnd(TAG);
-    }
-
 }

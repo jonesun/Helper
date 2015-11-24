@@ -40,7 +40,6 @@ import jone.helper.util.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
      private SwipeRefreshLayout swipeRefreshLayout;
      private RecyclerView recyclerView;
      private AppsRecyclerViewAdapter appsRecyclerViewAdapter;
-     private ProgressDialog progressDialog;
 
      private PackageManager packageManager;
      private LoaderManager loaderManager;
@@ -109,8 +108,8 @@ import jone.helper.util.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
         recyclerView.setAdapter(appsRecyclerViewAdapter);
         recyclerView.setLayoutManager(mLayoutManager);
 
-        progressDialog = ProgressDialog.show(getActivity(), "提示", "加载中");
         loaderManager.initLoader(APP_LIST_LOADER, null, appsCallbacks);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
      @Override
@@ -185,10 +184,6 @@ import jone.helper.util.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
          public void onLoadFinished(Loader<List> listLoader, List list) {
              appsRecyclerViewAdapter.setDataList(list);
              swipeRefreshLayout.setRefreshing(false);
-             if(progressDialog != null){
-                 progressDialog.dismiss();
-                 progressDialog = null;
-             }
          }
 
          @Override

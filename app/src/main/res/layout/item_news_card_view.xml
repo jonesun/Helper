@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="@color/cardview_light_background"
+    card_view:cardBackgroundColor="?attr/cardBackgroundColor"
     card_view:cardCornerRadius="5dp" >
 
     <RelativeLayout

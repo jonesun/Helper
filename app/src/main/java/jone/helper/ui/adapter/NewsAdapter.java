@@ -164,9 +164,9 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 //            String festival = "";
             if(fest.size() > 0){
                 for(String str:fest){
-                    festival.append(str + "(" + FestivalUtil.getPinYin(str).trim() + ")" +" ");
+                    festival.append(str);
 //                    festival += str + " ";
-                    System.out.println(str + "(" + FestivalUtil.getPinYin(str, "_").trim() + ")");
+                    System.out.println(str);
                 }
                 txt_festival.setText("今天是: " + festival);
             }else {

@@ -69,7 +69,7 @@
             android:theme="@android:style/Theme.Holo.Light" />
         <activity
             android:name=".ui.activities.SelectCityActivity"
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.HeartRateMonitorActivity"
             android:configChanges="keyboardHidden|orientation"

@@ -53,4 +53,5 @@ public class Constants {
     public static final String KEY_NEWS = "news";
 
     public static final String WPSJ_ID = "8cda8e14e15162ebbf69e41fd1562602";//万普世纪
+    public static final String TAG_SP_USER = "sp_user";
 }

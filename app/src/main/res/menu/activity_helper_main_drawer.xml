@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_menu_item_home"
-            android:icon="@mipmap/menu_item_home"
-            android:title="@string/menu_item_home" />
-        <item android:id="@+id/nav_menu_item_weather"
-            android:icon="@mipmap/menu_item_weather"
-            android:title="@string/menu_item_weather" />
+    <group android:checkableBehavior="none">
+        <!--<item android:id="@+id/nav_menu_item_home"-->
+            <!--android:icon="@mipmap/menu_item_home"-->
+            <!--android:title="@string/menu_item_home" />-->
+        <!--<item android:id="@+id/nav_menu_item_weather"-->
+            <!--android:icon="@mipmap/menu_item_weather"-->
+            <!--android:title="@string/menu_item_weather" />-->
         <item android:id="@+id/nav_menu_item_note"
             android:icon="@mipmap/menu_item_note"
             android:title="@string/menu_item_note" />
@@ -17,9 +18,20 @@
         <item android:id="@+id/nav_menu_item_logistics"
             android:icon="@mipmap/menu_item_logistics"
             android:title="@string/menu_item_logistics" />
+    </group>
+
+    <group
+        android:id="@+id/second"
+        android:checkableBehavior="none">
         <item android:id="@+id/nav_menu_item_theme"
             android:icon="@mipmap/menu_item_recommend"
             android:title="@string/menu_item_theme"/>
+        <item
+            android:id="@+id/night_model"
+            android:title="@string/night_model"
+            android:icon="@mipmap/menu_item_home"
+            app:actionLayout="@layout/menu_switch"
+            app:showAsAction="always" />
     </group>
 
     <item android:title="Other">

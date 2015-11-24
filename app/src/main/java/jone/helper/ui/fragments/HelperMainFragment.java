@@ -4,8 +4,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,14 +30,9 @@ import jone.helper.App;
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
 import jone.helper.bean.HomeMainCalendarBean;
-import jone.helper.databinding.FragmentJoneHelperMainBinding;
-import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.BaiduLocationTool;
 import jone.helper.model.MemoryStoreProgressTool;
-import jone.helper.model.bing.BingPicture;
-import jone.helper.model.bing.BingPictureOperator;
-import jone.helper.model.bing.OnBingPicturesListener;
 import jone.helper.model.calendar.CalendarActivity;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
@@ -44,12 +40,12 @@ import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.ui.activities.JoneAppManagerActivity;
-import jone.helper.ui.activities.ZoomImageViewActivity;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.ui.adapter.MainCalendarAdapter;
-import jone.helper.ui.fragments.base.DataBindingBaseFragment;
+import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.mvp.view.weather.WeatherView;
+import jone.helper.ui.widget.circleprogress.ArcProgress;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.util.WeatherUtil;
@@ -57,12 +53,15 @@ import jone.helper.util.WeatherUtil;
 /**
  * Created by jone.sun on 2015/8/17.
  */
-public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivity, FragmentJoneHelperMainBinding> implements WeatherView {
+public class HelperMainFragment extends BaseFragment<HelperMainActivity> implements WeatherView {
     private static final String TAG = HelperMainFragment.class.getSimpleName();
     private ViewGroup layout_weather;
     private LinearLayout layout_ad;
-    private TextView txt_calendar, txt_pm25, txt_weather_temperature, txt_weather_weather;
+    private TextView txt_calendar, txt_pm25, txt_weather_temperature,
+            txt_weather_weather, txt_weather_index, txt_capacity;
     private Button btn_city;
+    private RecyclerView recyclerViewCalendar;
+    private ArcProgress arc_store, arc_process;
     private ImageView image_weather;
     public static final int resultCode = 10001;
 
@@ -102,11 +101,14 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
         layout_weather = findView(view, R.id.layout_weather);
 
         layout_ad = findView(view, R.id.layout_ad);
-    }
+        recyclerViewCalendar = findView(view, R.id.recyclerViewCalendar);
 
-    @Override
-    public void initViews(FragmentJoneHelperMainBinding viewDataBinding) {
-        findViews(viewDataBinding.getRoot());
+        arc_store = findView(view, R.id.arc_store);
+        arc_process = findView(view, R.id.arc_process);
+        txt_capacity = findView(view, R.id.txt_capacity);
+
+        txt_weather_index = findView(view, R.id.txt_weather_index);
+
         DateInfo dateInfo = getDateInfo();
         txt_calendar.setText(dateInfo.getDataStr());
         MainCalendarAdapter mainCalendarAdapter = new MainCalendarAdapter(getHostActivity());
@@ -121,10 +123,10 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
             homeMainCalendarBeanList.add(homeMainCalendarBean);
         }
         mainCalendarAdapter.setDataList(homeMainCalendarBeanList);
-        viewDataBinding.recyclerViewCalendar.setAdapter(mainCalendarAdapter);
+        recyclerViewCalendar.setAdapter(mainCalendarAdapter);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        viewDataBinding.recyclerViewCalendar.setLayoutManager(mLayoutManager);
-        viewDataBinding.recyclerViewCalendar.setFocusableInTouchMode(false);
+        recyclerViewCalendar.setLayoutManager(mLayoutManager);
+        recyclerViewCalendar.setFocusableInTouchMode(false);
 //        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         weatherPresenter = new BaiduWeatherPresenter(this);
         loadingDialog = new ProgressDialog(getHostActivity());
@@ -136,7 +138,13 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
             getLocation();
         }else {
             layout_weather.setVisibility(View.GONE);
-            viewDataBinding.txtWeatherIndex.setText("网络连接失败");
+            txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
+            txt_weather_index.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+                }
+            });
         }
         image_weather.setOnClickListener(gotoWeatherFragmentListener);
         txt_pm25.setOnClickListener(gotoWeatherFragmentListener);
@@ -149,14 +157,14 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
             }
         });
 
-        viewDataBinding.txtCalendar.setOnClickListener(new View.OnClickListener() {
+        txt_calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getHostActivity(), CalendarActivity.class));
             }
         });
 
-        getViewDataBinding().arcProcess.setOnClickListener(new View.OnClickListener() {
+        arc_process.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
@@ -164,7 +172,7 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
                 startActivity(intent);
             }
         });
-        getViewDataBinding().arcStore.setOnClickListener(new View.OnClickListener() {
+        arc_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
@@ -224,7 +232,13 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
     @Override
     public void showError(String reason) {
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
-        getViewDataBinding().txtWeatherIndex.setText("网络连接失败");
+        txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
+        txt_weather_index.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+            }
+        });
         layout_weather.setVisibility(View.GONE);
     }
 
@@ -262,7 +276,8 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
                         .append("\r\n");
             }
         }
-        getViewDataBinding().txtWeatherIndex.setText(weatherStringBuilder.toString());
+        txt_weather_index.setText(weatherStringBuilder.toString());
+        txt_weather_index.setOnClickListener(null);
     }
 
     private void getWeatherByCity(String city){
@@ -272,7 +287,13 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
-            getViewDataBinding().txtWeatherIndex.setText("网络连接失败");
+            txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
+            txt_weather_index.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+                }
+            });
             layout_weather.setVisibility(View.GONE);
         }
     }
@@ -281,8 +302,8 @@ public class HelperMainFragment extends DataBindingBaseFragment<HelperMainActivi
     public void onResume() {
         super.onResume();
         if(memoryStoreProgressTool != null){
-            memoryStoreProgressTool.showMemoryProgress(getHostActivity(), getViewDataBinding().arcProcess);
-            memoryStoreProgressTool.showStoreProgress(getHostActivity(), getViewDataBinding().arcStore, getViewDataBinding().txtCapacity);
+            memoryStoreProgressTool.showMemoryProgress(getHostActivity(), arc_process);
+            memoryStoreProgressTool.showStoreProgress(getHostActivity(), arc_store, txt_capacity);
         }
     }
 

@@ -68,7 +68,7 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
+//        tabLayout.setTabMode(TabLayout.MODE_FIXED); TabLayout.MODE_SCROLLABLE
         if(getIntent().hasExtra("currentIndex")){
             currentIndex = getIntent().getIntExtra("currentIndex", 0);
         }
