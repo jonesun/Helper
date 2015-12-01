@@ -1,12 +1,19 @@
 package jone.helper.ui.activities;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -66,6 +73,7 @@ import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.model.bing.OnBingPicturesListener;
+import jone.helper.services.MessengerService;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.dialog.ChooseThemeDialogFragment;
@@ -91,6 +99,14 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private boolean isCurrentPageFirst;
 
     private LocalBroadcastManager localBroadcastManager;
+    private Messenger messenger, reply;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Log.e(TAG, "回调成功" + msg.what);
+        }
+    };
     @Override
     protected int getContentView() {
         return R.layout.activity_helper_main;
@@ -111,6 +127,39 @@ public class HelperMainActivity extends BaseAppCompatActivity
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("jone.helper.activity.recreate");
         localBroadcastManager.registerReceiver(broadcastReceiver, intentFilter);
+        reply = new Messenger(handler);
+        Intent intent = new Intent();
+        intent.setClassName(getPackageName(), MessengerService.class.getCanonicalName());
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            App.showToast("bind success");
+            Log.e(TAG, name.toString() + "onServiceConnected");
+            messenger = new Messenger(service);
+            sendMessage();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.e(TAG, name.toString() + "onServiceDisconnected");
+        }
+    };
+
+    public void sendMessage(){
+        Message message = Message.obtain(null, 1);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", "我是" + TAG);
+        message.setData(bundle);
+        // 设置回调用的Messenger
+        message.replyTo = reply;
+        try {
+            messenger.send(message);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -482,5 +531,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
         if(localBroadcastManager != null && broadcastReceiver != null){
             localBroadcastManager.unregisterReceiver(broadcastReceiver);
         }
+        unbindService(serviceConnection);
     }
 }

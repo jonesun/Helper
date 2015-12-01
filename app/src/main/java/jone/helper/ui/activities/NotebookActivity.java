@@ -93,7 +93,8 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
 
     private void initToolbar() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView mToolBarTextView = (TextView) findViewById(R.id.text_view_toolbar_title);
+        TextView tv_title = (TextView) findViewById(R.id.tv_title);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -104,7 +105,7 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
                 onBackPressed();
             }
         });
-        mToolBarTextView.setText(getString(R.string.menu_item_note));
+        tv_title.setText(getString(R.string.menu_item_note));
     }
 
     @Override
@@ -119,7 +120,6 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
         switch (item.getItemId()) {
             case R.id.item_add:
                 startActivity(new Intent(NotebookActivity.this, EditNotebookActivity.class));
-                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

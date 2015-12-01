@@ -62,19 +62,19 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
 
     private void initToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView mToolBarTextView = (TextView) findViewById(R.id.text_view_toolbar_title);
+        TextView tv_title = (TextView) findViewById(R.id.tv_title);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        mToolbar.setNavigationIcon(R.mipmap.ic_menu_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        mToolBarTextView.setText("便签");
+        tv_title.setText("便签");
     }
 
     @Override

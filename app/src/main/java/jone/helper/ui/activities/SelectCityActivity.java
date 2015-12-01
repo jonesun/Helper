@@ -67,6 +67,7 @@ public class SelectCityActivity extends ListActivity{
 
         });
         search_view.setSubmitButtonEnabled(true);
+        getListView().setFastScrollEnabled(true);
         setData();
     }
 
