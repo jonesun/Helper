@@ -93,8 +93,9 @@ public class MemoryCleanFragment extends BaseFragment<JoneAppManagerActivity> im
                     }
                 }
                 progress_bar.setVisibility(View.GONE);
-                loaderManager.restartLoader(APP_LIST_LOADER, null, appsCallbacks);
-                App.showToast("清理完成");
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isClean", true);
+                loaderManager.restartLoader(APP_LIST_LOADER, bundle, appsCallbacks);
             }
         });
     }
@@ -113,9 +114,14 @@ public class MemoryCleanFragment extends BaseFragment<JoneAppManagerActivity> im
     }
 
     private LoaderManager.LoaderCallbacks<List> appsCallbacks = new LoaderManager.LoaderCallbacks<List>() {
-
+        private boolean isClean;
         @Override
         public Loader<List> onCreateLoader(int i, final Bundle bundle) {
+            if(bundle != null && bundle.containsKey("isClean")){
+                isClean = bundle.getBoolean("isClean");
+            }else {
+                isClean = false;
+            }
             progress_bar.setVisibility(View.VISIBLE);
             return new CustomV4ListAsyncTaskLoader(getActivity(), new CustomV4ListAsyncTaskLoader.LoadListener() {
                 @Override
@@ -127,6 +133,9 @@ public class MemoryCleanFragment extends BaseFragment<JoneAppManagerActivity> im
 
         @Override
         public void onLoadFinished(Loader<List> listLoader, List list) {
+            if(isClean){
+                App.showToast("清理完成");
+            }
             myAdapter.setDataList(list);
             swipeRefreshLayout.setRefreshing(false);
             progress_bar.setVisibility(View.GONE);

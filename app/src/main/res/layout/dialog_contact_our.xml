@@ -8,12 +8,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="QQ: 761612741"
-        android:textSize="20dp"/>
+        android:textSize="@dimen/font_large"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="新浪微博: http://weibo.com/sunr7"
-        android:textSize="20dp"
+        android:textSize="@dimen/font_large"
         android:autoLink="all"/>
     <ImageButton
         android:layout_width="wrap_content"

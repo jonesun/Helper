@@ -107,6 +107,27 @@ public class SystemUtil {
         }
         return false;
     }
+    private static boolean wifiConnected = false;
+    // Whether there is a mobile connection.
+    private static boolean mobileConnected = false;
+    private static void checkNetworkConnection(Context context) {
+
+        ConnectivityManager connMgr =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+        if (activeInfo != null && activeInfo.isConnected()) {
+            wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
+            mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+            if(wifiConnected) {
+//                Log.i(TAG, getString(R.string.wifi_connection));
+            } else if (mobileConnected){
+//                Log.i(TAG, getString(R.string.mobile_connection));
+            }
+        } else {
+//            Log.i(TAG, getString(R.string.no_wifi_or_mobile));
+        }
+
+    }
 
     public static void uninstallAPK(Context context, String packageName){
         Uri uri = Uri.parse("package:" + packageName);

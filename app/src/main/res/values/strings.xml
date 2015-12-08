@@ -211,4 +211,6 @@
     <string name="bing_copyright">copyright: %1$s</string>
     <string name="clean">清理</string>
     <string name="night_model">夜间模式</string>
+
+    <string name="qr_scan_tips">将二维码/条码放入框内，即可自动扫描</string>
 </resources>

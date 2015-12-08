@@ -195,6 +195,15 @@
         <activity android:name=".ui.activities.BingPicDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HelperTheme.light_blue"/>
+
+        <activity
+            android:name=".zxing.activity.CaptureActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
     </application>
 
 </manifest>

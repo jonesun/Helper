@@ -2,20 +2,16 @@ package jone.helper.lib.model.net;
 
 import android.content.Context;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.AuthFailureError;
+import com.android.volley.toolbox.StringRequest;
 
 import java.util.Map;
-
-import jone.helper.lib.volley.VolleyCommon;
-import jone.helper.lib.volley.VolleyErrorHelper;
-
 
 /**
  * @author jone.sun on 2015/3/24.
  */
-public class NetStringOperator implements NetOperator<Map<String, String>, String> {
-    private VolleyCommon volleyCommon;
+public class NetStringOperator extends NetBaseOperator<Map<String, String>, String>{
+    private static final String TAG = NetStringOperator.class.getSimpleName();
     private static NetStringOperator instance;
     public static NetStringOperator getInstance(Context context){
         if(instance == null){
@@ -23,34 +19,45 @@ public class NetStringOperator implements NetOperator<Map<String, String>, Strin
         }
         return instance;
     }
-    private NetStringOperator(Context context){
-        volleyCommon = VolleyCommon.getInstance(context);
+    public NetStringOperator(Context context){
+        super(context);
     }
 
-    private NetStringOperator(){}
+    private NetStringOperator(){
+        super();
+    }
 
     @Override
-    public void request(int method, String url, Map<String, String> params,
-                           final NetResponseCallback<String> responseCallback) {
-        volleyCommon.requestString(method,
-                url,
-                params,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(responseCallback != null){
-                            responseCallback.onSuccess(response);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //todo 先把VolleyError转换成String
-                        if(responseCallback != null){
-                            responseCallback.onFailure(VolleyErrorHelper.getMessage(error));
-                        }
-                    }
-                });
+    public void request(String url, NetResponseCallback<String> responseCallback) {
+        addToRequest(new StringRequest(url,
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
+    }
+
+    @Override
+    public void request(String url, final Map<String, String> params, NetResponseCallback<String> responseCallback) {
+        addToRequest(new StringRequest(url,
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        }, TAG);
+    }
+
+    @Override
+    public void request(int method, String url, final Map<String, String> params,
+                           NetResponseCallback<String> responseCallback) {
+        addToRequest(new StringRequest(method, url,
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        }, TAG);
+    }
+
+    @Override
+    public void cancelAll() {
+        cancelAll(TAG);
     }
 }

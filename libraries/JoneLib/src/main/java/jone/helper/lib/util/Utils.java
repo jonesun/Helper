@@ -20,6 +20,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2014/12/24.
@@ -138,5 +140,12 @@ public class Utils {
         if(!var3) {
             throw new SecurityException("Permission Denial: requires permission " + permission);
         }
+    }
+
+    public static ExecutorService newFixedThreadPool(){
+        // 获取当前系统的CPU数目
+        int cpuNums = Runtime.getRuntime().availableProcessors();
+        //根据系统资源情况灵活定义线程池大小
+        return Executors.newFixedThreadPool(cpuNums + 1);
     }
 }

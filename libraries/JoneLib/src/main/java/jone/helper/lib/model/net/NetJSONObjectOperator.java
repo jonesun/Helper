@@ -2,19 +2,15 @@ package jone.helper.lib.model.net;
 
 import android.content.Context;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
-
-import jone.helper.lib.volley.VolleyCommon;
-import jone.helper.lib.volley.VolleyErrorHelper;
 
 /**
  * @author jone.sun on 2015/3/24.
  */
-public class NetJSONObjectOperator implements NetOperator<JSONObject, JSONObject> {
-    private VolleyCommon volleyCommon;
+public class NetJSONObjectOperator extends NetBaseOperator<JSONObject, JSONObject> {
+    private static final String TAG = NetJSONObjectOperator.class.getSimpleName();
     private static NetJSONObjectOperator instance;
     public static NetJSONObjectOperator getInstance(Context context){
         if(instance == null){
@@ -23,32 +19,39 @@ public class NetJSONObjectOperator implements NetOperator<JSONObject, JSONObject
         return instance;
     }
     private NetJSONObjectOperator(Context context){
-        volleyCommon = VolleyCommon.getInstance(context);
+        super(context);
     }
-    private NetJSONObjectOperator(){}
+
+    private NetJSONObjectOperator(){
+        super();
+    }
+
+    @Override
+    public void request(String url, NetResponseCallback<JSONObject> responseCallback) {
+        addToRequest(new JsonObjectRequest(url,
+                null,
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
+    }
+
+    @Override
+    public void request(String url, JSONObject params, NetResponseCallback<JSONObject> responseCallback) {
+        addToRequest(new JsonObjectRequest(url,
+                params,
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
+    }
 
     @Override
     public void request(int method, String url, JSONObject params,
                         final NetResponseCallback<JSONObject> responseCallback) {
-        volleyCommon.requestJsonObject(method,
+        addToRequest(new JsonObjectRequest(method,
                 url,
                 params,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        if(responseCallback != null){
-                            responseCallback.onSuccess(response);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //todo 先把VolleyError转换成String
-                        if(responseCallback != null){
-                            responseCallback.onFailure(VolleyErrorHelper.getMessage(error));
-                        }
-                    }
-                });
+                getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
     }
+
+    @Override
+    public void cancelAll() {
+        cancelAll(TAG);
+    }
+
 }

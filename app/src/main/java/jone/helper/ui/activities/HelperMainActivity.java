@@ -136,7 +136,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            App.showToast("bind success");
+//            App.showToast("bind success");
             Log.e(TAG, name.toString() + "onServiceConnected");
             messenger = new Messenger(service);
             sendMessage();
@@ -490,7 +490,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
 
     @Override
     public void onMenuItemClick(View clickedView, int position) {
-        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
         switch (position){
             case 0:
                 UmengUtil.event_click_camera(HelperMainActivity.this);

@@ -353,28 +353,4 @@ public class WeatherUtil {
         }
 
     }
-
-    public static int getPm25BgResId(String pm25){
-        try{
-            int p = Integer.parseInt(pm25);
-            if(p >= 0 && p <= 35){
-                return R.drawable.bg_weather_pm25_0;
-            }else if(p > 35 && p <= 75){
-                return R.drawable.bg_weather_pm25_1;
-            }else if( p > 75 && p <= 115){
-                return R.drawable.bg_weather_pm25_2;
-            }else if( p > 115 && p <= 150){
-                return R.drawable.bg_weather_pm25_3;
-            }else if( p > 150 && p <= 250){
-                return R.drawable.bg_weather_pm25_4;
-            }else if( p > 250){
-                return R.drawable.bg_weather_pm25_5;
-            }else {
-                return R.drawable.bg_weather_pm25_0;
-            }
-        }catch (Exception e){
-            return R.drawable.bg_weather_pm25_0;
-        }
-
-    }
 }

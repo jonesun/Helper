@@ -29,6 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/clean"
-        android:background="?attr/colorPrimaryDark"
+        android:textColor="@color/text_btn_selector"
+        android:background="@drawable/bg_btn_selector"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -1,6 +1,9 @@
 package jone.helper.lib.util;
 
+import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
@@ -56,5 +59,14 @@ public class BitmapUtil {
         return finalReflection;
     }
 
-
+    /**
+     * 从资源中取出Bitmap
+     * @param activity
+     * @param resId
+     * @return
+     */
+    public static Bitmap getBitmapFromResources(Activity activity, int resId) {
+        Resources res = activity.getResources();
+        return BitmapFactory.decodeResource(res, resId);
+    }
 }

@@ -65,12 +65,18 @@
                         android:padding="8dp"
                         android:background="@android:color/transparent" />
 
-                    <View
-                        android:id="@+id/view_top_line"
+                    <!--<View-->
+                        <!--android:id="@+id/view_top_line"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="1dp"-->
+                        <!--android:background="#20000000"-->
+                        <!--android:layout_margin="2dp"-->
+                        <!--android:layout_below="@+id/txt_calendar"/>-->
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#20000000"
-                        android:layout_margin="2dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_line_solid"
                         android:layout_below="@+id/txt_calendar"/>
                 </RelativeLayout>
                 <android.support.v7.widget.RecyclerView

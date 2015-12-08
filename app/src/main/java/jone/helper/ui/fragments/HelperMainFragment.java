@@ -72,12 +72,14 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     private WeatherPresenter weatherPresenter;
 
     private static HelperMainFragment instance = null;
-    public static HelperMainFragment getInstance(){
-        if(instance == null){
+
+    public static HelperMainFragment getInstance() {
+        if (instance == null) {
             instance = new HelperMainFragment();
         }
         return instance;
     }
+
     public HelperMainFragment() {
     }
 
@@ -113,11 +115,11 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         txt_calendar.setText(dateInfo.getDataStr());
         MainCalendarAdapter mainCalendarAdapter = new MainCalendarAdapter(getHostActivity());
         List<HomeMainCalendarBean> homeMainCalendarBeanList = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
+        for (int i = 0; i < 7; i++) {
             HomeMainCalendarBean homeMainCalendarBean = new HomeMainCalendarBean();
             homeMainCalendarBean.setLabel(FestivalUtil.getWeekDay(i));
             homeMainCalendarBean.setCalendar(dateInfo.getCalendars()[i]);
-            if(dateInfo.getTodayIndex() == i){
+            if (dateInfo.getTodayIndex() == i) {
                 homeMainCalendarBean.setIsToday(true);
             }
             homeMainCalendarBeanList.add(homeMainCalendarBean);
@@ -133,10 +135,10 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         loadingDialog.setTitle("加载天气中...");
         baiduLocationTool = new BaiduLocationTool();
         memoryStoreProgressTool = new MemoryStoreProgressTool();
-        if(Utils.isNetworkAlive(getHostActivity())){
+        if (Utils.isNetworkAlive(getHostActivity())) {
             // 定位初始化
             getLocation();
-        }else {
+        } else {
             layout_weather.setVisibility(View.GONE);
             txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
             txt_weather_index.setOnClickListener(new View.OnClickListener() {
@@ -185,7 +187,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == getHostActivity().RESULT_OK){
+        if (resultCode == getHostActivity().RESULT_OK) {
             String result = data.getExtras().getString("result");
             getWeatherByCity(result);
         }
@@ -198,7 +200,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         }
     };
 
-    private void getLocation(){
+    private void getLocation() {
         baiduLocationTool.getLocation(getHostActivity(), new BDLocationListener() {
 
             @Override
@@ -246,14 +248,15 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     public void setWeatherInfo(Weather weather) {
         List<WeatherData> weatherDataList = weather.getWeather_data();
         txt_pm25.setText(weather.getPm25() + " " + WeatherUtil.getPm25String(weather.getPm25()));
-        txt_pm25.setBackgroundResource(WeatherUtil.getPm25BgResId(weather.getPm25()));
-        if(weatherDataList != null && weatherDataList.size() > 0){
+        txt_pm25.setBackgroundResource(R.drawable.bg_weather_pm25);
+        txt_pm25.getBackground().setLevel(Integer.parseInt(weather.getPm25()));
+        if (weatherDataList != null && weatherDataList.size() > 0) {
             WeatherData todayWeatherData = weatherDataList.get(0);
             Calendar calendar = Calendar.getInstance();
             String weekDay = FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1);
-            if(!todayWeatherData.getDate().contains(weekDay)){
-                for(WeatherData weatherData : weatherDataList){
-                    if(weatherData.getDate().contains(weekDay)){
+            if (!todayWeatherData.getDate().contains(weekDay)) {
+                for (WeatherData weatherData : weatherDataList) {
+                    if (weatherData.getDate().contains(weekDay)) {
                         todayWeatherData = weatherData;
                         break;
                     }
@@ -267,8 +270,8 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         }
         StringBuilder weatherStringBuilder = new StringBuilder();
         List<WeatherIndex> weatherIndexList = weather.getIndex();
-        if(weatherIndexList != null && weatherIndexList.size() > 0){
-            for(WeatherIndex weatherIndex : weatherIndexList){
+        if (weatherIndexList != null && weatherIndexList.size() > 0) {
+            for (WeatherIndex weatherIndex : weatherIndexList) {
                 weatherStringBuilder.append("\r\n")
                         .append(weatherIndex.getTitle())
                         .append("(").append(weatherIndex.getZs()).append(")").append(": ")
@@ -280,13 +283,13 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         txt_weather_index.setOnClickListener(null);
     }
 
-    private void getWeatherByCity(String city){
+    private void getWeatherByCity(String city) {
         btn_city.setText(" " + city);
-        if(Utils.isNetworkAlive(getHostActivity())){
-            if(weatherPresenter != null){
+        if (Utils.isNetworkAlive(getHostActivity())) {
+            if (weatherPresenter != null) {
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
-        }else {
+        } else {
             txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
             txt_weather_index.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -301,7 +304,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     @Override
     public void onResume() {
         super.onResume();
-        if(memoryStoreProgressTool != null){
+        if (memoryStoreProgressTool != null) {
             memoryStoreProgressTool.showMemoryProgress(getHostActivity(), arc_process);
             memoryStoreProgressTool.showStoreProgress(getHostActivity(), arc_store, txt_capacity);
         }
@@ -313,12 +316,12 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         if (baiduLocationTool != null) {
             baiduLocationTool.close();
         }
-        if(memoryStoreProgressTool != null){
+        if (memoryStoreProgressTool != null) {
             memoryStoreProgressTool.close();
         }
     }
 
-    private DateInfo getDateInfo(){
+    private DateInfo getDateInfo() {
         DateInfo dateInfo = new DateInfo();
         StringBuilder stringBuilder = new StringBuilder();
         Calendar calendar = Calendar.getInstance();
@@ -330,32 +333,32 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
                 .append("\r\n")
                 .append("农历:").append(festivalUtil.getChineseDate()).append(" ");
         ArrayList<String> fest = festivalUtil.getFestVals();
-        if(fest.size() > 0){
+        if (fest.size() > 0) {
             stringBuilder.append("今天是: ");
-            for(String str:fest){
+            for (String str : fest) {
                 stringBuilder.append(str).append(" ");
             }
-        }else {
+        } else {
             stringBuilder.append("今天没有节日");
         }
         dateInfo.setDataStr(stringBuilder.toString());
         String[] calendars = new String[7];
         int week = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if(week >= 0 && week < calendars.length){
+        if (week >= 0 && week < calendars.length) {
             calendars[week] = calendar.get(Calendar.DAY_OF_MONTH) + "\r\n"
                     + festivalUtil.getChinaDayString();
             dateInfo.setTodayIndex(week);
             int leftWeek = week - 1;
             Calendar leftCalendar = Calendar.getInstance();
-            while (leftWeek >= 0){
+            while (leftWeek >= 0) {
                 leftCalendar.set(Calendar.DATE, leftCalendar.get(Calendar.DATE) - 1);
                 calendars[leftWeek] = (leftCalendar.get(Calendar.DAY_OF_MONTH)) + "\r\n"
                         + new FestivalUtil(leftCalendar.get(Calendar.YEAR), (leftCalendar.get(Calendar.MONTH) + 1), leftCalendar.get(Calendar.DAY_OF_MONTH)).getChinaDayString();
-                leftWeek --;
+                leftWeek--;
             }
             Calendar rightCalendar = Calendar.getInstance();
             int rightWeek = week + 1;
-            while (rightWeek < calendars.length){
+            while (rightWeek < calendars.length) {
                 rightCalendar.set(Calendar.DATE, rightCalendar.get(Calendar.DATE) + 1);
                 calendars[rightWeek] = (rightCalendar.get(Calendar.DAY_OF_MONTH)) + "\r\n"
                         + new FestivalUtil(rightCalendar.get(Calendar.YEAR), (rightCalendar.get(Calendar.MONTH) + 1), rightCalendar.get(Calendar.DAY_OF_MONTH)).getChinaDayString();
