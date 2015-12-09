@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.model.net.NetJSONObjectOperator;
 import jone.helper.lib.model.net.NetOperator;
 import jone.helper.lib.model.net.NetStringOperator;
@@ -49,6 +51,9 @@ public class App extends Application {
         }
 
     };
+    private static int DISK_IMAGE_CACHE_SIZE = 1024*1024*10;
+    private static Bitmap.CompressFormat DISK_IMAGE_CACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
+    private static int DISK_IMAGE_CACHE_QUALITY = 100;  //PNG is lossless so quality is ignored but must be provided
     private static NetOperator<Map<String, String>, String> netStringOperator;
     private static NetOperator<JSONObject, JSONObject> netJsonOperator;
     public static App getInstance() {
@@ -59,6 +64,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        createImageCache();
         netStringOperator = NetStringOperator.getInstance(this);
         netJsonOperator = NetJSONObjectOperator.getInstance(this);
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
@@ -99,6 +105,18 @@ public class App extends Application {
                 Log.d(TAG, "onActivityDestroyed: " + activity.getComponentName());
             }
         });
+    }
+
+    /**
+     * Create the image cache. Uses Memory Cache by default. Change to Disk for a Disk based LRU implementation.
+     */
+    private void createImageCache(){
+        ImageCacheManager.getInstance().init(this,
+                this.getPackageCodePath()
+                , DISK_IMAGE_CACHE_SIZE
+                , DISK_IMAGE_CACHE_COMPRESS_FORMAT
+                , DISK_IMAGE_CACHE_QUALITY
+                , ImageCacheManager.CacheType.MEMORY);
     }
 
     private void initAppInfo(){

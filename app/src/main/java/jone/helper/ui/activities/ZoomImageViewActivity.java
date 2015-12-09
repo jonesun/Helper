@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
 import jone.helper.R;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.widget.zoom.Info;
 import jone.helper.ui.widget.zoom.PhotoView;
@@ -35,7 +36,7 @@ public class ZoomImageViewActivity extends Activity {
         progress_bar = (ProgressBar) findViewById(R.id.progress_bar);
 //        ImageLoader.ImageListener listener = ImageLoader.getImageListener(photo_view,
 //                R.mipmap.bg02, R.mipmap.bg02);
-        VolleyCommon.getImageLoader().get(imageUrl, new ImageLoader.ImageListener() {
+        ImageCacheManager.getInstance().getImageLoader().get(imageUrl, new ImageLoader.ImageListener() {
             @Override
             public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                 if (response.getBitmap() != null) {

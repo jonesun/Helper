@@ -10,10 +10,12 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.List;
 
 import jone.helper.R;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureHs;
 import jone.helper.model.bing.BingPictureOperator;
+import jone.helper.model.imageCache.ImageCacheManger;
 import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 
 /**
@@ -39,7 +41,7 @@ public class BingPicDetailActivity extends BaseAppCompatWithLayoutActivity {
 //            iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
 //            iv_picture.setErrorImageResId(R.drawable.side_nav_bar);
             picUrl = BingPictureOperator.getFullImageUrl(BingPicDetailActivity.this, bingPicture.getUrl());
-            iv_picture.setImageUrl(picUrl, VolleyCommon.getImageLoader());
+            iv_picture.setImageUrl(picUrl, ImageCacheManager.getInstance().getImageLoader());
 
             iv_picture.setOnClickListener(new View.OnClickListener() {
                 @Override

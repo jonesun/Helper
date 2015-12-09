@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import jone.helper.R;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.volley.VolleyCommon;
@@ -37,7 +38,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public WeatherAdapter(Context context , List<WeatherData> weatherDataList){
         this.mContext = context;
         this.weatherDataList = weatherDataList;
-        imageLoader = VolleyCommon.getImageLoader();
+        imageLoader = ImageCacheManager.getInstance().getImageLoader();
     }
 
     @Override

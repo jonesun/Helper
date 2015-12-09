@@ -13,6 +13,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.List;
 
 import jone.helper.R;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.lib.volley.VolleyCommon;
@@ -53,7 +54,7 @@ public class SplashActivity extends AppCompatActivity {
                         }catch (Exception e){
                             url = bingPicture.getUrl();
                         }
-                        iv_picture.setImageUrl(url, VolleyCommon.getImageLoader());
+                        iv_picture.setImageUrl(url, ImageCacheManager.getInstance().getImageLoader());
                         iv_picture.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

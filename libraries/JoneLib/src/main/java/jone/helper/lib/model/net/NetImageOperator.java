@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.volley.BitmapLruCache;
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.lib.volley.VolleyErrorHelper;
@@ -36,7 +37,7 @@ public class NetImageOperator {
     }
 
     public ImageLoader getImageLoader(){
-        return VolleyCommon.getImageLoader();
+        return ImageCacheManager.getInstance().getImageLoader();
     }
 
     public void showToImageView(String url, ImageView imageView, int default_image, int failed_image){

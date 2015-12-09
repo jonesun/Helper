@@ -1,9 +1,7 @@
 package jone.helper.lib.volley;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -14,7 +12,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -23,6 +20,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
+import jone.helper.lib.okhttp.SimpleOkHttpStack;
 
 /**
  * @author jone.sun on 2015/3/24.
@@ -37,16 +36,12 @@ public class VolleyCommon {
         return instance;
     }
 
-    private static ImageLoader imageLoader;
     private static RequestQueue mRequestQueue;
     private VolleyCommon(Context context) {
         if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(context);
+//            mRequestQueue = Volley.newRequestQueue(context);
+            mRequestQueue = Volley.newRequestQueue(context, new SimpleOkHttpStack()); //使用OkHttp
         }
-        int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
-        // Use 1/8th of the available memory for this memory cache.
-        int cacheSize = 1024 * 1024 * memClass / 8;
-        imageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache(cacheSize));
     }
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
@@ -110,13 +105,5 @@ public class VolleyCommon {
 
     public RequestQueue getmRequestQueue() {
         return mRequestQueue;
-    }
-
-    public static void setmImageLoader(ImageLoader imageLoader) {
-        VolleyCommon.imageLoader = imageLoader;
-    }
-
-    public static ImageLoader getImageLoader() {
-        return imageLoader;
     }
 }

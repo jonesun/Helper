@@ -44,6 +44,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.camera.Camera;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.cooliris.media.Gallery;
 import com.umeng.analytics.MobclickAgent;
@@ -64,6 +66,7 @@ import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.App;
 import jone.helper.R;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.lib.volley.VolleyCommon;
@@ -73,6 +76,7 @@ import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.model.bing.OnBingPicturesListener;
+import jone.helper.model.imageCache.ImageCacheManger;
 import jone.helper.services.MessengerService;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
@@ -254,7 +258,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                     public void onSuccess(final BingPicture bingPicture) {
                         Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
                         if (bingPicture != null && iv_picture != null) {
-                            iv_picture.setImageUrl(bingPicture.getUrl(), VolleyCommon.getImageLoader());
+                            iv_picture.setImageUrl(bingPicture.getUrl(), ImageCacheManager.getInstance().getImageLoader());
                             iv_picture.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -532,5 +536,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
             localBroadcastManager.unregisterReceiver(broadcastReceiver);
         }
         unbindService(serviceConnection);
+        App.getNetStringOperator().cancelAll();
+        App.getNetJsonOperator().cancelAll();
     }
 }

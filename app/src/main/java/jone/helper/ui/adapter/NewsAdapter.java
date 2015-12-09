@@ -17,6 +17,7 @@ import java.util.List;
 
 import jone.helper.R;
 import jone.helper.bean.News;
+import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.model.BaiduLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
@@ -43,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public NewsAdapter(EggsActivity eggsActivity, List<News> newsList){
         this.eggsActivity = eggsActivity;
         this.newsList = newsList;
-        imageLoader = VolleyCommon.getImageLoader();
+        imageLoader = ImageCacheManager.getInstance().getImageLoader();
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
