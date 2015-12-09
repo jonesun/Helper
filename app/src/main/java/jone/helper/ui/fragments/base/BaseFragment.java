@@ -59,10 +59,6 @@ public abstract class BaseFragment<T extends FragmentActivity> extends Fragment 
             findViews(view);
             initViews(view);
         }
-        if(!hasRootView){
-            findViews(view);
-            initViews(view);
-        }
     }
 
     protected abstract void findViews(View view);
