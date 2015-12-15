@@ -74,11 +74,11 @@ public class User {
     }
 
     private void save(String tag,String data){
-        mSP.edit().putString(tag, data).commit();
+        mSP.edit().putString(tag, data).apply();
     }
 
     private void save(String tag,boolean data){
-        mSP.edit().putBoolean(tag, data).commit();
+        mSP.edit().putBoolean(tag, data).apply();
     }
 
     private String loadString(String tag){

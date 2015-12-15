@@ -47,6 +47,7 @@
     <string name="title_activity_memory_manager">内存管理</string>
     <string name="title_activity_phone_info">设备信息</string>
     <string name="memory_clean">内存清理</string>
+    <string name="file_path">文件目录</string>
 
     <string name="open">打开</string>
     <string name="close">关闭</string>

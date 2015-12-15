@@ -170,7 +170,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
-                intent.putExtra("currentIndex", 2);
+                intent.putExtra(JoneAppManagerActivity.KEY_CURRENT_INDEX, 2);
                 startActivity(intent);
             }
         });
@@ -178,7 +178,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
-                intent.putExtra("currentIndex", 0);
+                intent.putExtra(JoneAppManagerActivity.KEY_CURRENT_INDEX, 0);
                 startActivity(intent);
             }
         });

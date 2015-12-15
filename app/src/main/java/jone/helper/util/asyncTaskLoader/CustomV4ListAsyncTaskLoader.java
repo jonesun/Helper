@@ -6,10 +6,10 @@ import android.support.v4.content.AsyncTaskLoader;
 import java.util.Collections;
 import java.util.List;
 
-public class CustomV4ListAsyncTaskLoader extends AsyncTaskLoader<List> {
-    private List list;
-    private LoadListener listener;
-    public CustomV4ListAsyncTaskLoader(Context context, LoadListener listener) {
+public class CustomV4ListAsyncTaskLoader<T> extends AsyncTaskLoader<List<T>> {
+    private List<T> list;
+    private LoadListener<T> listener;
+    public CustomV4ListAsyncTaskLoader(Context context, LoadListener<T> listener) {
         super(context);
         this.listener = listener;
     }
@@ -44,14 +44,15 @@ public class CustomV4ListAsyncTaskLoader extends AsyncTaskLoader<List> {
     }
 
     @Override
-    public List loadInBackground() {
-        // even if fail return empty list and print exception stack trace
-        list = Collections.unmodifiableList(listener.loading());
+    public List<T> loadInBackground() {
+        // even if fail return empty list and print exception stack trace “只读的”
+//        list = Collections.unmodifiableList(listener.loading());
+        list = listener.loading();
         return list;
     }
 
-    public interface LoadListener {
-        List loading();
+    public interface LoadListener<T> {
+        List<T> loading();
     }
 }
 

@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import jone.helper.R;
+import jone.helper.lib.util.GsonUtils;
 import jone.helper.model.BaiduLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
@@ -240,6 +241,7 @@ public class JoneMainFragment extends Fragment implements TextToSpeech.OnInitLis
             baiduLocationTool.getLocation(getContext(), new BDLocationListener() {
                 @Override
                 public void onReceiveLocation(BDLocation bdLocation) {
+                    Log.e(TAG, "onReceiveLocation: " + GsonUtils.toJson(bdLocation));
                     if (bdLocation != null) {
                         String city = bdLocation.getCity();
                         if (!TextUtils.isEmpty(city)) {

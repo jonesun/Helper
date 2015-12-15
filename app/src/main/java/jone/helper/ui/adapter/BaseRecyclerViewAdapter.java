@@ -57,6 +57,14 @@ public abstract class BaseRecyclerViewAdapter<H extends RecyclerView.ViewHolder,
         notifyDataSetChanged();
     }
 
+    public void addDataList(List<T> list){
+        if(this.dataList == null){
+            this.dataList = new ArrayList<>();
+        }
+        this.dataList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public void addDataToFirst(T data){
         if(dataList == null){
             dataList = new ArrayList<>();

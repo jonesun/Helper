@@ -21,6 +21,7 @@ import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
 import jone.helper.ui.fragments.MemoryCleanFragment;
+import jone.helper.ui.fragments.SdPathInfoFragment;
 
 public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
@@ -37,7 +38,9 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
     /**
      * The {@link ViewPager} that will host the section contents.
      */
+    private TabLayout tabLayout;
     private ViewPager mViewPager;
+    public static final String KEY_CURRENT_INDEX = "currentIndex";
     private int currentIndex = 0;
 
     @Override
@@ -66,11 +69,11 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 //        tabLayout.setTabMode(TabLayout.MODE_FIXED); TabLayout.MODE_SCROLLABLE
-        if(getIntent().hasExtra("currentIndex")){
-            currentIndex = getIntent().getIntExtra("currentIndex", 0);
+        if(getIntent().hasExtra(KEY_CURRENT_INDEX)){
+            currentIndex = getIntent().getIntExtra(KEY_CURRENT_INDEX, 0);
         }
         mViewPager.setCurrentItem(currentIndex);
 
@@ -82,6 +85,22 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(tabLayout != null){
+            outState.putInt(KEY_CURRENT_INDEX, tabLayout.getSelectedTabPosition());
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(mViewPager != null){
+            mViewPager.setCurrentItem(savedInstanceState.getInt(KEY_CURRENT_INDEX));
+        }
     }
 
 
@@ -132,6 +151,8 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
                 return DeviceInfoFragment.getInstance();
             } else if(position == 2){
                 return MemoryCleanFragment.newInstance();
+            }else if(position == 3){
+                return SdPathInfoFragment.getInstance();
             }
             return PlaceholderFragment.newInstance(position + 1);
         }
@@ -139,7 +160,7 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
         @Override
         public int getCount() {
             // Show 2 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -153,6 +174,8 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
                     return getString(R.string.title_activity_phone_info);
                 case 2:
                     return getString(R.string.memory_clean);
+                case 3:
+                    return getString(R.string.file_path);
             }
             return null;
         }

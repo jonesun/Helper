@@ -204,6 +204,8 @@
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
+        <activity android:name=".lib.ui.tab.SimpleWithPagerTabStripActivity"/>
+
     </application>
 
 </manifest>

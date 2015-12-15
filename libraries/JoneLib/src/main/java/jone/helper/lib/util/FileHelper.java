@@ -1,6 +1,7 @@
 package jone.helper.lib.util;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +11,21 @@ import java.io.IOException;
  * Created by jone.sun on 2015/11/6.
  */
 public class FileHelper {
+
+    /**
+     * Check if the primary "external" storage device is available.
+     * 判断sd卡可用
+     *
+     * @return
+     */
+    public static boolean hasSDCardMounted() {
+        String state = Environment.getExternalStorageState();
+        if (state != null && state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void save(Context context, String fileName, String fileContent) throws IOException {
         FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);

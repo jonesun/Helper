@@ -1,7 +1,11 @@
 package jone.helper.util;
 
+import android.support.annotation.IntDef;
 import android.support.design.widget.Snackbar;
 import android.view.View;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import jone.helper.R;
 
@@ -9,13 +13,16 @@ import jone.helper.R;
  * Created by Monkey on 2015/7/1.
  */
 public class SnackbarUtil {
+//    @Retention(RetentionPolicy.SOURCE)
+//    @IntDef({Snackbar.LENGTH_SHORT, Snackbar.LENGTH_LONG})
+//    public @interface SnackbarMode {}
 
     // android-support-design兼容包中新添加的一个类似Toast的控件。
     // make()中的第一个参数，可以写当前界面中的任意一个view对象。
     // 这样CoordinatorLayout就可以协调各个View之间的动画效果 Snackbar Snackbar.make(mCoordinatorLayout.getRootView(), "Snackbar", Snackbar.LENGTH_SHORT).show();
     private static Snackbar mSnackbar;
 
-    public static void show(View view, String msg, int flag) {
+    public static void show(View view, String msg, @Snackbar.Duration int flag) {
 
         if (flag == 0) { // 短时显示
             mSnackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);

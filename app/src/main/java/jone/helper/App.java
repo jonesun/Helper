@@ -9,11 +9,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.IntDef;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Map;
 
 import jone.helper.lib.model.imageCache.ImageCacheManager;
@@ -147,7 +151,10 @@ public class App extends Application {
         showToast(info, Toast.LENGTH_SHORT);
     }
 
-    public static void showToast(String info, int toastTime) {
+    @IntDef({Toast.LENGTH_SHORT, Toast.LENGTH_LONG})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Duration {}
+    public static void showToast(String info, @Duration int toastTime) {
         Handler handler = App.getInstance().getHandler();
         handler.sendMessage(handler.obtainMessage(WHAT_SHOW_TOAST, toastTime, 0, info));
     }

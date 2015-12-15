@@ -242,9 +242,7 @@ public class AppUtil {
         boolean flag = false;
 
         try {
-            String dbPath = "/data/data/" + context.getPackageName()
-                    + "/databases/" + dbName;
-            File dbfile = new File(dbPath);
+            File dbfile = context.getDatabasePath(dbName);
             // 判断数据库文件是否存在，若不存在则执行导入，否则直接打开数据库
             if (!dbfile.exists()) {
                 // 欲导入的数据库
