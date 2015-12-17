@@ -246,6 +246,9 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
 
     @Override
     public void setWeatherInfo(Weather weather) {
+        if(weather == null){
+            return;
+        }
         List<WeatherData> weatherDataList = weather.getWeather_data();
         txt_pm25.setText(weather.getPm25() + " " + WeatherUtil.getPm25String(weather.getPm25()));
         txt_pm25.setBackgroundResource(R.drawable.bg_weather_pm25);

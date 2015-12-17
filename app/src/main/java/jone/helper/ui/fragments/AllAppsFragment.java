@@ -35,7 +35,7 @@ import java.util.List;
 
 import jone.helper.R;
 import jone.helper.ui.adapter.AppsAdapter;
-import jone.helper.util.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
+import jone.helper.ui.loader.CustomV4ListAsyncTaskLoader;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.view.PullToRefreshView;
 

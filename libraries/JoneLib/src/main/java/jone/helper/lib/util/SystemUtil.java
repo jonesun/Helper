@@ -13,6 +13,8 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -127,6 +129,14 @@ public class SystemUtil {
 //            Log.i(TAG, getString(R.string.no_wifi_or_mobile));
         }
 
+    }
+
+    public static boolean hasNetWork(Context context) {
+        checkNetworkConnection(context);
+        if(wifiConnected || mobileConnected){
+            return true;
+        }
+        return false;
     }
 
     public static void uninstallAPK(Context context, String packageName){

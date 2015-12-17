@@ -31,10 +31,15 @@
     <string name="flashlight">手电筒</string>
     <string name="bluetooth_chat">蓝牙聊天</string>
 
+    <string name="uninstall">卸载</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_news">NewsActivity</string>
-    <string name="no_data">No data</string>
+    <string name="no_data">无数据</string>
+    <string name="no_network">无网络</string>
+    <string name="refresh"><u>刷新</u></string>
+    <string name="toast_please_check_network">请检查网络</string>
     <string name="search">查询</string>
 
     <string name="pull_to_refresh_pull_label">下拉刷新</string>

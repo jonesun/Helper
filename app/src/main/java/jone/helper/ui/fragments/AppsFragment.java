@@ -1,34 +1,21 @@
  package jone.helper.ui.fragments;
 
-
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import jone.helper.R;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.ui.activities.JoneAppManagerActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
@@ -52,15 +39,22 @@ import jone.helper.ui.fragments.base.BaseRecyclerViewFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        packageManager = getActivity().getPackageManager();
-        setShowMode(SHOW_MODE_HAVE_REFRESH);
+
     }
+
+     @Override
+     public void initConfig() {
+         super.initConfig();
+         setShowMode(SHOW_MODE_HAVE_REFRESH);
+         enableDebugLogging(true);
+         setDebugTag(TAG);
+         packageManager = getActivity().getPackageManager();
+     }
 
      @Override
      public LinearLayoutManager getLayoutManager() {
          return new GridLayoutManager(getActivity(), 4, GridLayoutManager.VERTICAL, false);
      }
-
 
      @Override
      public void onItemClick(View view, int position) {
@@ -78,7 +72,7 @@ import jone.helper.ui.fragments.base.BaseRecyclerViewFragment;
          view.setBackgroundColor(Color.RED);
          final ApplicationInfo applicationInfo = appsRecyclerViewAdapter.getItem(position);
          Snackbar snackbar = Snackbar.make(view, applicationInfo.loadLabel(packageManager), Snackbar.LENGTH_LONG)
-                 .setAction("卸载", new View.OnClickListener() {
+                 .setAction(getString(R.string.uninstall), new View.OnClickListener() {
                      @Override
                      public void onClick(View view) {
                          if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
@@ -110,6 +104,12 @@ import jone.helper.ui.fragments.base.BaseRecyclerViewFragment;
 
      @Override
      public List<ApplicationInfo> getList() {
+//         try {
+//             Thread.sleep(3000);
+//         } catch (InterruptedException e) {
+//             e.printStackTrace();
+//         }
+//         return new ArrayList<>();
          List<ApplicationInfo> applicationInfoList =  new ArrayList<>();
          List<ApplicationInfo> tmpList = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
          for(ApplicationInfo applicationInfo : tmpList){

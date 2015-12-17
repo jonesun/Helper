@@ -1,4 +1,4 @@
-package jone.helper.util.asyncTaskLoader;
+package jone.helper.ui.loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import jone.helper.ui.activities.JoneAppManagerActivity;
 import jone.helper.ui.adapter.BaseRecyclerViewAdapter;
 import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.util.AppUtil;
-import jone.helper.util.asyncTaskLoader.CustomV4ListAsyncTaskLoader;
+import jone.helper.ui.loader.CustomV4ListAsyncTaskLoader;
 
 /**
  * Created by jone.sun on 2015/11/16.
