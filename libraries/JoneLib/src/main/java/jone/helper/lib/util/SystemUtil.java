@@ -264,13 +264,10 @@ public class SystemUtil {
         Intent localIntent = new Intent("android.intent.action.MAIN");
         localIntent.addCategory("android.intent.category.LAUNCHER");
         try{
-            Iterator<ResolveInfo> localIterator = localPackageManager.queryIntentActivities(localIntent, 0).iterator();
-            while (localIterator.hasNext()){
-                ResolveInfo localResolveInfo = localIterator.next();
+            for (ResolveInfo localResolveInfo : localPackageManager.queryIntentActivities(localIntent, 0)) {
                 if (!localResolveInfo.activityInfo.applicationInfo.packageName.equalsIgnoreCase(context.getPackageName()))
                     continue;
-                String str = localResolveInfo.activityInfo.name;
-                return str;
+                return localResolveInfo.activityInfo.name;
             }
         } catch (Exception localException){
             return null;

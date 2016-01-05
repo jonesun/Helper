@@ -274,3 +274,45 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.google.code.gson:gson:2.3'
 }
+
+
+D:\>keytool -list -v -keystore store.jks
+输入密钥库口令:
+
+密钥库类型: JKS
+密钥库提供方: SUN
+
+您的密钥库包含 1 个条目
+
+别名: jonesun
+创建日期: 2014-5-5
+条目类型: PrivateKeyEntry
+证书链长度: 1
+证书[1]:
+所有者: CN=jone sun, OU=Jone, L=suzhou, ST=jiangsu, C=ZH
+发布者: CN=jone sun, OU=Jone, L=suzhou, ST=jiangsu, C=ZH
+序列号: 5796d294
+有效期开始日期: Mon May 05 12:53:42 CST 2014, 截止日期: Fri Apr 29 12:53:42 CST
+2039
+证书指纹:
+         MD5: 87:39:D7:B3:3D:06:D7:8A:EA:E5:10:D2:24:B8:E9:30
+         SHA1: 8C:0D:D9:A6:8A:19:14:37:4A:29:82:74:5E:E3:17:9B:88:62:5D:30
+         SHA256: C6:80:1F:F1:84:C2:B2:49:80:C5:34:F2:8F:2F:2C:0A:F5:54:FE:58:C7:
+8E:76:4A:97:16:C3:7A:A7:A2:0C:E4
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 8D 0F 1B C6 BD 0C 56 C1   CE 27 06 52 D4 FD E3 25  ......V..'.R...%
+0010: 93 99 11 16                                        ....
+]
+]
+
+
+
+*******************************************
+*******************************************

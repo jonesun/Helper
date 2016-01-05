@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">帮手</string>
     <string name="hello_world">Hello world!</string>
@@ -219,4 +219,9 @@
     <string name="night_model">夜间模式</string>
 
     <string name="qr_scan_tips">将二维码/条码放入框内，即可自动扫描</string>
+
+    <string name="now_date">%1$d年%2$d月%3$d日 周%4$s\r\n 农历: %5$s</string>
+
+    <string name="today_festival">今天是: <xliff:g id="xxx">%s</xliff:g></string>
+    <string name="today_no_festival">今天没有节日</string>
 </resources>

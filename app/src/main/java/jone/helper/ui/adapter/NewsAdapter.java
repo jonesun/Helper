@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.android.volley.toolbox.ImageLoader;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,11 +18,10 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.bean.News;
 import jone.helper.lib.model.imageCache.ImageCacheManager;
-import jone.helper.model.BaiduLocationTool;
+import jone.helper.model.AMapLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.util.SystemUtil;
-import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
@@ -179,18 +178,16 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     }
 
-    private BaiduLocationTool baiduLocationTool;
     private void showWeatherInfo(final TextView txt_weather){
         if(weatherStringBuffer == null){
             if(SystemUtil.isNetworkAlive(eggsActivity)){
                 txt_weather.setText("loading...");
                 txt_weather.setSelected(true);
-                baiduLocationTool = new BaiduLocationTool();
-                baiduLocationTool.getLocation(eggsActivity, new BDLocationListener() {
+                AMapLocationTool.getInstance().startLocation(new AMapLocationListener() {
                     @Override
-                    public void onReceiveLocation(BDLocation bdLocation) {
-                        if (bdLocation != null) {
-                            String city = bdLocation.getCity();
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation != null) {
+                            String city = aMapLocation.getCity();
                             if (!TextUtils.isEmpty(city)) {
                                 UmengUtil.get_location(eggsActivity, "baiduLocation", city);
                                 WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
@@ -214,9 +211,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                                 });
                             }
                         }
-                        if (baiduLocationTool != null) {
-                            baiduLocationTool.close();
-                        }
+                        AMapLocationTool.getInstance().stopLocation();
                     }
                 });
             }else {

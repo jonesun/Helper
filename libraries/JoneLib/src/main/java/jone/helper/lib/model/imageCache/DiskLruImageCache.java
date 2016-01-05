@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import jone.helper.lib.BuildConfig;
-import jone.helper.lib.model.imageCache.disklrucache.DiskLruCache;
+import com.jakewharton.disklrucache.DiskLruCache;
 
 /**
  * Implementation of DiskLruCache by Jake Wharton

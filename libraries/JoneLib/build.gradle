@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    compile 'com.mcxiaoke.volley:library:1.0.6'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.google.code.gson:gson:2.4'

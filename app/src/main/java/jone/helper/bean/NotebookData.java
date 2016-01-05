@@ -10,6 +10,9 @@ import java.io.Serializable;
  */
 @DatabaseTable
 public class NotebookData implements Serializable{
+//    @DatabaseField(generatedId = true, columnName = "_id") private int id;
+//    @DatabaseField(generatedId = true) private int _id;
+
     @DatabaseField(generatedId = true) private int id;
     @DatabaseField private String title;
     @DatabaseField(columnDefinition = "TEXT") private String content;

@@ -97,7 +97,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/yalantiscontextmenu-release1.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
@@ -111,6 +110,7 @@
     <orderEntry type="jdk" jdkName="Android API 23 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Gallery3D-release1.0-" level="project" />
+    <orderEntry type="library" exported="" name="library-1.0.19" level="project" />
     <orderEntry type="library" exported="" name="palette-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
@@ -119,18 +119,17 @@
     <orderEntry type="library" exported="" name="ormlite-android-4.48" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="library-1.0.6" level="project" />
     <orderEntry type="library" exported="" name="core-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="baidu_cuid" level="project" />
     <orderEntry type="library" exported="" name="Camera-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="library-1.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="AMap_Location_v2.1.0_20151202" level="project" />
     <orderEntry type="library" exported="" name="yalantiscontextmenu-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="okhttp-urlconnection-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="locSDK_5.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.4" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="baidu_appx_android_2.0.0" level="project" />
@@ -139,7 +138,7 @@
     <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v13-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="analytics-5.6.1" level="project" />
+    <orderEntry type="library" exported="" name="analytics-5.6.4" level="project" />
     <orderEntry type="module" module-name="JoneLib" exported="" />
     <orderEntry type="module" module-name="ZxingScan" exported="" />
   </component>

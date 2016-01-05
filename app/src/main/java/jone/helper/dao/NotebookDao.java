@@ -1,9 +1,13 @@
 package jone.helper.dao;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
+import com.j256.ormlite.android.AndroidDatabaseResults;
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
@@ -41,5 +45,24 @@ public class NotebookDao extends HelperOrmLiteDao<NotebookData> {
             e.printStackTrace();
         }
     }
+
+//    public Cursor getCursor(){
+//
+//        // build your query
+//        QueryBuilder<Foo, String> qb = fooDao.queryBuilder();
+//        qb.where()...;
+//// when you are done, prepare your query and build an iterator
+//        CloseableIterator<Foo> iterator = dao.iterator(qb.prepare());
+//        try {
+//            // get the raw results which can be cast under Android
+//            AndroidDatabaseResults results =
+//                    (AndroidDatabaseResults)iterator.getRawResults();
+//            Cursor cursor = results.getRawCursor();
+//            ...
+//        } finally {
+//            iterator.closeQuietly();
+//        }
+//    }
+
 
 }

@@ -1,5 +1,6 @@
 package jone.helper.ui.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
-import jone.helper.model.BaiduLocationTool;
+import jone.helper.model.AMapLocationTool;
 import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.ui.activities.HelperMainActivity;
@@ -56,7 +57,6 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     private WeatherPresenter weatherPresenter;
 
     private List<WeatherData> weatherDataList = new ArrayList<>();
-    private BaiduLocationTool baiduLocationTool;
 
     public static final int resultCode = 10001;
     private static WeatherFragment instance = null;
@@ -103,19 +103,17 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         weatherPresenter = new BaiduWeatherPresenter(this); //传入WeatherView
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
-        baiduLocationTool = new BaiduLocationTool();
         if(Utils.isNetworkAlive(getHostActivity())){
-            baiduLocationTool.getLocation(getHostActivity(), new BDLocationListener() {
+            AMapLocationTool.getInstance().startLocation(new AMapLocationListener() {
                 @Override
-                public void onReceiveLocation(BDLocation bdLocation) {
+                public void onLocationChanged(AMapLocation aMapLocation) {
                     // map view 销毁后不在处理新接收的位置
-                    if (bdLocation != null && bdLocation.getCity() != null) {
-                        Log.e("sss", "city: " + bdLocation.getCity());
-                        getWeatherByCity(bdLocation.getCity().replace("市", ""));
+                    if (aMapLocation != null) {
+                        String city = aMapLocation.getCity();
+                        Log.e("sss", "city: " + city);
+                        getWeatherByCity(aMapLocation.getCity().replace("市", ""));
                     }
-                    if (baiduLocationTool != null) {
-                        baiduLocationTool.close();
-                    }
+                    AMapLocationTool.getInstance().stopLocation();
                 }
             });
         }else {
@@ -126,10 +124,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // 退出时销毁定位
-        if(baiduLocationTool != null){
-            baiduLocationTool.close();
-        }
+        AMapLocationTool.getInstance().destroy();
     }
 
     private void getWeatherByCity(String city){
@@ -138,7 +133,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
         }else {
-            btn_city.setText("网络连接失败");
+            btn_city.setText(getString(R.string.no_network));
         }
     }
 
@@ -165,24 +160,30 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     private void showDate(){
         Calendar calendar = Calendar.getInstance();
         FestivalUtil festivalUtil = new FestivalUtil(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH));
-        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
-                (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
+        txt_date.setText(getString(R.string.now_date,
+                calendar.get(Calendar.YEAR),
+                (calendar.get(Calendar.MONTH) + 1),
+                calendar.get(Calendar.DAY_OF_MONTH),
+                FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1),
+                festivalUtil.getChineseDate()));
+//        txt_date.setText(calendar.get(Calendar.YEAR) + "年" +
+//                (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日" + "周" + FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1)  +" 农历:" + festivalUtil.getChineseDate());
         ArrayList<String> fest = festivalUtil.getFestVals();
         StringBuilder festival = new StringBuilder();
         if(fest.size() > 0){
             for(String str:fest){
                 festival.append(str).append(" ");
             }
-            txt_festival.setText("今天是: " + festival);
+            txt_festival.setText(getString(R.string.today_festival, festival));
         }else {
-            txt_festival.setText("今天没有节日");
+            txt_festival.setText(getString(R.string.today_no_festival));
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == getHostActivity().RESULT_OK){
+        if(resultCode == Activity.RESULT_OK){
             String result = data.getExtras().getString("result");
             getWeatherByCity(result);
         }
@@ -201,7 +202,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     @Override
     public void showError(String reason) {
         Toast.makeText(getHostActivity(), "error: " + reason, Toast.LENGTH_SHORT).show();
-        btn_city.setText("网络连接失败");
+        btn_city.setText(getString(R.string.no_network));
     }
 
     @Override

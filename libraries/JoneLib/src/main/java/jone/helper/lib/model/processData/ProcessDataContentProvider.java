@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 
 import java.util.Map;
 
@@ -55,14 +56,14 @@ public class ProcessDataContentProvider extends ContentProvider {
                         saveToSharedPreferences(editor, key, values.get(key));
                     }
                 }
-                editor.commit();
+                editor.apply();
                 break;
         }
         return uri;
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         int flag = URI_MATCHER.match(uri);
         // Log.e(TAG, "delete>>" + uri.toString() + " ," + flag);
         int result = 0;
@@ -77,7 +78,7 @@ public class ProcessDataContentProvider extends ContentProvider {
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         int flag = URI_MATCHER.match(uri);
         switch (flag) {
             case SP:
@@ -87,7 +88,7 @@ public class ProcessDataContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String defaultStr) {
         int flag = URI_MATCHER.match(uri);
         //Log.e(TAG, "query>>" + uri.toString() + " ," + flag);

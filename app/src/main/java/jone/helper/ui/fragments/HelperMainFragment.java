@@ -1,5 +1,6 @@
 package jone.helper.ui.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,22 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
-import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
-import jone.helper.App;
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
 import jone.helper.bean.HomeMainCalendarBean;
+import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
-import jone.helper.model.BaiduLocationTool;
+import jone.helper.model.AMapLocationTool;
 import jone.helper.model.MemoryStoreProgressTool;
 import jone.helper.model.calendar.CalendarActivity;
 import jone.helper.mvp.model.weather.entity.Weather;
@@ -66,7 +65,6 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     public static final int resultCode = 10001;
 
     private Dialog loadingDialog;
-    private BaiduLocationTool baiduLocationTool;
     private MemoryStoreProgressTool memoryStoreProgressTool;
 
     private WeatherPresenter weatherPresenter;
@@ -133,20 +131,12 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         weatherPresenter = new BaiduWeatherPresenter(this);
         loadingDialog = new ProgressDialog(getHostActivity());
         loadingDialog.setTitle("加载天气中...");
-        baiduLocationTool = new BaiduLocationTool();
         memoryStoreProgressTool = new MemoryStoreProgressTool();
         if (Utils.isNetworkAlive(getHostActivity())) {
             // 定位初始化
             getLocation();
         } else {
-            layout_weather.setVisibility(View.GONE);
-            txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
-            txt_weather_index.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
-                }
-            });
+            showFail();
         }
         image_weather.setOnClickListener(gotoWeatherFragmentListener);
         txt_pm25.setOnClickListener(gotoWeatherFragmentListener);
@@ -184,10 +174,21 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         });
     }
 
+    private void showFail(){
+        layout_weather.setVisibility(View.GONE);
+        txt_weather_index.setText(Html.fromHtml("连接失败<u>重试</u>"));
+        txt_weather_index.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getHostActivity().RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             String result = data.getExtras().getString("result");
             getWeatherByCity(result);
         }
@@ -201,24 +202,24 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     };
 
     private void getLocation() {
-        baiduLocationTool.getLocation(getHostActivity(), new BDLocationListener() {
-
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                // map view 销毁后不在处理新接收的位置
-                if (bdLocation != null) {
-                    String city = bdLocation.getCity();
-                    if (!TextUtils.isEmpty(city)) {
-                        Log.e(TAG, "city: " + city);
-                        UmengUtil.get_location(getHostActivity(), "baiduLocation", city);
-                        getWeatherByCity(city.replace("市", ""));
+        AMapLocationTool.getInstance().startLocation(AMapLocationClientOption.AMapLocationMode.Battery_Saving,
+                new AMapLocationListener() {
+                    @Override
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation != null) {
+                            Log.e("AMapLocationTool", "onLocationChanged>>" + GsonUtils.toJson(aMapLocation));
+                            String city = aMapLocation.getCity();
+                            if (!TextUtils.isEmpty(city)) {
+                                Log.e(TAG, "city: " + city);
+                                UmengUtil.get_location(getHostActivity(), "baiduLocation", city);
+                                getWeatherByCity(city.replace("市", ""));
+                            }else {
+                                showFail();
+                            }
+                        }
+                        AMapLocationTool.getInstance().stopLocation();
                     }
-                }
-                if (baiduLocationTool != null) {
-                    baiduLocationTool.close();
-                }
-            }
-        });
+                });
     }
 
     @Override
@@ -316,9 +317,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (baiduLocationTool != null) {
-            baiduLocationTool.close();
-        }
+        AMapLocationTool.getInstance().destroy();
         if (memoryStoreProgressTool != null) {
             memoryStoreProgressTool.close();
         }

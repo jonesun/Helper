@@ -99,3 +99,9 @@ public static final android.os.Parcelable$Creator *;
 -keep public class jone.helper.R$*{
     public static final int *;
 }
+
+#高德地图
+-keep class com.amap.api.location.**{*;}
+-keep class com.amap.api.fence.**{*;}
+-keep class com.autonavi.aps.amapapi.model.**{*;}
+#高德地图 end

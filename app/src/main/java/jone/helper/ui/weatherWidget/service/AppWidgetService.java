@@ -17,10 +17,8 @@ import android.view.WindowManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -29,6 +27,7 @@ import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
+import jone.helper.model.AMapLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.lib.util.Utils;
@@ -135,55 +134,37 @@ public class AppWidgetService extends Service{
         }
     }
 
-    private LocationClient mLocClient;
     private Runnable runnableGetWeather = new Runnable() {
         @Override
         public void run() {
             Log.d(TAG, "getWeatherRunnable");
             if(Utils.isNetworkAlive(AppWidgetService.this)){
-                if(mLocClient == null){
-                    // 定位初始化
-                    mLocClient = new LocationClient(AppWidgetService.this);
-                    mLocClient.registerLocationListener(bdLocationListener);
-                    LocationClientOption option = new LocationClientOption();
-                    //option.setOpenGps(true);// 打开gps
-                    option.setIsNeedAddress(true);
-                    option.setNeedDeviceDirect(true);
-                    option.setCoorType("bd09ll"); //返回的定位结果是百度经纬度,默认值gcj02
-//        option.setScanSpan(1000); //设置发起定位请求的间隔时间为5000ms
-                    mLocClient.setLocOption(option);
-                }
-                mLocClient.start();
-            }else {
-                Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
-
-    private BDLocationListener bdLocationListener = new BDLocationListener() {
-        @Override
-        public void onReceiveLocation(BDLocation bdLocation) {
-            // map view 销毁后不在处理新接收的位置
-            if (bdLocation != null){
-                String city = bdLocation.getCity();
-                if(!TextUtils.isEmpty(city)){
-                    Log.e(TAG, "city: " + city);
-                    UmengUtil.get_location(AppWidgetService.this, "baiduLocation", city);
-                    WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
-                        @Override
-                        public void onResponse(Weather weatherInfo) {
-                            if(weatherInfo != null){
-                                updateWeather(weatherInfo);
-                            }else {
-                                Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
+                AMapLocationTool.getInstance().startLocation(new AMapLocationListener() {
+                    @Override
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation != null){
+                            String city = aMapLocation.getCity();
+                            if(!TextUtils.isEmpty(city)){
+                                Log.e(TAG, "city: " + city);
+                                UmengUtil.get_location(AppWidgetService.this, "baiduLocation", city);
+                                WeatherUtil.getWeatherInfoByCity(city.replace("市", ""), new WeatherUtil.WeatherInfoListener() {
+                                    @Override
+                                    public void onResponse(Weather weatherInfo) {
+                                        if(weatherInfo != null){
+                                            updateWeather(weatherInfo);
+                                        }else {
+                                            Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         }
-                    });
-                }
-            }
-            if(mLocClient != null){
-                mLocClient.stop();
-                mLocClient.unRegisterLocationListener(this);
+                        AMapLocationTool.getInstance().stopLocation();
+                        AMapLocationTool.getInstance().destroy();
+                    }
+                });
+            }else {
+                Toast.makeText(AppWidgetService.this, "天气更新失败, 请检查网络", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -209,9 +190,6 @@ public class AppWidgetService extends Service{
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-        if(mLocClient != null){
-            mLocClient.stop();
-            mLocClient.unRegisterLocationListener(bdLocationListener);
-        }
+        AMapLocationTool.getInstance().destroy();
     }
 }
