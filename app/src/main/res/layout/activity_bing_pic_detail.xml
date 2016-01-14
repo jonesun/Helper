@@ -34,7 +34,7 @@
             app:cardMaxElevation="@dimen/card_max_elevation"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true">
-            <com.android.volley.toolbox.NetworkImageView
+            <ImageView
                 android:id="@+id/iv_picture"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"

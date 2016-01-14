@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * @author jone.sun on 2015/3/24.
  */
-public class NetStringOperator extends NetBaseOperator<Map<String, String>, String>{
+public class NetStringOperator extends NetBaseOperator<String>{
     private static final String TAG = NetStringOperator.class.getSimpleName();
     private static NetStringOperator instance;
     public static NetStringOperator getInstance(Context context){

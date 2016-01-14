@@ -253,7 +253,13 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         List<WeatherData> weatherDataList = weather.getWeather_data();
         txt_pm25.setText(weather.getPm25() + " " + WeatherUtil.getPm25String(weather.getPm25()));
         txt_pm25.setBackgroundResource(R.drawable.bg_weather_pm25);
-        txt_pm25.getBackground().setLevel(Integer.parseInt(weather.getPm25()));
+        int level = 0;
+        try {
+            level = Integer.parseInt(weather.getPm25());
+        }catch (Exception e){
+            level = 0;
+        }
+        txt_pm25.getBackground().setLevel(level);
         if (weatherDataList != null && weatherDataList.size() > 0) {
             WeatherData todayWeatherData = weatherDataList.get(0);
             Calendar calendar = Calendar.getInstance();

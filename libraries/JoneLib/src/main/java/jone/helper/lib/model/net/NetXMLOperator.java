@@ -13,7 +13,7 @@ import jone.helper.lib.volley.customRequest.XMLRequest;
 /**
  * @author jone.sun on 2015/4/3.
  */
-public class NetXMLOperator extends NetBaseOperator<Map<String, String>, XmlPullParser> {
+public class NetXMLOperator extends NetBaseOperator<XmlPullParser> {
     private static final String TAG = NetXMLOperator.class.getSimpleName();
     private static NetXMLOperator instance;
     public static NetXMLOperator getInstance(Context context){

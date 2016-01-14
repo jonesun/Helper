@@ -12,7 +12,7 @@ import jone.helper.lib.volley.VolleyErrorHelper;
 /**
  * @author jone.sun on 2015/4/3.
  */
-public abstract class NetBaseOperator<E, T> implements NetOperator<E, T> {
+public abstract class NetBaseOperator<T> implements NetOperator<T> {
     private VolleyCommon volleyCommon;
     protected NetBaseOperator(Context context){
         volleyCommon = VolleyCommon.getInstance(context);

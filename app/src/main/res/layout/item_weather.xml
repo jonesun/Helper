@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:textColor="@android:color/black"
             android:textSize="14sp"/>
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/image_weather_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

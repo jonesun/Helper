@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
+import jone.helper.App;
 import jone.helper.R;
-import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
-import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
@@ -24,7 +23,7 @@ import jone.helper.model.bing.OnBingPictureListener;
 
 public class SplashActivity extends AppCompatActivity {
     private final String TAG = SplashActivity.class.getSimpleName();
-    private NetworkImageView iv_picture;
+    private ImageView iv_picture;
     private TextView tv_title, tv_copyright;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +36,16 @@ public class SplashActivity extends AppCompatActivity {
                     closePage();
                 }
             }, 5000);
-            iv_picture = (NetworkImageView) findViewById(R.id.iv_picture);
+            iv_picture = (ImageView) findViewById(R.id.iv_picture);
             tv_title = (TextView) findViewById(R.id.tv_title);
             tv_copyright = (TextView) findViewById(R.id.tv_copyright);
             BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
                 @Override
                 public void onSuccess(final BingPicture bingPicture) {
                     if (bingPicture != null) {
-                        String url = bingPicture.getUrl();
-                        DisplayMetrics displayMetrics = SystemUtil.getDisplayMetrics(SplashActivity.this);
-                        String suffix = url.substring(url.lastIndexOf("."));
-                        try{
-                            url = url.substring(0, url.lastIndexOf("_") + 1);
-                            //http://s.cn.bing.net/az/hprichbg/rb/IxtapaJellyfish_ZH-CN9411866711_480x800.jpg
-                            url = url + displayMetrics.widthPixels + "x" + displayMetrics.heightPixels + suffix;
-                        }catch (Exception e){
-                            url = bingPicture.getUrl();
-                        }
-                        iv_picture.setImageUrl(url, ImageCacheManager.getInstance().getImageLoader());
+                        App.getImageLoader().display(SplashActivity.this,
+                                iv_picture, BingPictureOperator.getFullImageUrl(SplashActivity.this, bingPicture.getUrl()),
+                                R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);
                         iv_picture.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -79,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
         } else {
-            finish();
+            closePage();
         }
     }
 

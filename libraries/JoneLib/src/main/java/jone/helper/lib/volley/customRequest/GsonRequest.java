@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 
+import jone.helper.lib.volley.NetWorkTool;
+
 /**
  * @author by jone.sun on 2015/4/3.
  */
@@ -36,8 +38,15 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-            String jsonString = new String(response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
+            String jsonString;
+            if("gzip".equals(response.headers.get("Content-Encoding"))) {
+                jsonString = NetWorkTool.GZipDecoderToString(response.data);
+            }else {
+                jsonString = new String(response.data,
+                        HttpHeaderParser.parseCharset(response.headers));
+            }
+//            String jsonString = new String(response.data,
+//                    HttpHeaderParser.parseCharset(response.headers));
             return Response.success(mGson.fromJson(jsonString, mClass),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

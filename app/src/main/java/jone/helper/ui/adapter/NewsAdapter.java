@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
-import com.android.volley.toolbox.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +16,6 @@ import java.util.List;
 
 import jone.helper.R;
 import jone.helper.bean.News;
-import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.model.AMapLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
@@ -35,7 +33,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private static final int TYPE_ITEM = 1;
     private List<News> newsList;
     private EggsActivity eggsActivity;
-    private ImageLoader imageLoader;
     private StringBuffer weatherStringBuffer = null;
     private Calendar calendar = Calendar.getInstance();
     private FestivalUtil festivalUtil;
@@ -43,7 +40,6 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public NewsAdapter(EggsActivity eggsActivity, List<News> newsList){
         this.eggsActivity = eggsActivity;
         this.newsList = newsList;
-        imageLoader = ImageCacheManager.getInstance().getImageLoader();
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;

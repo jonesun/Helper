@@ -15,6 +15,7 @@ import jone.helper.R;
  */
 public abstract class BaseAppCompatWithLayoutActivity extends AppCompatActivity {
     private ThemeTool themeTool;
+    private Toolbar toolbar;
     protected abstract int getContentView();
 
     @Override
@@ -25,10 +26,11 @@ public abstract class BaseAppCompatWithLayoutActivity extends AppCompatActivity 
         setContentView(R.layout.activity_base_app_compat_with_layout);
         themeTool.setStatusBarView(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +42,12 @@ public abstract class BaseAppCompatWithLayoutActivity extends AppCompatActivity 
         layout_center.addView(getLayoutInflater().inflate(getContentView(), null));
         findViews();
         initViews();
+    }
+
+    public void setTitle(String title){
+        if(toolbar != null){
+            toolbar.setTitle(title);
+        }
     }
 
     protected abstract void findViews();

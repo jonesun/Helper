@@ -46,6 +46,7 @@ public class VolleyCommon {
 
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         req.setTag(TextUtils.isEmpty(tag) ? TAG : tag);
+        req.setShouldCache(false);
         req.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 1, 1.0f));//重试失败的请求，自定义请求超时
         VolleyLog.d("Adding request to queue: %s", req.getUrl());
         mRequestQueue.add(req);

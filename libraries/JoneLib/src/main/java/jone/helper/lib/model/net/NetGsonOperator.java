@@ -6,9 +6,11 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 
 import java.util.Map;
+import java.lang.reflect.Type;
 
 import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.lib.volley.customRequest.GsonRequest;
+import jone.helper.lib.volley.customRequest.GsonRequest_;
 
 /**
  * @author jone.sun on 2015/4/3.
@@ -32,38 +34,9 @@ public class NetGsonOperator {
 
     }
 
-    public <T>void request(String url, Class<T> clazz, final NetResponseCallback<T> responseCallback) {
-        volleyCommon.addToRequestQueue(new GsonRequest<T>(url, clazz,
-                new Response.Listener<T>() {
-                    @Override
-                    public void onResponse(T response) {
-                        if (responseCallback != null) {
-                            responseCallback.onSuccess(response);
-                        }
-                    }
-                }, getErrorListener(responseCallback)), TAG);
-    }
-
-    public <T>void request(String url, Class<T> clazz, final Map<String, String> params, final NetResponseCallback<T> responseCallback) {
-        volleyCommon.addToRequestQueue(new GsonRequest<T>(url, clazz,
-                new Response.Listener<T>() {
-                    @Override
-                    public void onResponse(T response) {
-                        if (responseCallback != null) {
-                            responseCallback.onSuccess(response);
-                        }
-                    }
-                }, getErrorListener(responseCallback)) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return params;
-            }
-        }, TAG);
-    }
-
-    public <T>void request(int method, String url, Class<T> clazz, final Map<String, String> params,
+    public <T>void request(int method, String url, Type type, final Map<String, String> params,
                         final NetResponseCallback<T> responseCallback) {
-        volleyCommon.addToRequestQueue(new GsonRequest<T>(method, url, clazz,
+        volleyCommon.addToRequestQueue(new GsonRequest_<T>(method, url, type, null,
                 new Response.Listener<T>() {
                     @Override
                     public void onResponse(T response) {

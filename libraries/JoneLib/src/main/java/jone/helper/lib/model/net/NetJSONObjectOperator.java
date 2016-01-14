@@ -2,14 +2,17 @@ package jone.helper.lib.model.net;
 
 import android.content.Context;
 
+
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
 /**
  * @author jone.sun on 2015/3/24.
  */
-public class NetJSONObjectOperator extends NetBaseOperator<JSONObject, JSONObject> {
+public class NetJSONObjectOperator extends NetBaseOperator<JSONObject> {
     private static final String TAG = NetJSONObjectOperator.class.getSimpleName();
     private static NetJSONObjectOperator instance;
     public static NetJSONObjectOperator getInstance(Context context){
@@ -34,18 +37,20 @@ public class NetJSONObjectOperator extends NetBaseOperator<JSONObject, JSONObjec
     }
 
     @Override
-    public void request(String url, JSONObject params, NetResponseCallback<JSONObject> responseCallback) {
-        addToRequest(new JsonObjectRequest(url,
-                params,
+    public void request(String url, final Map<String, String> params, NetResponseCallback<JSONObject> responseCallback) {
+        JSONObject jsonObject = new JSONObject(params);
+        addToRequest(new JsonObjectRequest(url, jsonObject,
                 getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
     }
 
     @Override
-    public void request(int method, String url, JSONObject params,
+    public void request(int method, String url, final Map<String, String> params,
                         final NetResponseCallback<JSONObject> responseCallback) {
-        addToRequest(new JsonObjectRequest(method,
-                url,
-                params,
+        JSONObject jsonObject = null;
+        if(params != null){
+            jsonObject = new JSONObject(params);
+        }
+        addToRequest(new JsonObjectRequest(method, url, jsonObject,
                 getSuccessListener(responseCallback), getErrorListener(responseCallback)), TAG);
     }
 

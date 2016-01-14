@@ -1,15 +1,14 @@
 package jone.helper.lib;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
-import jone.helper.lib.model.imageCache.ImageCacheManager;
-import jone.helper.lib.model.imageCache.RequestManager;
-import jone.helper.lib.volley.VolleyCommon;
 
 /**
  * 公共库Application
@@ -17,13 +16,9 @@ import jone.helper.lib.volley.VolleyCommon;
  */
 public class PublicLibraryApp extends Application{
     public static final int WHAT_SHOW_TOAST = 1010101;
+    private static final String TAG = "PublicLibraryApp";
     private static PublicLibraryApp instance;
     private static Handler handler = new Handler();
-
-    private static int DISK_IMAGECACHE_SIZE = 1024*1024*10;
-    private static Bitmap.CompressFormat DISK_IMAGE_CACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
-    private static int DISK_IMAGECACHE_QUALITY = 100;  //PNG is lossless so quality is ignored but must be provided
-
     public static PublicLibraryApp getInstance() {
         return instance;
     }
@@ -34,20 +29,42 @@ public class PublicLibraryApp extends Application{
         instance = this;
         handler = new ShowToastHandler(instance);
 
-        RequestManager.init(getApplicationContext());
-        createImageCache();
-    }
-
-    /**
-     * Create the image cache. Uses Memory Cache by default. Change to Disk for a Disk based LRU implementation.
-     */
-    private void createImageCache(){
-        ImageCacheManager.getInstance().init(this,
-                this.getPackageCodePath()
-                , DISK_IMAGECACHE_SIZE
-                , DISK_IMAGE_CACHE_COMPRESS_FORMAT
-                , DISK_IMAGECACHE_QUALITY
-                , ImageCacheManager.CacheType.MEMORY);
+//        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+//            @Override
+//            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+//                //Log.e(TAG, "onActivityCreated: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivityStarted(Activity activity) {
+//                Log.d(TAG, "onActivityStarted: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivityResumed(Activity activity) {
+//                Log.d(TAG, "onActivityResumed: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivityPaused(Activity activity) {
+//                Log.d(TAG, "onActivityPaused: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivityStopped(Activity activity) {
+//                Log.d(TAG, "onActivityStopped: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+//                Log.d(TAG, "onActivitySaveInstanceState: " + activity.getComponentName());
+//            }
+//
+//            @Override
+//            public void onActivityDestroyed(Activity activity) {
+//                Log.d(TAG, "onActivityDestroyed: " + activity.getComponentName());
+//            }
+//        });
     }
 
     static class ShowToastHandler extends Handler {

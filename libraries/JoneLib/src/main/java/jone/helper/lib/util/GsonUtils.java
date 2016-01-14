@@ -5,6 +5,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +23,18 @@ public class GsonUtils {
         return gson.toJson(obj);
     }
 
-    public static <T> T loadAs(String json, Class<T> clazz) throws Exception {
+    public static <T> T loadAs(String json, Class<T> clazz){
         return gson.fromJson(json, clazz);
     }
 
-    public static <T> List<T> loadAsList(String json, Class<T> clazz)
-            throws Exception {
-        return gson.fromJson(json, new TypeToken<List<T>>() {
-        }.getType());
+    public <T> T loadAs(byte[] bytes, Class<T> clazz) {
+        return gson.fromJson(new String(bytes), clazz);
+    }
+
+    public static <T> List<T> loadAsList(String json, Class<T> clazz) {
+        Type type = new TypeToken<ArrayList<T>>() {
+        }.getType();
+        return gson.fromJson(json, type);
     }
 
     public static boolean isGoodJson(String json) {

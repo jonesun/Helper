@@ -1,22 +1,22 @@
 <resources>
 
     <!--&lt;!&ndash;-->
-        <!--Base application theme, dependent on API level. This theme is replaced-->
-        <!--by AppBaseTheme from res/values-vXX/styles.xml on newer devices.-->
+    <!--Base application theme, dependent on API level. This theme is replaced-->
+    <!--by AppBaseTheme from res/values-vXX/styles.xml on newer devices.-->
     <!--&ndash;&gt;-->
     <!--<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-        <!--&lt;!&ndash;-->
-            <!--Theme customizations available in newer API levels can go in-->
-            <!--res/values-vXX/styles.xml, while customizations related to-->
-            <!--backward-compatibility can go here.-->
-        <!--&ndash;&gt;-->
+    <!--&lt;!&ndash;-->
+    <!--Theme customizations available in newer API levels can go in-->
+    <!--res/values-vXX/styles.xml, while customizations related to-->
+    <!--backward-compatibility can go here.-->
+    <!--&ndash;&gt;-->
     <!--</style>-->
 
     <!--&lt;!&ndash; Application theme. &ndash;&gt;-->
     <!--<style name="AppTheme" parent="AppBaseTheme">-->
 
-        <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;-->
-        <!--<item name="android:windowNoTitle">true</item>-->
+    <!--&lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;-->
+    <!--<item name="android:windowNoTitle">true</item>-->
     <!--</style>-->
 
     <!-- Base application theme. -->
@@ -221,6 +221,7 @@
         <!--<item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>-->
         <!--<item name="tabSelectedTextColor">?android:textColorPrimary</item>-->
     </style>
+
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">?android:textColorSecondary</item>

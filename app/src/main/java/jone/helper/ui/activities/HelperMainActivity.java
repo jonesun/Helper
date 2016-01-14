@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -24,9 +22,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,14 +34,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.camera.Camera;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.cooliris.media.Gallery;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
@@ -59,33 +50,28 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
 import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.App;
 import jone.helper.R;
-import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
-import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.model.Calculator.Calculator;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
 import jone.helper.model.bing.OnBingPicturesListener;
-import jone.helper.model.imageCache.ImageCacheManger;
 import jone.helper.services.MessengerService;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.dialog.ChooseThemeDialogFragment;
 import jone.helper.ui.fragments.HelperMainFragment;
-import jone.helper.ui.fragments.WeatherFragment;
 import jone.helper.ui.setting.SettingsActivity;
 import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
+import jone.helper.zxing.scan.BuildConfig;
 import jone.helper.zxing.scan.CaptureActivity;
 
 public class HelperMainActivity extends BaseAppCompatActivity
@@ -97,7 +83,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private FloatingActionButton fab;
 
     private InfiniteIndicatorLayout infinite_indicator_layout;
-    private NetworkImageView iv_picture;
+    private ImageView iv_picture;
     private TextView tv_title, tv_copyright;
 
     private boolean isCurrentPageFirst;
@@ -120,7 +106,18 @@ public class HelperMainActivity extends BaseAppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState == null){
-            startActivity(new Intent(this, SplashActivity.class));
+            if(PreferenceManager
+                    .getDefaultSharedPreferences(HelperMainActivity.this)
+                    .getBoolean("first_open_" + BuildConfig.VERSION_NAME, true)){
+                startActivity(new Intent(HelperMainActivity.this, GuideActivity.class));
+                PreferenceManager
+                        .getDefaultSharedPreferences(HelperMainActivity.this)
+                        .edit()
+                        .putBoolean("first_open_" + BuildConfig.VERSION_NAME, false)
+                        .apply();
+            }else {
+                startActivity(new Intent(this, SplashActivity.class));
+            }
             changeFragment(HelperMainFragment.getInstance());
         } else {
             if(savedInstanceState.containsKey("isCurrentPageFirst")){
@@ -248,7 +245,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 navigationView.removeOnLayoutChangeListener(this);
-                iv_picture = (NetworkImageView) navigationView.findViewById(R.id.iv_picture);
+                iv_picture = (ImageView) navigationView.findViewById(R.id.iv_picture);
                 tv_title = (TextView) navigationView.findViewById(R.id.tv_title);
                 tv_copyright = (TextView) navigationView.findViewById(R.id.tv_copyright);
 //        iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
@@ -258,7 +255,9 @@ public class HelperMainActivity extends BaseAppCompatActivity
                     public void onSuccess(final BingPicture bingPicture) {
                         Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
                         if (bingPicture != null && iv_picture != null) {
-                            iv_picture.setImageUrl(bingPicture.getUrl(), ImageCacheManager.getInstance().getImageLoader());
+                            App.getImageLoader().display(HelperMainActivity.this,
+                                    iv_picture, bingPicture.getUrl(),
+                                    R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);
                             iv_picture.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -418,9 +417,9 @@ public class HelperMainActivity extends BaseAppCompatActivity
 //            case R.id.nav_menu_item_home:
 //                changeFragment(HelperMainFragment.getInstance());
 //                break;
-//            case R.id.nav_menu_item_weather:
-//                changeFragment(WeatherFragment.getInstance());
-//                break;
+            case R.id.nav_menu_item_picture:
+                startActivity(new Intent(HelperMainActivity.this, PicturesTabActivity.class));
+                break;
             case R.id.nav_menu_item_note:
                 startActivity(new Intent(HelperMainActivity.this, NotebookActivity.class));
                 break;
@@ -469,9 +468,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> menuObjects = new ArrayList<>();
 
-        MenuObject menu_camera = new MenuObject(getString(R.string.camera));
-        menu_camera.setResource(android.R.drawable.ic_menu_camera);
-
         MenuObject menu_gallery = new MenuObject(getString(R.string.photos));
         menu_gallery.setResource(android.R.drawable.ic_menu_gallery);
 
@@ -484,7 +480,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
         MenuObject menu_flashlight = new MenuObject(getString(R.string.flashlight));
         menu_flashlight.setResource(R.mipmap.ic_menu_paste);
 
-        menuObjects.add(menu_camera);
         menuObjects.add(menu_gallery);
         menuObjects.add(menu_calculator);
         menuObjects.add(menu_scan);
@@ -497,26 +492,21 @@ public class HelperMainActivity extends BaseAppCompatActivity
 //        Toast.makeText(this, "Clicked on position: " + position, Toast.LENGTH_SHORT).show();
         switch (position){
             case 0:
-                UmengUtil.event_click_camera(HelperMainActivity.this);
-                startActivity(new Intent(HelperMainActivity.this, Camera.class));
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                break;
-            case 1:
                 UmengUtil.event_click_photos(HelperMainActivity.this);
                 startActivity(new Intent(HelperMainActivity.this, Gallery.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case 2:
+            case 1:
                 UmengUtil.event_click_calculator(HelperMainActivity.this);
                 startActivity(new Intent(HelperMainActivity.this, Calculator.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case 3:
+            case 2:
                 UmengUtil.event_click_scan(HelperMainActivity.this);
                 startActivity(new Intent(HelperMainActivity.this, CaptureActivity.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
-            case 4:
+            case 3:
                 UmengUtil.event_click_scan(HelperMainActivity.this);
                 startActivity(new Intent(HelperMainActivity.this, FlashlightActivity.class));
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

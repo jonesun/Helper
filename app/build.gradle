@@ -92,7 +92,6 @@ repositories {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile(name: 'Gallery3D-release1.0', ext: 'aar')
-    compile(name: 'Camera-release1.0', ext: 'aar')
     //    compile(name: 'ZxingScan-release1.0', ext: 'aar')
     compile(name: 'yalantiscontextmenu-release1.0', ext: 'aar')
     compile project(':libraries:JoneLib')
@@ -109,6 +108,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.1.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'cn.lightsky.infiniteindicator:library:1.0.3'
+    compile project(':libraries:viewpagerindicator')
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {

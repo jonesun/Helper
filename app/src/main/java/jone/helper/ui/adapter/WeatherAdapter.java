@@ -8,19 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.Calendar;
 import java.util.List;
 
+import jone.helper.App;
 import jone.helper.R;
-import jone.helper.lib.model.imageCache.ImageCacheManager;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
-import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.util.WeatherUtil;
 
@@ -33,12 +30,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Weather weather;
     private List<WeatherData> weatherDataList;
     private Context mContext;
-    private ImageLoader imageLoader;
     private Calendar calendar = Calendar.getInstance();
     public WeatherAdapter(Context context , List<WeatherData> weatherDataList){
         this.mContext = context;
         this.weatherDataList = weatherDataList;
-        imageLoader = ImageCacheManager.getInstance().getImageLoader();
     }
 
     @Override
@@ -65,15 +60,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         .append("天气: ").append(weatherData.getWeather()).append("\r\n")
                         .append("风度: ").append(weatherData.getWind());
                 item.txt_weather.setText(weatherStringBuffer);
-                item.image_weather_pic.setDefaultImageResId(R.mipmap.ic_weather_default);
-                item.image_weather_pic.setErrorImageResId(R.mipmap.ic_weather_default);
+
+                String pictureUrl = weatherData.getNightPictureUrl();
                 if(calendar.get(Calendar.HOUR_OF_DAY) < 18){
-                    item.image_weather_pic.setImageUrl(weatherData.getDayPictureUrl(),
-                            imageLoader);
-                }else {
-                    item.image_weather_pic.setImageUrl(weatherData.getNightPictureUrl(),
-                            imageLoader);
+                    pictureUrl = weatherData.getDayPictureUrl();
                 }
+                App.getImageLoader().display(mContext,
+                        item.image_weather_pic, pictureUrl,
+                        R.mipmap.ic_weather_default, R.mipmap.ic_weather_default);
                 Bitmap bitmap = ((BitmapDrawable) item.image_weather_pic.getDrawable()).getBitmap();
                 Palette p = Palette.from(bitmap).generate();
                 item.txt_weather.setTextColor(p.getDarkVibrantColor(mContext.getResources().getColor(android.R.color.black)));
@@ -134,12 +128,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     class VHItem extends RecyclerView.ViewHolder {
         public ViewGroup root_view;
         public TextView txt_weather;
-        public NetworkImageView image_weather_pic;
+        public ImageView image_weather_pic;
         public VHItem(View v){
             super(v);
             root_view = (ViewGroup) v.findViewById(R.id.root_view);
             txt_weather = (TextView) v.findViewById(R.id.txt_weather);
-            image_weather_pic = (NetworkImageView) v.findViewById(R.id.image_weather_pic);
+            image_weather_pic = (ImageView) v.findViewById(R.id.image_weather_pic);
         }
     }
 

@@ -6,9 +6,9 @@
         <!--<item android:id="@+id/nav_menu_item_home"-->
             <!--android:icon="@mipmap/menu_item_home"-->
             <!--android:title="@string/menu_item_home" />-->
-        <!--<item android:id="@+id/nav_menu_item_weather"-->
-            <!--android:icon="@mipmap/menu_item_weather"-->
-            <!--android:title="@string/menu_item_weather" />-->
+        <item android:id="@+id/nav_menu_item_picture"
+            android:icon="@mipmap/menu_item_picture"
+            android:title="@string/menu_item_picture" />
         <item android:id="@+id/nav_menu_item_note"
             android:icon="@mipmap/menu_item_note"
             android:title="@string/menu_item_note" />

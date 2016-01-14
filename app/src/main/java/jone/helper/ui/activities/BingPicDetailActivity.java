@@ -3,19 +3,16 @@ package jone.helper.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.List;
 
+import jone.helper.App;
 import jone.helper.R;
-import jone.helper.lib.model.imageCache.ImageCacheManager;
-import jone.helper.lib.volley.VolleyCommon;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureHs;
 import jone.helper.model.bing.BingPictureOperator;
-import jone.helper.model.imageCache.ImageCacheManger;
 import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 
 /**
@@ -33,15 +30,15 @@ public class BingPicDetailActivity extends BaseAppCompatWithLayoutActivity {
         if(getIntent().hasExtra("bingPicture")){
             BingPicture bingPicture = (BingPicture) getIntent().getSerializableExtra("bingPicture");
             TextView tv_title = findView(R.id.tv_title);
-            NetworkImageView iv_picture = findView(R.id.iv_picture);
+            ImageView iv_picture = findView(R.id.iv_picture);
             TextView tv_content = findView(R.id.tv_content);
             TextView tv_copyright = findView(R.id.tv_copyright);
 
             tv_title.setText(bingPicture.getMsg().get(0).getText());
-//            iv_picture.setDefaultImageResId(R.drawable.side_nav_bar);
-//            iv_picture.setErrorImageResId(R.drawable.side_nav_bar);
             picUrl = BingPictureOperator.getFullImageUrl(BingPicDetailActivity.this, bingPicture.getUrl());
-            iv_picture.setImageUrl(picUrl, ImageCacheManager.getInstance().getImageLoader());
+            App.getImageLoader().display(BingPicDetailActivity.this,
+                    iv_picture, picUrl,
+                    R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);
 
             iv_picture.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,7 +50,7 @@ public class BingPicDetailActivity extends BaseAppCompatWithLayoutActivity {
 
             List<BingPictureHs> bingPictureHsList = bingPicture.getHs();
             if(bingPictureHsList != null && bingPictureHsList.size() > 0){
-                StringBuffer stringBuffer = new StringBuffer();
+                StringBuilder stringBuffer = new StringBuilder();
                 for(BingPictureHs bingPictureHs : bingPictureHsList){
                     stringBuffer.append("\r\n").append(bingPictureHs.getDesc())
                             .append(bingPictureHs.getQuery())
