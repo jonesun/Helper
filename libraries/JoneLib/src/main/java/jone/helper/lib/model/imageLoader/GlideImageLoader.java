@@ -9,15 +9,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.volley.VolleyUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 
 import java.io.InputStream;
 
-import jone.helper.lib.volley.VolleyCommon;
+import jone.net.volley.VolleyCommon;
 
 /**
  * 采用Glide库的imageLoader

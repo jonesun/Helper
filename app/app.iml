@@ -18,14 +18,14 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res-modules/weather-widget;file://$MODULE_DIR$/src/main/res-modules/calculator;file://$MODULE_DIR$/src/main/res-modules/umeng;file://$MODULE_DIR$/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res;file://$MODULE_DIR$/src/main/res-modules/calculator;file://$MODULE_DIR$/src/main/res-modules/umeng;file://$MODULE_DIR$/src/main/res-modules/weather-widget" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/baidu/release" />
-    <output-test url="file://$MODULE_DIR$/build/intermediates/classes/androidTest/_163/debug" />
+    <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/baidu/release" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/baidu/release" isTestSource="false" generated="true" />
@@ -41,6 +41,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/baiduRelease/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/baiduRelease/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/baiduRelease/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaiduRelease/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/assets" type="java-resource" />
@@ -55,6 +62,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/assets" type="java-resource" />
@@ -62,6 +76,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/release/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testRelease/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res-modules/calculator" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res-modules/umeng" type="java-resource" />
@@ -72,6 +93,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/rs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/assets" type="java-test-resource" />
@@ -113,7 +141,6 @@
     <orderEntry type="library" exported="" name="palette-v7-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-2.7.2" level="project" />
     <orderEntry type="library" exported="" name="volley-integration-1.3.1" level="project" />
     <orderEntry type="library" exported="" name="com.umeng.fb.5.4.0" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.48" level="project" />
@@ -129,16 +156,18 @@
     <orderEntry type="library" exported="" name="yalantiscontextmenu-release1.0-" level="project" />
     <orderEntry type="library" exported="" name="arity-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.7.2" level="project" />
     <orderEntry type="library" exported="" name="gson-2.5" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.1.1" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-3.0.1" level="project" />
     <orderEntry type="library" exported="" name="baidu_appx_android_2.0.0" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
     <orderEntry type="library" exported="" name="umeng-update-v2.6.0.1" level="project" />
     <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v13-23.1.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="analytics-5.6.4" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="module" module-name="JoneLib" exported="" />
     <orderEntry type="module" module-name="viewpagerindicator" exported="" />
     <orderEntry type="module" module-name="ZxingScan" exported="" />

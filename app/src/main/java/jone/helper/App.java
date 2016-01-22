@@ -9,18 +9,14 @@ import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Map;
+
 import jone.helper.lib.model.imageLoader.GlideImageLoader;
 import jone.helper.lib.model.imageLoader.ImageLoader;
-import jone.helper.lib.model.imageLoader.VolleyImageLoader;
-import jone.helper.lib.model.net.NetGsonOperator;
-import jone.helper.lib.model.net.NetJSONObjectOperator;
-import jone.helper.lib.model.net.NetOperator;
-import jone.helper.lib.model.net.NetStringOperator;
+import jone.helper.lib.model.network.NetworkOperator;
+import jone.helper.lib.model.network.okhttp.OkHttpNetworkOperator;
+import jone.helper.lib.model.network.volley.VolleyNetworkOperator;
 import jone.helper.lib.view.CommonView;
 
 /**
@@ -29,9 +25,8 @@ import jone.helper.lib.view.CommonView;
 public class App extends Application {
     private static final String TAG = App.class.getSimpleName();
     private static App instance;
-    private static NetOperator<String> netStringOperator;
-    private static NetOperator<JSONObject> netJsonOperator;
-    private static NetGsonOperator netGsonOperator;
+    private static NetworkOperator volleyNetworkOperator;
+    private static NetworkOperator okHttpNetworkOperator;
     private static ImageLoader imageLoader;
     public static App getInstance() {
         return instance;
@@ -41,9 +36,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        netStringOperator = NetStringOperator.getInstance(this);
-        netJsonOperator = NetJSONObjectOperator.getInstance(this);
-        netGsonOperator = NetGsonOperator.getInstance(this);
+        volleyNetworkOperator = VolleyNetworkOperator.getInstance().init(this);
+        okHttpNetworkOperator = OkHttpNetworkOperator.getInstance().init(this);
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
         initAppInfo();
         imageLoader = GlideImageLoader.getInstance().init(this);
@@ -61,16 +55,12 @@ public class App extends Application {
         }
     }
 
-    public static NetOperator<String> getNetStringOperator() {
-        return netStringOperator;
+    public static NetworkOperator getVolleyNetworkOperator() {
+        return volleyNetworkOperator;
     }
 
-    public static NetOperator<JSONObject> getNetJsonOperator() {
-        return netJsonOperator;
-    }
-
-    public static NetGsonOperator getNetGsonOperator() {
-        return netGsonOperator;
+    public static NetworkOperator getOkHttpNetworkOperator() {
+        return okHttpNetworkOperator;
     }
 
     public static ImageLoader getImageLoader() {

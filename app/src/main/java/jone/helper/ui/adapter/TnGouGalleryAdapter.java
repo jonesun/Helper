@@ -37,7 +37,8 @@ public class TnGouGalleryAdapter extends LoadDataRecyclerViewAdapter<TnGouGaller
             PictureItemViewHolder viewHolder = (PictureItemViewHolder) holder;
             viewHolder.mTitle.setText(data.getTitle());
             viewHolder.mImage.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 700));
+                    LinearLayout.LayoutParams.MATCH_PARENT, 750));
+            viewHolder.mImage.setScaleType(ImageView.ScaleType.FIT_XY);
             App.getImageLoader().display(getContext(),
                     viewHolder.mImage, data.getImg(),
                     R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);

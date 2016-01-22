@@ -73,4 +73,9 @@ public class FragmentTabHostActivity extends AppCompatActivity implements
         }
         supportInvalidateOptionsMenu();
     }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+    }
 }

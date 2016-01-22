@@ -180,6 +180,10 @@ public abstract class LoadDataRecyclerViewAdapter<T> extends RecyclerView.Adapte
         }
     }
 
+    public List<T> getDataList() {
+        return dataList;
+    }
+
     public Context getContext() {
         return context;
     }

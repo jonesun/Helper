@@ -228,4 +228,9 @@
     <string name="today_festival">今天是: <xliff:g id="xxx">%s</xliff:g></string>
     <string name="today_no_festival">今天没有节日</string>
     <string name="title_activity_pictures_tab">图片</string>
+
+    <string name="picture_indicator">%1$d/%2$d</string>
+
+    <string name="title_activity_picture_view_pager_fullscreen">PictureViewPagerFullscreenActivity
+    </string>
 </resources>

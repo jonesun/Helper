@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
 import jone.helper.App;
-import jone.helper.lib.volley.VolleyCommon;
+import jone.net.volley.VolleyCommon;
 
 /**
  * ImageCacheManger.loadImage("http://ww2.sinaimg.cn/large/7cc829d3gw1eahy2zrjlxj20kd0a10t9.jpg", iv,

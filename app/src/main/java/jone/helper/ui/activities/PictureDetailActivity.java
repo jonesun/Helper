@@ -9,7 +9,11 @@ import android.view.View;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jone.helper.R;
+import jone.helper.bean.PictureBean;
 import jone.helper.bean.TnGouPicture;
 import jone.helper.mvp.model.load.JSONObjectLoadDataModel;
 import jone.helper.mvp.model.load.LoadDataModel;
@@ -26,6 +30,7 @@ import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
  * Created by jone.sun on 2016/1/14.
  */
 public class PictureDetailActivity extends BaseAppCompatWithLayoutActivity {
+    private static String title;
     @Override
     protected int getContentView() {
         return R.layout.activity_picture_detail;
@@ -36,7 +41,7 @@ public class PictureDetailActivity extends BaseAppCompatWithLayoutActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         int id = getIntent().getIntExtra("id", 0);
-        String title = getIntent().getStringExtra("title");
+        title = getIntent().getStringExtra("title");
         if(!TextUtils.isEmpty(title)){
             setTitle(title);
         }
@@ -82,8 +87,14 @@ public class PictureDetailActivity extends BaseAppCompatWithLayoutActivity {
 
         @Override
         public void onItemClick(View view, int position, TnGouPicture data) {
-            ZoomImageViewActivity.open(getActivity(),
-                    data.getSrc());
+            List<TnGouPicture> tnGouPictureList = getAdapter().getDataList();
+            ArrayList<PictureBean> pictureBeanArrayList = new ArrayList<>();
+            for(TnGouPicture tnGouPicture : tnGouPictureList){
+                pictureBeanArrayList.add(new PictureBean(title, "暂无说明", tnGouPicture.getSrc()));
+            }
+            PictureViewPagerActivity.open(getContext(), pictureBeanArrayList, position);
+//            ZoomImageViewActivity.open(getActivity(),
+//                    data.getSrc());
         }
     }
 }

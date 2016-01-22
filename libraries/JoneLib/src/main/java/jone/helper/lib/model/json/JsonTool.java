@@ -1,5 +1,9 @@
 package jone.helper.lib.model.json;
 
+import com.google.gson.JsonSyntaxException;
+
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -15,5 +19,11 @@ public interface JsonTool {
 
     <T> List<T> loadAsList(String json, Class<T> clazz);
 
+    <T> T deserialize(String json, Type type);
+
     boolean isGoodJson(String json);
+
+    <T> T loadAs(Reader reader, Class<T> clazz);
+
+    <T> List<T> loadAsList(Reader reader, Type type);
 }

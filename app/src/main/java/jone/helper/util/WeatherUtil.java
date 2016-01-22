@@ -25,10 +25,11 @@ import java.util.Calendar;
 import jone.helper.App;
 import jone.helper.Constants;
 import jone.helper.R;
+import jone.helper.lib.model.network.NetworkRequest;
+import jone.helper.lib.model.network.ResponseCallback;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.callbacks.CommonListener;
-import jone.helper.lib.model.net.NetResponseCallback;
-import jone.helper.lib.volley.Method;
+import jone.net.NetResponseCallback;
 
 /**
  * @author jone_admin on 2014/4/28.
@@ -40,9 +41,13 @@ public class WeatherUtil {
      * @param locationListener
      */
     public static void getLocationAddressFromBaidu(final CommonListener locationListener){
-        App.getNetJsonOperator().request(Method.GET, Constants.GET_LOCATION_URL, null, new NetResponseCallback<JSONObject>() {
+        NetworkRequest request = new NetworkRequest.Builder()
+                .get()
+                .url(Constants.GET_LOCATION_URL)
+                .setUsingCacheWithNoNetwork(true).build();
+        App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response, boolean fromCache) {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
                     String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
@@ -62,9 +67,9 @@ public class WeatherUtil {
             }
 
             @Override
-            public void onFailure(String error) {
+            public void onFailure(Exception e) {
                 locationListener.onExecute(null);
-                Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + error);
+                Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + e.getMessage());
             }
         });
     }
@@ -139,9 +144,13 @@ public class WeatherUtil {
      */
     public static void getWeatherInfoByURL(final String url, final WeatherInfoListener weatherInfoListener){
         if(url != null){
-            App.getNetJsonOperator().request(Method.GET, url, null, new NetResponseCallback<JSONObject>() {
+            NetworkRequest request = new NetworkRequest.Builder()
+                    .get()
+                    .url(url)
+                    .setUsingCacheWithNoNetwork(true).build();
+            App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
                 @Override
-                public void onSuccess(JSONObject response) {
+                public void onSuccess(JSONObject response, boolean fromCache) {
                     Weather weather = null;
                     try {
                         if (response.has("status")) {
@@ -162,8 +171,8 @@ public class WeatherUtil {
                 }
 
                 @Override
-                public void onFailure(String error) {
-                    Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
+                public void onFailure(Exception e) {
+                    Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + e.getMessage());
                     weatherInfoListener.onResponse(null);
                 }
             });

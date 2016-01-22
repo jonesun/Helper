@@ -11,15 +11,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import jone.helper.App;
-import jone.helper.lib.model.net.NetResponseCallback;
+import jone.helper.lib.model.network.NetworkRequest;
+import jone.helper.lib.model.network.ResponseCallback;
 import jone.helper.lib.util.SystemUtil;
-import jone.helper.lib.volley.Method;
 
-/**http://www.bing.com/HPImageArchive.aspx?format=xml&idx=1&n=1&mkt=en-US
+/**http://www.bing.com/HPImageArchive.aspx?format=js&idx=1&n=1&mkt=en-US
  * format：接口返回格式，已知可选项xml,js
  * idx:日期表示0为当天，-1为明天，1为昨天，2为后天，依次类推，已知可选项-1 ~ 18
  * n: 个数
@@ -40,9 +42,18 @@ public class BingPictureOperator {
                 .append("&").append("idx=").append(new Random().nextInt(10) + "")
                 .append("&").append("n=1");
 //                .append("&").append("mkt=").append("zh-CN");
-        App.getNetJsonOperator().request(Method.GET, url.toString(), null, new NetResponseCallback<JSONObject>() {
+        Map<String, String> params = new HashMap<>();
+        params.put("format", "js");
+        params.put("idx", new Random().nextInt(10) + "");
+        params.put("n", "1");
+        NetworkRequest request = new NetworkRequest.Builder()
+                .get()
+                .params(params)
+                .url(url.toString())
+                .setUsingCacheWithNoNetwork(true).build();
+        App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response, boolean fromCache) {
                 Log.e("getDailyPictureUrl", "response: " + response.toString());
                 BingPicture bingPicture = null;
                 try {
@@ -63,10 +74,10 @@ public class BingPictureOperator {
             }
 
             @Override
-            public void onFailure(String error) {
-                Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + error);
+            public void onFailure(Exception e) {
+                Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + e.getMessage());
                 if(onBingPictureListener != null){
-                    onBingPictureListener.onError(error);
+                    onBingPictureListener.onError(e.getMessage());
                 }
             }
         });
@@ -76,9 +87,13 @@ public class BingPictureOperator {
         StringBuilder url = new StringBuilder("http://www.bing.com/HPImageArchive.aspx");
         url.append("?").append("format=").append("js")
                 .append("&").append("n=").append(count);
-        App.getNetJsonOperator().request(Method.GET, url.toString(), null, new NetResponseCallback<JSONObject>() {
+        NetworkRequest request = new NetworkRequest.Builder()
+                .get()
+                .url(url.toString())
+                .setUsingCacheWithNoNetwork(true).build();
+        App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response, boolean fromCache) {
                 Log.e("getDailyPictureUrl", "response: " + response.toString());
                 List<BingPicture> bingPictureList = new ArrayList<>();
                 try {
@@ -101,10 +116,10 @@ public class BingPictureOperator {
             }
 
             @Override
-            public void onFailure(String error) {
-                Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + error);
+            public void onFailure(Exception e) {
+                Log.e("getDailyPictureUrl", "获取失败，请检查网络连接: " + e.getMessage());
                 if(onBingPicturesListener != null){
-                    onBingPicturesListener.onError(error);
+                    onBingPicturesListener.onError(e.getMessage());
                 }
             }
         });

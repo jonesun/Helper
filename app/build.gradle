@@ -98,6 +98,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //    compile 'com.android.support:support-v4:23.0.1'
     compile project(':libraries:ZxingScan')
+    compile project(':libraries:viewpagerindicator')
     compile 'com.google.zxing:core:3.0.1'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
@@ -108,7 +109,7 @@ dependencies {
     compile 'com.android.support:palette-v7:23.1.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'cn.lightsky.infiniteindicator:library:1.0.3'
-    compile project(':libraries:viewpagerindicator')
+    compile 'com.android.support:support-v4:23.1.1'
 }
 
 def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
@@ -125,6 +126,7 @@ def getSrcDirs(defaultSrcDirs, customSrcDirsRoot) {
 def releaseTime() {
     return new Date().format("yyyy_MM_dd")
 }
+
 
 
 

@@ -1,12 +1,12 @@
 package jone.helper.ui.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,14 +28,13 @@ import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
-import jone.helper.model.customAd.JoneBaiduAd;
-import jone.helper.ui.adapter.NewsAdapter;
 import jone.helper.bean.News;
-import jone.helper.lib.model.net.NetResponseCallback;
+import jone.helper.lib.model.network.NetworkRequest;
+import jone.helper.lib.model.network.ResponseCallback;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
-import jone.helper.lib.volley.Method;
-import jone.helper.ui.view.PullToRefreshView;
+import jone.helper.model.customAd.JoneBaiduAd;
+import jone.helper.ui.adapter.NewsAdapter;
 
 public class EggsActivity extends FragmentActivity {
     private static final String TAG = EggsActivity.class.getSimpleName();
@@ -169,58 +168,58 @@ public class EggsActivity extends FragmentActivity {
          */
         private void getNewsList() {
             //
-
-            App.getNetStringOperator().request(Method.GET,
-                    "http://roll.news.sina.com.cn/interface/rollnews_ch_out_interface.php?num=20",
-                    null,
-                    new NetResponseCallback<String>() {
-                        @Override
-                        public void onSuccess(String response) {
-                            List<News> newses = new ArrayList<>();
-                            if(response != null && response.length() > 0){
-                                response = response.replace("var jsonData = ", "").replace(";", "");
-                                Log.e(TAG, "response: " + response);
-                                if(GsonUtils.isGoodJson(response)){
-                                    try {
-                                        JSONObject jsonObject = new JSONObject(response);
-                                        if(jsonObject.length() > 0 && jsonObject.has("list")){
-                                            String listStr = jsonObject.getString("list");
-                                            Log.e(TAG, "list: " + listStr);
-                                            JSONArray jsonArray = new JSONArray(listStr);
-                                            if(jsonArray.length() > 0){
-                                                for(int i = 0; i < jsonArray.length(); i++){
-                                                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                                    News news = new News();
-                                                    if(jsonObject1.has("title")){
-                                                        news.setTitle(jsonObject1.getString("title"));
-                                                    }
-                                                    if(jsonObject1.has("url")){
-                                                        news.setUrl(jsonObject1.getString("url"));
-                                                    }
-                                                    if(jsonObject1.has("pic")){
-                                                        news.setImageUrl(jsonObject1.getString("pic"));
-                                                    }
-                                                    if(jsonObject1.has("time")){
-                                                        news.setTime(jsonObject1.getLong("time"));
-                                                    }
-                                                    news.setFrom("sina");
-                                                    newses.add(news);
-                                                }
+            NetworkRequest request = new NetworkRequest.Builder()
+                    .get()
+                    .url("http://roll.news.sina.com.cn/interface/rollnews_ch_out_interface.php?num=20")
+                    .setUsingCacheWithNoNetwork(true).build();
+            App.getVolleyNetworkOperator().request(request, String.class, new ResponseCallback<String>() {
+                @Override
+                public void onSuccess(String response, boolean fromCache) {
+                    List<News> newses = new ArrayList<>();
+                    if(response != null && response.length() > 0){
+                        response = response.replace("var jsonData = ", "").replace(";", "");
+                        Log.e(TAG, "response: " + response);
+                        if(GsonUtils.isGoodJson(response)){
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if(jsonObject.length() > 0 && jsonObject.has("list")){
+                                    String listStr = jsonObject.getString("list");
+                                    Log.e(TAG, "list: " + listStr);
+                                    JSONArray jsonArray = new JSONArray(listStr);
+                                    if(jsonArray.length() > 0){
+                                        for(int i = 0; i < jsonArray.length(); i++){
+                                            JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                                            News news = new News();
+                                            if(jsonObject1.has("title")){
+                                                news.setTitle(jsonObject1.getString("title"));
                                             }
+                                            if(jsonObject1.has("url")){
+                                                news.setUrl(jsonObject1.getString("url"));
+                                            }
+                                            if(jsonObject1.has("pic")){
+                                                news.setImageUrl(jsonObject1.getString("pic"));
+                                            }
+                                            if(jsonObject1.has("time")){
+                                                news.setTime(jsonObject1.getLong("time"));
+                                            }
+                                            news.setFrom("sina");
+                                            newses.add(news);
                                         }
-                                    } catch (JSONException e) {
-                                        Log.e(TAG, "", e);
                                     }
                                 }
+                            } catch (JSONException e) {
+                                Log.e(TAG, "", e);
                             }
-                            handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, newses));
                         }
+                    }
+                    handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, newses));
+                }
 
-                        @Override
-                        public void onFailure(String error) {
-                            handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, null));
-                        }
-                    });
+                @Override
+                public void onFailure(Exception e) {
+                    handler.sendMessage(handler.obtainMessage(WHAT_GET_DONE, null));
+                }
+            });
         }
     }
 }

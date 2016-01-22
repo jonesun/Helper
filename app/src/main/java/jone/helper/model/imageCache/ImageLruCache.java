@@ -19,7 +19,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import jone.helper.App;
-import jone.helper.lib.model.cache.DiskLruCache;
+import jone.net.volley.cache.DiskLruCache;
 
 /**
  * Created by jone.sun on 2015/12/8.

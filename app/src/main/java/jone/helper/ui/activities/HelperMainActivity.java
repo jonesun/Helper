@@ -115,7 +115,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                         .edit()
                         .putBoolean("first_open_" + BuildConfig.VERSION_NAME, false)
                         .apply();
-            }else {
+            }else if(Utils.isNetworkAlive(HelperMainActivity.this)){
                 startActivity(new Intent(this, SplashActivity.class));
             }
             changeFragment(HelperMainFragment.getInstance());
@@ -526,7 +526,5 @@ public class HelperMainActivity extends BaseAppCompatActivity
             localBroadcastManager.unregisterReceiver(broadcastReceiver);
         }
         unbindService(serviceConnection);
-        App.getNetStringOperator().cancelAll();
-        App.getNetJsonOperator().cancelAll();
     }
 }

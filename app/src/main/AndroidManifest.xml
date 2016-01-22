@@ -120,6 +120,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/HelperTheme.light_blue" />
         <activity
+            android:name=".ui.activities.PictureViewPagerActivity"
+            android:screenOrientation="portrait"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:theme="@style/HelperTheme.light_blue">
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
+        </activity>
+        <activity
             android:name=".ui.activities.ZoomImageViewActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
@@ -205,7 +214,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <!-- 高德地图 -->
         <service android:name="com.amap.api.location.APSService" />
@@ -219,13 +228,19 @@
             android:label="@string/title_activity_pictures_tab"
             android:parentActivityName=".ui.activities.HelperMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.light_blue"/>
+            android:theme="@style/HelperTheme.light_blue" />
         <activity
             android:name=".ui.activities.PictureDetailActivity"
             android:label="@string/title_activity_pictures_tab"
             android:parentActivityName=".ui.activities.PicturesTabActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HelperTheme.light_blue"/>
+            android:theme="@style/HelperTheme.light_blue" />
+        <activity
+            android:name=".ui.activities.PictureViewPagerFullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_picture_view_pager_fullscreen"
+            android:theme="@style/FullscreenTheme"/>
     </application>
 
 </manifest>

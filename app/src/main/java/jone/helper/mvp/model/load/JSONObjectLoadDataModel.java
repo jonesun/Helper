@@ -1,15 +1,12 @@
 package jone.helper.mvp.model.load;
 
-import android.util.Log;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
 
 import core.common.tuple.Tuple2;
-import jone.helper.lib.volley.Method;
+import jone.helper.lib.model.network.NetworkRequest;
 import jone.helper.mvp.model.netLoadData.NetLoadDataModel;
 import jone.helper.mvp.model.netLoadData.VolleyJSONObjectLoadDataModel;
 
@@ -28,7 +25,7 @@ public abstract class JSONObjectLoadDataModel<T> implements LoadDataModel<T, JSO
     public void loadData(int pageIndex, final Callback<List<T>> callback) {
         this.callbacks = callback;
         Tuple2<String, Map<String, String>> config = getConfig(pageIndex);
-        netLoadDataModel.loadData(Method.GET, config.v1, config.v2,
+        netLoadDataModel.loadData(NetworkRequest.Method.GET, config.v1, config.v2,
                 new Callback<JSONObject>() {
                     @Override
                     public void onComplete(int resultCode, String message, JSONObject data) {

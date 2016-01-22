@@ -3,6 +3,7 @@ package jone.helper.lib.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -34,6 +35,10 @@ public class GsonUtils {
     public static <T> List<T> loadAsList(String json, Class<T> clazz) {
         Type type = new TypeToken<ArrayList<T>>() {
         }.getType();
+        return gson.fromJson(json, type);
+    }
+
+    public static <T> T deserialize(String json, Type type) throws JsonSyntaxException {
         return gson.fromJson(json, type);
     }
 

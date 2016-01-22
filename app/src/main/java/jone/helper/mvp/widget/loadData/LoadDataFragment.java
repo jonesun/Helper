@@ -58,6 +58,14 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
         loadDataPresenter = initLoadDataPresenter();
     }
 
+    /**
+     * 是否检查网络
+     * @return
+     */
+    public boolean checkNetwork(){
+        return true;
+    }
+
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
@@ -109,7 +117,7 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
                 }
             });
             adapter.setOnItemClickListener(this);
-            if(SystemUtil.hasNetWork(getContext())){
+            if(SystemUtil.hasNetWork(getContext()) || !checkNetwork()){
                 onRefresh();
             }else {
                 mSwipeRefreshWidget.setVisibility(View.GONE);

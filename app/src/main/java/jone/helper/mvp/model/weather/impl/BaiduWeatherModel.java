@@ -22,12 +22,13 @@ import java.net.URLEncoder;
 
 import jone.helper.App;
 import jone.helper.Constants;
-import jone.helper.lib.model.net.NetResponseCallback;
-import jone.helper.lib.volley.Method;
+import jone.helper.lib.model.network.NetworkRequest;
+import jone.helper.lib.model.network.ResponseCallback;
 import jone.helper.mvp.model.weather.OnLocationListener;
 import jone.helper.mvp.model.weather.OnWeatherListener;
 import jone.helper.mvp.model.weather.WeatherModel;
 import jone.helper.mvp.model.weather.entity.Weather;
+import jone.net.NetResponseCallback;
 
 /**
  * Created by jone.sun on 2015/7/2.
@@ -36,9 +37,13 @@ public class BaiduWeatherModel implements WeatherModel {
 
     @Override
     public void getLocationCity(Context context, final OnLocationListener locationListener) {
-        App.getNetJsonOperator().request(Method.GET, Constants.GET_LOCATION_URL, null, new NetResponseCallback<JSONObject>() {
+        NetworkRequest request = new NetworkRequest.Builder()
+                .get()
+                .url(Constants.GET_LOCATION_URL)
+                .setUsingCacheWithNoNetwork(true).build();
+        App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject response, boolean fromCache) {
                 try {
                     JSONObject locationContent = response.getJSONObject(Constants.LOCATION_CONTENT);
                     String address = locationContent.isNull(Constants.LOCATION_ADDRESS) ? "北京" : locationContent.getString(Constants.LOCATION_ADDRESS);
@@ -56,11 +61,11 @@ public class BaiduWeatherModel implements WeatherModel {
             }
 
             @Override
-            public void onFailure(String error) {
+            public void onFailure(Exception e) {
                 if(locationListener != null){
-                    locationListener.onError(error);
+                    locationListener.onError(e.getMessage());
                 }
-                Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + error);
+                Log.d("baiduapi", "获取当前位置失败，请检查网络连接: " + e.getMessage());
             }
         });
     }
@@ -68,10 +73,14 @@ public class BaiduWeatherModel implements WeatherModel {
     @Override
     public void loadData(Context context, String city, final OnWeatherListener listener) {
         String weatherUrl = getWeatherUrlByCityFromBaidu(city);
-        App.getNetJsonOperator().request(Method.GET, weatherUrl, null, new NetResponseCallback<JSONObject>() {
+        NetworkRequest request = new NetworkRequest.Builder()
+                .get()
+                .url(weatherUrl)
+                .setUsingCacheWithNoNetwork(true).build();
+        App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
-            public void onSuccess(JSONObject response) {
-//                Log.e("loadWeather", "response: " + response.toString());
+            public void onSuccess(JSONObject response, boolean fromCache) {
+                //                Log.e("loadWeather", "response: " + response.toString());
                 Weather weather = null;
                 try {
                     if (response.has("status")) {
@@ -94,10 +103,10 @@ public class BaiduWeatherModel implements WeatherModel {
             }
 
             @Override
-            public void onFailure(String error) {
-                Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + error);
+            public void onFailure(Exception e) {
+                Log.e("getWeatherInfo", "获取天气信息失败，请检查网络连接: " + e.getMessage());
                 if(listener != null){
-                    listener.onError(error);
+                    listener.onError(e.getMessage());
                 }
             }
         });

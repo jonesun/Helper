@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/libraries/JoneLib" />
             <option value="$PROJECT_DIR$/libraries/ZxingScan" />
             <option value="$PROJECT_DIR$/libraries/viewpagerindicator" />
+            <option value="$PROJECT_DIR$/libraries/volley" />
           </set>
         </option>
         <option name="myModules">
@@ -24,6 +25,7 @@
             <option value="$PROJECT_DIR$/libraries/JoneLib" />
             <option value="$PROJECT_DIR$/libraries/ZxingScan" />
             <option value="$PROJECT_DIR$/libraries/viewpagerindicator" />
+            <option value="$PROJECT_DIR$/libraries/volley" />
           </set>
         </option>
       </GradleProjectSettings>

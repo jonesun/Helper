@@ -21,6 +21,11 @@ import jone.helper.ui.activities.ZoomImageViewActivity;
 public class LaiFuDaoPictureFragment extends LoadDataFragment<LaiFuDaoPicture> {
 
     @Override
+    public boolean checkNetwork() {
+        return false;
+    }
+
+    @Override
     public LoadDataPresenter initLoadDataPresenter() {
         return new LoadDataPresenterImpl<LaiFuDaoPicture, String>(this) {
             @Override
