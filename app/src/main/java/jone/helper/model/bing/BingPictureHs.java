@@ -1,11 +1,12 @@
 package jone.helper.model.bing;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by jone.sun on 2015/9/21.
  */
-public class BingPictureHs implements Serializable{
+public class BingPictureHs implements Parcelable {
     private String desc;
     private String link;
     private String query;
@@ -51,4 +52,39 @@ public class BingPictureHs implements Serializable{
     public void setLocy(int locy) {
         this.locy = locy;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.desc);
+        dest.writeString(this.link);
+        dest.writeString(this.query);
+        dest.writeInt(this.locx);
+        dest.writeInt(this.locy);
+    }
+
+    public BingPictureHs() {
+    }
+
+    protected BingPictureHs(Parcel in) {
+        this.desc = in.readString();
+        this.link = in.readString();
+        this.query = in.readString();
+        this.locx = in.readInt();
+        this.locy = in.readInt();
+    }
+
+    public static final Parcelable.Creator<BingPictureHs> CREATOR = new Parcelable.Creator<BingPictureHs>() {
+        public BingPictureHs createFromParcel(Parcel source) {
+            return new BingPictureHs(source);
+        }
+
+        public BingPictureHs[] newArray(int size) {
+            return new BingPictureHs[size];
+        }
+    };
 }

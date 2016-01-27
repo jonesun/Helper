@@ -1,11 +1,10 @@
 package jone.helper.model.bing;
 
-import java.util.List;
-
+import java.util.ArrayList;
 /**
  * Created by jone.sun on 2015/10/16.
  */
 public interface OnBingPicturesListener {
-    void onSuccess(List<BingPicture> bingPictureList);
+    void onSuccess(ArrayList<BingPicture> bingPictureList);
     void onError(String reason);
 }

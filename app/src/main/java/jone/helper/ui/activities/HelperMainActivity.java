@@ -15,25 +15,25 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,14 +56,12 @@ import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
 import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
 import jone.helper.App;
 import jone.helper.R;
-import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.Calculator.Calculator;
 import jone.helper.model.bing.BingPicture;
 import jone.helper.model.bing.BingPictureMsg;
 import jone.helper.model.bing.BingPictureOperator;
 import jone.helper.model.bing.OnBingPictureListener;
-import jone.helper.model.bing.OnBingPicturesListener;
 import jone.helper.services.MessengerService;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.dialog.ChooseThemeDialogFragment;
@@ -90,11 +88,22 @@ public class HelperMainActivity extends BaseAppCompatActivity
 
     private LocalBroadcastManager localBroadcastManager;
     private Messenger messenger, reply;
+    public static final int WHAT_RESPONSE_PICTURE_LIST = 20001;
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Log.e(TAG, "回调成功" + msg.what);
+            switch (msg.what){
+                case WHAT_RESPONSE_PICTURE_LIST:
+                    Bundle bundle = msg.getData();
+                    bundle.setClassLoader(getClassLoader());
+                    if(bundle.containsKey("bingPictureList")){
+                        ArrayList<BingPicture> bingPictureList = bundle.getParcelableArrayList("bingPictureList");
+                        initIndicator(bingPictureList);
+                    }
+                    break;
+            }
         }
     };
     @Override
@@ -105,6 +114,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Debug.startMethodTracing("Entertainment");//生成日志，运行TraceView
         if(savedInstanceState == null){
             if(PreferenceManager
                     .getDefaultSharedPreferences(HelperMainActivity.this)
@@ -150,7 +160,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     };
 
     public void sendMessage(){
-        Message message = Message.obtain(null, 1);
+        Message message = Message.obtain(null, MessengerService.WHAT_REQUEST_PICTURE_LIST);
         Bundle bundle = new Bundle();
         bundle.putString("name", "我是" + TAG);
         message.setData(bundle);
@@ -185,7 +195,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
     protected void findViews() {
         fragmentManager = getSupportFragmentManager();
         initViews();
-        initIndicator();
 
         MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
@@ -253,7 +262,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
                 BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
                     @Override
                     public void onSuccess(final BingPicture bingPicture) {
-                        Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
+//                        Log.e(TAG, "bingPicture: " + GsonUtils.toJson(bingPicture));
                         if (bingPicture != null && iv_picture != null) {
                             App.getImageLoader().display(HelperMainActivity.this,
                                     iv_picture, bingPicture.getUrl(),
@@ -282,44 +291,36 @@ public class HelperMainActivity extends BaseAppCompatActivity
 
     }
 
-    private void initIndicator(){
+    private void initIndicator(ArrayList<BingPicture> bingPictureList){
         infinite_indicator_layout = findView(R.id.infinite_indicator_layout);
-        BingPictureOperator.getInstance().getPictureUrls(4, new OnBingPicturesListener() {
-            @Override
-            public void onSuccess(List<BingPicture> bingPictureList) {
-                for (final BingPicture bingPicture : bingPictureList) {
-                    DefaultSliderView textSliderView = new DefaultSliderView(HelperMainActivity.this);
-                    textSliderView
-                            .image(bingPicture.getUrl())
-                            .setScaleType(BaseSliderView.ScaleType.Fit)
-                            .showImageResForEmpty(R.drawable.side_nav_bar)
-                            .showImageResForError(R.drawable.side_nav_bar)
-                            .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                                @Override
-                                public void onSliderClick(BaseSliderView slider) {
-                                    Bundle bundle = slider.getBundle();
-                                    if (bundle.containsKey("bingPicture")) {
-                                        BingPicDetailActivity.open(HelperMainActivity.this, (BingPicture) bundle.getSerializable("bingPicture"));
-                                    } else {
-                                        ZoomImageViewActivity.open(HelperMainActivity.this,
-                                                BingPictureOperator.getFullImageUrl(HelperMainActivity.this, slider.getUrl()));
-                                    }
+        if(bingPictureList != null && bingPictureList.size() > 0){
+            for (final BingPicture bingPicture : bingPictureList) {
+                DefaultSliderView textSliderView = new DefaultSliderView(HelperMainActivity.this);
+                textSliderView
+                        .image(bingPicture.getUrl())
+                        .setScaleType(BaseSliderView.ScaleType.Fit)
+                        .showImageResForEmpty(R.drawable.side_nav_bar)
+                        .showImageResForError(R.drawable.side_nav_bar)
+                        .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                            @Override
+                            public void onSliderClick(BaseSliderView slider) {
+                                Bundle bundle = slider.getBundle();
+                                if (bundle.containsKey("bingPicture")) {
+                                    BingPicDetailActivity.open(HelperMainActivity.this, (BingPicture) bundle.getSerializable("bingPicture"));
+                                } else {
+                                    ZoomImageViewActivity.open(HelperMainActivity.this,
+                                            BingPictureOperator.getFullImageUrl(HelperMainActivity.this, slider.getUrl()));
                                 }
-                            });
-                    textSliderView.getBundle()
-                            .putString("extra", bingPicture.getUrl());
-                    textSliderView.getBundle().putSerializable("bingPicture", bingPicture);
-                    infinite_indicator_layout.addSlider(textSliderView);
-                }
-                infinite_indicator_layout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-                infinite_indicator_layout.startAutoScroll();
+                            }
+                        });
+                textSliderView.getBundle()
+                        .putString("extra", bingPicture.getUrl());
+                textSliderView.getBundle().putParcelable("bingPicture", bingPicture);
+                infinite_indicator_layout.addSlider(textSliderView);
             }
-
-            @Override
-            public void onError(String reason) {
-
-            }
-        });
+            infinite_indicator_layout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
+            infinite_indicator_layout.startAutoScroll();
+        }
     }
 
     public void changeFragment(Fragment targetFragment){
@@ -526,5 +527,6 @@ public class HelperMainActivity extends BaseAppCompatActivity
             localBroadcastManager.unregisterReceiver(broadcastReceiver);
         }
         unbindService(serviceConnection);
+//        Debug.stopMethodTracing();
     }
 }

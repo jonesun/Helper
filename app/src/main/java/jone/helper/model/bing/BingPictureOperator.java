@@ -42,19 +42,14 @@ public class BingPictureOperator {
                 .append("&").append("idx=").append(new Random().nextInt(10) + "")
                 .append("&").append("n=1");
 //                .append("&").append("mkt=").append("zh-CN");
-        Map<String, String> params = new HashMap<>();
-        params.put("format", "js");
-        params.put("idx", new Random().nextInt(10) + "");
-        params.put("n", "1");
         NetworkRequest request = new NetworkRequest.Builder()
                 .get()
-                .params(params)
                 .url(url.toString())
                 .setUsingCacheWithNoNetwork(true).build();
         App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject response, boolean fromCache) {
-                Log.e("getDailyPictureUrl", "response: " + response.toString());
+//                Log.e("getDailyPictureUrl", "response: " + response.toString());
                 BingPicture bingPicture = null;
                 try {
                     if (response.has("images")) {
@@ -94,8 +89,8 @@ public class BingPictureOperator {
         App.getVolleyNetworkOperator().request(request, JSONObject.class, new ResponseCallback<JSONObject>() {
             @Override
             public void onSuccess(JSONObject response, boolean fromCache) {
-                Log.e("getDailyPictureUrl", "response: " + response.toString());
-                List<BingPicture> bingPictureList = new ArrayList<>();
+//                Log.e("getPictureUrls", fromCache + ">>response: " + response.toString());
+                ArrayList<BingPicture> bingPictureList = new ArrayList<>();
                 try {
                     if (response.has("images")) {
                         JSONArray results = response.getJSONArray("images");

@@ -1,6 +1,7 @@
 package jone.helper.lib.model.network;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class NetworkRequest {
     private Map<String, String> headers; //请求头
     private Map<String, String> params;   //请求参数
     private String tag; //设置tag,用于取消请求
+    private int cacheControl; //缓存策略
     private boolean usingCacheWithNoNetwork; //当无网络时使用缓存
     private boolean writeDebugLog; //打印debugLog
     private NetworkRequest(){}
@@ -40,7 +42,11 @@ public class NetworkRequest {
     }
 
     public String getTag() {
-        return builder.tag;
+        return initTag(builder.tag);
+    }
+
+    public int getCacheControl() {
+        return cacheControl;
     }
 
     public boolean isUsingCacheWithNoNetwork() {
@@ -57,6 +63,7 @@ public class NetworkRequest {
         private Map<String, String> headers; //请求头
         private Map<String, String> params;   //请求参数
         private String tag; //设置tag,用于取消请求
+        private int cacheControl; //缓存策略
         private boolean usingCacheWithNoNetwork; //当无网络时使用缓存
         private boolean writeDebugLog; //打印debugLog
         public Builder(){
@@ -114,6 +121,10 @@ public class NetworkRequest {
             return this;
         }
 
+        public void setCacheControl(@CacheControl int cacheControl) {
+            this.cacheControl = cacheControl;
+        }
+
         public Builder setUsingCacheWithNoNetwork(boolean usingCacheWithNoNetwork) {
             this.usingCacheWithNoNetwork = usingCacheWithNoNetwork;
             return this;
@@ -130,7 +141,14 @@ public class NetworkRequest {
 
     }
 
-    public @interface Method {
+    private String initTag(String tag){
+        if(TextUtils.isEmpty(tag)){
+            tag = getUrl(); //如果tag为空则设置为url
+        }
+        return tag;
+    }
+
+    public @interface Method { //HTTP请求方式
         int DEPRECATED_GET_OR_POST = -1;
         int GET = 0;
         int POST = 1;
@@ -140,5 +158,13 @@ public class NetworkRequest {
         int OPTIONS = 5;
         int TRACE = 6;
         int PATCH = 7;
+    }
+
+    public @interface CacheControl { //缓存策略
+        int FIRST_USE_NETWORK = 0; //优先使用网络数据，获取不到则采用缓存数据
+        int FORCE_NETWORK = 1; //强制使用网络数据
+        int FIRST_USE_CACHE = 2; //优先使用缓存数据
+        int FORCE_CACHE = 3;  //强制使用缓存数据
+        int FIRST_USE_CACHE_THEN_USE_NETWORK = 4; //先使用缓存数据，然后获取网络数据
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -49,6 +50,13 @@ public class AboutActivity extends BaseAppCompatActivity {
         glsurfaceview.setRenderer(homeGLRenderer);
         TextView txtAppVersion = (TextView) findViewById(R.id.txtAppVersion);
         txtAppVersion.setText(getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME);
+
+        findViewById(R.id.layoutAbout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AboutActivity.this, GuideActivity.class));
+            }
+        });
 
         findViewById(R.id.layoutShare).setOnClickListener(new View.OnClickListener() {
             @Override
