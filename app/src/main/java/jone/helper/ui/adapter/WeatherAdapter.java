@@ -3,6 +3,7 @@ package jone.helper.ui.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
+import jone.helper.lib.model.imageLoader.ImageLoaderListener;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
@@ -51,7 +53,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i ){
         if (viewHolder instanceof VHItem) {
-            VHItem item = (VHItem) viewHolder;
+            final VHItem item = (VHItem) viewHolder;
             WeatherData weatherData = getItem(i);
             if(weatherData != null){
                 StringBuffer weatherStringBuffer = new StringBuffer();
@@ -68,30 +70,24 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 App.getImageLoader().display(mContext,
                         item.image_weather_pic, pictureUrl,
                         R.mipmap.ic_weather_default, R.mipmap.ic_weather_default);
-                Bitmap bitmap = ((BitmapDrawable) item.image_weather_pic.getDrawable()).getBitmap();
-                Palette p = Palette.from(bitmap).generate();
-                item.txt_weather.setTextColor(p.getDarkVibrantColor(mContext.getResources().getColor(android.R.color.black)));
-                item.root_view.setBackgroundColor(p.getLightVibrantColor(mContext.getResources().getColor(android.R.color.white)));
-
+                App.getImageLoader().getBitmap(mContext, pictureUrl, new ImageLoaderListener() {
+                    @Override
+                    public void onDone(Bitmap bitmap) {
+                        Palette p = Palette.from(bitmap).generate();
+                        item.txt_weather.setTextColor(p.getDarkVibrantColor(ContextCompat.getColor(mContext, android.R.color.black)));
+                        item.root_view.setBackgroundColor(p.getLightVibrantColor(ContextCompat.getColor(mContext, android.R.color.white)));
+                    }
+                });
             }
         } else if (viewHolder instanceof VHHeader) {
             //cast holder to VHHeader and set data for header.
             VHHeader item = (VHHeader) viewHolder;
             if(weather != null){
-                List<WeatherIndex> weatherIndexList = weather.getIndex();
                 String pm25String = WeatherUtil.getPm25String(weather.getPm25());
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("pm2.5: ").append(weather.getPm25()).append("(").append(pm25String).append(")");
-                if(weatherIndexList != null && weatherIndexList.size() > 0){
-                    for(WeatherIndex weatherIndex : weatherIndexList){
-                        stringBuilder.append("\r\n").append(weatherIndex.getTitle())
-                                .append("(").append(weatherIndex.getZs()).append(")").append(": ")
-                                .append(weatherIndex.getDes());
-                    }
-                }
                 item.txt_pm25.setText(stringBuilder.toString());
             }
-
         }
 
     }

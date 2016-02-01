@@ -1,19 +1,17 @@
 package jone.helper.ui.activities;
 
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import jone.helper.R;
+import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.LaiFuDaoPictureFragment;
 import jone.helper.ui.fragments.TnGouGalleryFragment;
-import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.fragments.TnGouNewGalleryFragment;
 
 public class PicturesTabActivity extends BaseAppCompatActivity {
 
@@ -91,7 +89,7 @@ public class PicturesTabActivity extends BaseAppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public String[] titles = new String[]{
-                "段子", "最新", "全部", "性感美女","日韩美女", "丝袜美腿", "美女照片", "美女写真", "清纯美女", "性感车模"
+                "段子", "全部", "性感美女","日韩美女", "丝袜美腿", "美女照片", "美女写真", "清纯美女", "性感车模"
         };
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -104,10 +102,8 @@ public class PicturesTabActivity extends BaseAppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             if(position == 0){
                 return new LaiFuDaoPictureFragment();
-            }else if(position == 1){
-                return TnGouNewGalleryFragment.newInstance(position);
             }
-            return TnGouGalleryFragment.newInstance(position - 2, titles[position]);
+            return TnGouGalleryFragment.newInstance(position - 1, titles[position]);
         }
 
         @Override

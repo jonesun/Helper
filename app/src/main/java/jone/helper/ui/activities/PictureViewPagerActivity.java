@@ -1,10 +1,13 @@
 package jone.helper.ui.activities;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,12 +20,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jone.helper.App;
 import jone.helper.R;
 import jone.helper.bean.PictureBean;
+import jone.helper.lib.model.imageLoader.ImageLoaderListener;
+import jone.helper.lib.util.BitmapUtil;
 import jone.helper.ui.widget.EnhancedMenuInflater;
 import jone.helper.ui.widget.photoview.HackyViewPager;
 import jone.helper.ui.widget.photoview.PhotoView;
@@ -97,6 +104,7 @@ public class PictureViewPagerActivity extends AppCompatActivity {
 
             }
         });
+        mViewPager.setCurrentItem(picture_indicator - 1);
     }
 
     @Override
@@ -108,10 +116,46 @@ public class PictureViewPagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_save:
-                break;
+        if(mViewPager != null && pictureBeanList != null && pictureBeanList.size() > 0){
+            final PictureBean currentPictureBean = pictureBeanList.get(mViewPager.getCurrentItem());
+            switch (item.getItemId()) {
+                case R.id.item_save:
+                    App.getImageLoader().getBitmap(this,
+                            currentPictureBean.getUri(), new ImageLoaderListener() {
+                                @Override
+                                public void onDone(Bitmap bitmap) {
+                                    String fileName = currentPictureBean.getTitle() + (mViewPager.getCurrentItem() + 1) + ".jpg";
+                                    File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                                    if(dir == null){
+                                        dir = Environment.getExternalStorageDirectory();
+                                    }
+                                    if(BitmapUtil.saveBitmapToSD(dir, fileName, bitmap)){
+                                        App.showToast("图片已成功保存到: " + dir.getPath() + File.separator + fileName);
+                                    }else {
+                                        App.showToast("图片保存失败");
+                                    }
+                                }
+                            });
+                    break;
+                case R.id.item_set_wallpaper:
+                    App.getImageLoader().getBitmap(this,
+                            currentPictureBean.getUri(), new ImageLoaderListener() {
+                                @Override
+                                public void onDone(Bitmap bitmap) {
+                                    WallpaperManager mWallManager= WallpaperManager.getInstance(PictureViewPagerActivity.this);
+                                    try {
+                                        mWallManager.setBitmap(bitmap);
+                                        App.showToast("成功设置" + currentPictureBean.getTitle() + "为壁纸");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                        App.showToast("设置壁纸失败");
+                                    }
+                                }
+                            });
+                    break;
+            }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
