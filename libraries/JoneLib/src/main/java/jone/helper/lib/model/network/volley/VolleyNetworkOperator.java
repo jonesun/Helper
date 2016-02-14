@@ -53,7 +53,7 @@ public class VolleyNetworkOperator extends BaseVolleyNetworkOperator{
     }
 
     private void stringRequest(int method, final NetworkRequest networkRequest, ResponseCallback<String> responseCallback){
-        StringRequest request = new CachingStringRequest(method, networkRequest.getUrl(),
+        StringRequest request = new CachingStringRequest(method, networkRequest.getUrl(), networkRequest.getHeaders(),
                 getSuccessListener(networkRequest, System.currentTimeMillis(), responseCallback),
                 getErrorListener(networkRequest, System.currentTimeMillis(), responseCallback),
                 networkRequest.isUsingCacheWithNoNetwork()){
@@ -66,7 +66,7 @@ public class VolleyNetworkOperator extends BaseVolleyNetworkOperator{
     }
 
     private void jsonObjectRequest(int method, NetworkRequest networkRequest, ResponseCallback<JSONObject> responseCallback){
-        CustomJsonObjectRequest request = new CustomJsonObjectRequest(method, networkRequest.getUrl(),networkRequest.getParams(),
+        CustomJsonObjectRequest request = new CustomJsonObjectRequest(method, networkRequest.getUrl(), networkRequest.getHeaders(), networkRequest.getParams(),
                 getSuccessListener(networkRequest, System.currentTimeMillis(), responseCallback),
                 getErrorListener(networkRequest, System.currentTimeMillis(), responseCallback),
                 networkRequest.isUsingCacheWithNoNetwork());

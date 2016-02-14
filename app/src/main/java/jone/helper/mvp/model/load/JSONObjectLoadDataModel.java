@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import core.common.tuple.Tuple2;
+import core.common.tuple.Tuple3;
 import jone.helper.lib.model.network.NetworkRequest;
 import jone.helper.mvp.model.netLoadData.NetLoadDataModel;
 import jone.helper.mvp.model.netLoadData.VolleyJSONObjectLoadDataModel;
@@ -22,10 +23,15 @@ public abstract class JSONObjectLoadDataModel<T> implements LoadDataModel<T, JSO
     }
 
     @Override
+    public int requestMethod(){
+        return NetworkRequest.Method.GET;
+    }
+
+    @Override
     public void loadData(int pageIndex, final Callback<List<T>> callback) {
         this.callbacks = callback;
-        Tuple2<String, Map<String, String>> config = getConfig(pageIndex);
-        netLoadDataModel.loadData(NetworkRequest.Method.GET, config.v1, config.v2,
+        Tuple3<String, Map<String, String>, Map<String, String>> config = getConfig(pageIndex);
+        netLoadDataModel.loadData(requestMethod(), config.v1, config.v2, config.v3,
                 new Callback<JSONObject>() {
                     @Override
                     public void onComplete(int resultCode, String message, JSONObject data) {

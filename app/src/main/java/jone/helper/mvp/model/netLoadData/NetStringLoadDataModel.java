@@ -14,10 +14,11 @@ import jone.helper.mvp.model.load.Callback;
  */
 public class NetStringLoadDataModel implements NetLoadDataModel<String> {
     @Override
-    public void loadData(int method, String url, Map<String, String> params, final Callback<String> callback) {
+    public void loadData(int method, String url, Map<String, String> headers, Map<String, String> params, final Callback<String> callback) {
         NetworkRequest request = new NetworkRequest.Builder()
                 .get()
                 .url(url)
+                .headers(headers)
                 .params(params)
                 .setUsingCacheWithNoNetwork(true).build();
         App.getVolleyNetworkOperator().request(request, String.class, new ResponseCallback<String>() {

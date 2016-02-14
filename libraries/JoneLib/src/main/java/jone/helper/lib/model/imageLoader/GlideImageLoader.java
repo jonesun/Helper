@@ -102,6 +102,7 @@ public class GlideImageLoader implements ImageLoader {
 //        Glide.clear(target);
         Glide.with(context).load(url).placeholder(image_loading)
                 .error(image_error)
+//                .centerCrop()//中心切圖, 會填滿
                 .crossFade() //图片的淡入淡出动画效果
                 .into(imageView);
     }

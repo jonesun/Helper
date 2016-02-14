@@ -17,7 +17,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <cn.lightsky.infiniteindicator.InfiniteIndicatorLayout
+            <cn.lightsky.infiniteindicator.InfiniteIndicator
                 android:id="@+id/infinite_indicator_layout"
                 app:indicator_type="indicator_anim_circle"
                 android:layout_height="match_parent"

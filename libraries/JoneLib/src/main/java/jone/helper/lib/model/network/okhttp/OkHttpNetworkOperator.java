@@ -216,18 +216,22 @@ public class OkHttpNetworkOperator implements NetworkOperator {
      */
     private File getCacheFile(Context context){
         File cacheFile = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            File[] externalCacheDirs = context.getExternalCacheDirs();
-            if(externalCacheDirs != null && externalCacheDirs.length > 0){
-                cacheFile = externalCacheDirs[0];
-                for(File file : externalCacheDirs){
-                    if(file.getFreeSpace() > cacheFile.getFreeSpace()){
-                        cacheFile = file;
+        try{
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                File[] externalCacheDirs = context.getExternalCacheDirs();
+                if(externalCacheDirs != null && externalCacheDirs.length > 0){
+                    cacheFile = externalCacheDirs[0];
+                    for(File file : externalCacheDirs){
+                        if(file != null && file.canRead() && file.canWrite() && file.getFreeSpace() > cacheFile.getFreeSpace()){
+                            cacheFile = file;
+                        }
                     }
                 }
+            }else {
+                cacheFile = context.getExternalCacheDir();
             }
-        }else {
-            cacheFile = context.getExternalCacheDir();
+        }catch (Exception e){
+            Log.e(TAG, "getCacheFile", e);
         }
         if(cacheFile == null || !cacheFile.exists()){
             cacheFile = context.getCacheDir();

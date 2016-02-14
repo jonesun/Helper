@@ -4,18 +4,25 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClientOption;
@@ -24,26 +31,31 @@ import com.amap.api.location.AMapLocationListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
+import jone.helper.bean.HistoryToday;
 import jone.helper.bean.HomeMainCalendarBean;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.AMapLocationTool;
 import jone.helper.model.MemoryStoreProgressTool;
 import jone.helper.model.calendar.CalendarActivity;
+import jone.helper.mvp.model.HistoryTodayModel;
+import jone.helper.mvp.model.load.Callback;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
 import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
-import jone.helper.ui.activities.JoneAppManagerActivity;
+import jone.helper.mvp.view.weather.WeatherView;
 import jone.helper.ui.activities.HelperMainActivity;
+import jone.helper.ui.activities.JoneAppManagerActivity;
 import jone.helper.ui.activities.SelectCityActivity;
 import jone.helper.ui.adapter.MainCalendarAdapter;
 import jone.helper.ui.fragments.base.BaseFragment;
-import jone.helper.mvp.view.weather.WeatherView;
 import jone.helper.ui.widget.circleprogress.ArcProgress;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
@@ -56,8 +68,11 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     private static final String TAG = HelperMainFragment.class.getSimpleName();
     private ViewGroup layout_weather;
     private LinearLayout layout_ad;
+    private View layout_history_today;
+    private TextSwitcher text_switcher_history_today;
     private TextView txt_calendar, txt_pm25, txt_weather_temperature,
-            txt_weather_weather, txt_weather_index, txt_capacity;
+            txt_weather_weather, txt_weather_index, txt_capacity,
+            txt_weather_1, txt_weather_2, txt_weather_3;
     private Button btn_city;
     private RecyclerView recyclerViewCalendar;
     private ArcProgress arc_store, arc_process;
@@ -91,6 +106,8 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     }
 
     protected void findViews(View view) {
+        layout_history_today = findView(view, R.id.layout_history_today);
+        text_switcher_history_today = findView(view, R.id.text_switcher_history_today);
         txt_calendar = findView(view, R.id.txt_calendar);
         btn_city = findView(view, R.id.btn_city);
         image_weather = findView(view, R.id.image_weather);
@@ -99,6 +116,10 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         txt_weather_weather = findView(view, R.id.txt_weather_weather);
 
         layout_weather = findView(view, R.id.layout_weather);
+
+        txt_weather_1 = findView(view, R.id.txt_weather_1);
+        txt_weather_2 = findView(view, R.id.txt_weather_2);
+        txt_weather_3 = findView(view, R.id.txt_weather_3);
 
         layout_ad = findView(view, R.id.layout_ad);
         recyclerViewCalendar = findView(view, R.id.recyclerViewCalendar);
@@ -135,6 +156,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         if (Utils.isNetworkAlive(getHostActivity())) {
             // 定位初始化
             getLocation();
+            showHistoryTodayView();
         } else {
             showFail();
         }
@@ -174,7 +196,45 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         });
     }
 
-    private void showFail(){
+    private void showHistoryTodayView() {
+        new HistoryTodayModel(10).loadData(1, new Callback<List<HistoryToday>>() {
+            @Override
+            public void onComplete(@ResultCode int resultCode, String message, final List<HistoryToday> data) {
+                if (data != null && data.size() > 0) {
+                    if (layout_history_today.getVisibility() == View.GONE) {
+                        layout_history_today.setVisibility(View.VISIBLE);
+                        text_switcher_history_today.setFactory(new ViewSwitcher.ViewFactory() {
+                            @Override
+                            public View makeView() {
+                                TextView tv = new TextView(getContext());
+                                return tv;
+                            }
+                        });
+                        Animation in = AnimationUtils.loadAnimation(getContext(),
+                                android.R.anim.fade_in);
+                        Animation out = AnimationUtils.loadAnimation(getContext(),
+                                android.R.anim.fade_out);
+                        text_switcher_history_today.setInAnimation(in);
+                        text_switcher_history_today.setOutAnimation(out);
+                        text_switcher_history_today.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    HistoryToday historyToday = data.get(new Random().nextInt(data.size()));
+                                    text_switcher_history_today.setText(getString(R.string.history_today, historyToday.getYear(), historyToday.getTitle()));
+                                    text_switcher_history_today.postDelayed(this, 10000);
+                                }catch (Exception e){
+
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    private void showFail() {
         layout_weather.setVisibility(View.GONE);
         txt_weather_index.setText(Html.fromHtml("连接失败<u>重试</u>"));
         txt_weather_index.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +273,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
                                 Log.e(TAG, "city: " + city);
                                 UmengUtil.get_location(getHostActivity(), "baiduLocation", city);
                                 getWeatherByCity(city.replace("市", ""));
-                            }else {
+                            } else {
                                 showFail();
                             }
                         }
@@ -247,7 +307,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
 
     @Override
     public void setWeatherInfo(Weather weather) {
-        if(weather == null){
+        if (weather == null) {
             return;
         }
         List<WeatherData> weatherDataList = weather.getWeather_data();
@@ -256,11 +316,11 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         int level = 0;
         try {
             level = Integer.parseInt(weather.getPm25());
-        }catch (Exception e){
+        } catch (Exception e) {
             level = 0;
         }
         txt_pm25.getBackground().setLevel(level);
-        if (weatherDataList != null && weatherDataList.size() > 0) {
+        if (weatherDataList != null && weatherDataList.size() > 2) {
             WeatherData todayWeatherData = weatherDataList.get(0);
             Calendar calendar = Calendar.getInstance();
             String weekDay = FestivalUtil.getWeekDay(calendar.get(Calendar.DAY_OF_WEEK) - 1);
@@ -277,6 +337,21 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             txt_weather_weather.setText(todayWeatherData.getWeather() + "(" + todayWeatherData.getWind() + ")");
             int weatherResId = WeatherUtil.getIconResIdByWeather(todayWeatherData.getWeather());
             image_weather.setBackgroundResource(weatherResId);
+
+            WeatherData weatherData1 = weatherDataList.get(1);
+            txt_weather_1.setText("明天 " + weatherData1.getWeather() + "\r\n"
+                    + weatherData1.getTemperature() + "\r\n" +
+                    weatherData1.getWind());
+
+            WeatherData weatherData2 = weatherDataList.get(2);
+            txt_weather_2.setText("后天 " + weatherData2.getWeather() + "\r\n"
+                    + weatherData2.getTemperature() + "\r\n" +
+                    weatherData2.getWind());
+
+            WeatherData weatherData3 = weatherDataList.get(3);
+            txt_weather_3.setText(weatherData3.getDate() + " " + weatherData3.getWeather() + "\r\n"
+                    + weatherData3.getTemperature() + "\r\n" +
+                    weatherData3.getWind());
         }
         StringBuilder weatherStringBuilder = new StringBuilder();
         List<WeatherIndex> weatherIndexList = weather.getIndex();

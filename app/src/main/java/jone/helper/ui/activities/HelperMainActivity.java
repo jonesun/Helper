@@ -51,9 +51,9 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.lightsky.infiniteindicator.InfiniteIndicatorLayout;
-import cn.lightsky.infiniteindicator.slideview.BaseSliderView;
-import cn.lightsky.infiniteindicator.slideview.DefaultSliderView;
+import cn.lightsky.infiniteindicator.InfiniteIndicator;
+import cn.lightsky.infiniteindicator.page.OnPageClickListener;
+import cn.lightsky.infiniteindicator.page.Page;
 import jone.helper.App;
 import jone.helper.R;
 import jone.helper.lib.util.Utils;
@@ -67,6 +67,7 @@ import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.dialog.ChooseThemeDialogFragment;
 import jone.helper.ui.fragments.HelperMainFragment;
 import jone.helper.ui.setting.SettingsActivity;
+import jone.helper.util.GlideLoader;
 import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
 import jone.helper.zxing.scan.BuildConfig;
@@ -80,7 +81,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     private DialogFragment mMenuDialogFragment;
     private FloatingActionButton fab;
 
-    private InfiniteIndicatorLayout infinite_indicator_layout;
+    private InfiniteIndicator infiniteIndicator;
     private ImageView iv_picture;
     private TextView tv_title, tv_copyright;
 
@@ -292,35 +293,21 @@ public class HelperMainActivity extends BaseAppCompatActivity
     }
 
     private void initIndicator(ArrayList<BingPicture> bingPictureList){
-        infinite_indicator_layout = findView(R.id.infinite_indicator_layout);
+        ArrayList<Page> mPageViews = new ArrayList<>();
+        infiniteIndicator = findView(R.id.infinite_indicator_layout);
+        infiniteIndicator.setImageLoader(new GlideLoader());
         if(bingPictureList != null && bingPictureList.size() > 0){
             for (final BingPicture bingPicture : bingPictureList) {
-                DefaultSliderView textSliderView = new DefaultSliderView(HelperMainActivity.this);
-                textSliderView
-                        .image(bingPicture.getUrl())
-                        .setScaleType(BaseSliderView.ScaleType.Fit)
-                        .showImageResForEmpty(R.drawable.side_nav_bar)
-                        .showImageResForError(R.drawable.side_nav_bar)
-                        .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
-                            @Override
-                            public void onSliderClick(BaseSliderView slider) {
-                                Bundle bundle = slider.getBundle();
-                                if (bundle.containsKey("bingPicture")) {
-                                    BingPicDetailActivity.open(HelperMainActivity.this, (BingPicture) bundle.getSerializable("bingPicture"));
-                                } else {
-                                    ZoomImageViewActivity.open(HelperMainActivity.this,
-                                            BingPictureOperator.getFullImageUrl(HelperMainActivity.this, slider.getUrl()));
-                                }
-                            }
-                        });
-                textSliderView.getBundle()
-                        .putString("extra", bingPicture.getUrl());
-                textSliderView.getBundle().putParcelable("bingPicture", bingPicture);
-                infinite_indicator_layout.addSlider(textSliderView);
+                mPageViews.add(new Page(bingPicture.getCopyright(), bingPicture.getUrl(), new OnPageClickListener() {
+                    @Override
+                    public void onPageClick(int position, Page page) {
+                        BingPicDetailActivity.open(HelperMainActivity.this, bingPicture);
+                    }
+                }));
             }
-            infinite_indicator_layout.setIndicatorPosition(InfiniteIndicatorLayout.IndicatorPosition.Center_Bottom);
-            infinite_indicator_layout.startAutoScroll();
         }
+        infiniteIndicator.addPages(mPageViews);
+        infiniteIndicator.setPosition(InfiniteIndicator.IndicatorPosition.Center_Bottom);
     }
 
     public void changeFragment(Fragment targetFragment){
@@ -376,12 +363,18 @@ public class HelperMainActivity extends BaseAppCompatActivity
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        if(infiniteIndicator != null){
+            infiniteIndicator.start();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+        if(infiniteIndicator != null){
+            infiniteIndicator.stop();
+        }
     }
 
     @Override

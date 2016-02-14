@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ public class App extends Application {
     private static final String TAG = App.class.getSimpleName();
     private static App instance;
     private static NetworkOperator volleyNetworkOperator;
-    private static NetworkOperator okHttpNetworkOperator;
+//    private static NetworkOperator okHttpNetworkOperator;
     private static ImageLoader imageLoader;
     public static App getInstance() {
         return instance;
@@ -37,10 +38,23 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         volleyNetworkOperator = VolleyNetworkOperator.getInstance().init(this);
-        okHttpNetworkOperator = OkHttpNetworkOperator.getInstance().init(this);
+//        okHttpNetworkOperator = OkHttpNetworkOperator.getInstance().init(this);
         CommonView.alwaysShowActionBarOverflow(getApplicationContext());//在具有硬件菜单键设备上依然显示Action bar overflow
         initAppInfo();
         imageLoader = GlideImageLoader.getInstance().init(this);
+        //crash 到本地
+        enabledStrictMode(); //启用严格模式
+//        LeakCanary.install(this);  //内存泄露检测
+    }
+
+    private void enabledStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //2.3+
+                    .detectAll() //
+                    .penaltyLog() //
+                    .penaltyDeath() //
+                    .build());
+        }
     }
 
     private void initAppInfo(){
@@ -59,9 +73,9 @@ public class App extends Application {
         return volleyNetworkOperator;
     }
 
-    public static NetworkOperator getOkHttpNetworkOperator() {
-        return okHttpNetworkOperator;
-    }
+//    public static NetworkOperator getOkHttpNetworkOperator() {
+//        return okHttpNetworkOperator;
+//    }
 
     public static ImageLoader getImageLoader() {
         return imageLoader;

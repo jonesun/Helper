@@ -10,6 +10,6 @@ import jone.helper.mvp.model.load.Callback;
  * Created by jone.sun on 2016/1/12.
  */
 public interface NetLoadDataModel<T> {
-    void loadData(int method, String url, Map<String, String> params, Callback<T> callback);
+    void loadData(int method, String url, Map<String, String> headers, Map<String, String> params, Callback<T> callback);
     void cancel();
 }

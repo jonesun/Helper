@@ -12,6 +12,7 @@ import java.util.Map;
 
 import core.common.tuple.Tuple;
 import core.common.tuple.Tuple2;
+import core.common.tuple.Tuple3;
 import jone.helper.bean.LaiFuDaoPicture;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.mvp.model.load.JSONObjectLoadDataModel;
@@ -22,8 +23,8 @@ import jone.helper.mvp.model.load.StringLoadDataModel;
  */
 public class LaiFuDaoPictureNewModel extends StringLoadDataModel<LaiFuDaoPicture> {
     @Override
-    public Tuple2<String, Map<String, String>> getConfig(int pageIndex) {
-        return Tuple.tuple("http://api.laifudao.com/open/tupian.json", null);
+    public Tuple3<String, Map<String, String>, Map<String, String>> getConfig(int pageIndex) {
+        return Tuple.tuple("http://api.laifudao.com/open/tupian.json", null, null);
     }
 
     @Override

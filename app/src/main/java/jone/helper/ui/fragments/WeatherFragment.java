@@ -25,21 +25,20 @@ import java.util.List;
 
 import jone.helper.BuildConfig;
 import jone.helper.R;
-import jone.helper.model.AMapLocationTool;
-import jone.helper.model.customAd.JoneBaiduAd;
-import jone.helper.ui.activities.EggsActivity;
-import jone.helper.ui.activities.HelperMainActivity;
-import jone.helper.ui.adapter.WeatherAdapter;
 import jone.helper.lib.util.Utils;
+import jone.helper.model.AMapLocationTool;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.presenter.weather.WeatherPresenter;
-import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.mvp.view.weather.WeatherView;
+import jone.helper.ui.activities.EggsActivity;
+import jone.helper.ui.activities.HelperMainActivity;
+import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.adapter.WeatherAdapter;
 import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.util.FestivalUtil;
 import jone.helper.util.UmengUtil;
-import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 
 /**
  * Created by jone.sun on 2015/7/2.
@@ -49,7 +48,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
     private WeatherAdapter weatherAdapter;
     private Dialog loadingDialog;
 
-    private LinearLayout layout_ad, layout_top;
+    private LinearLayout layout_top;
     private TextView txt_date, txt_festival;
     private Button btn_city;
     private RecyclerView rv_weather;
@@ -77,7 +76,6 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
 
     @Override
     protected void findViews(View view) {
-        layout_ad = findView(view, R.id.layout_ad);
         layout_top = findView(view, R.id.layout_top);
         txt_date = findView(view, R.id.txt_date);
         txt_festival = findView(view, R.id.txt_festival);
@@ -91,7 +89,6 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         weatherAdapter = new WeatherAdapter(getActivity(), weatherDataList);
         rv_weather.setAdapter(weatherAdapter);
         showDate();
-        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         showEggs();
         btn_city.setOnClickListener(new View.OnClickListener() {
             @Override

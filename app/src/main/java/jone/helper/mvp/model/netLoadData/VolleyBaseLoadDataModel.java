@@ -12,7 +12,7 @@ import jone.helper.mvp.model.load.Callback;
 public abstract class VolleyBaseLoadDataModel<T> implements NetLoadDataModel<T> {
     public static final String TAG = "VolleyLoadDataModel";
     @Override
-    public void loadData(int method, String url, Map<String, String> params, Callback<T> callback) {
+    public void loadData(int method, String url, Map<String, String> header, Map<String, String> params, Callback<T> callback) {
         if(!SystemUtil.hasNetWork(App.getInstance())){
             if(callback != null){
                 callback.onComplete(Callback.RESULT_CODE_NO_NETWORK, "no network", null);

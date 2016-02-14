@@ -33,7 +33,6 @@ import jone.helper.lib.model.network.NetworkRequest;
 import jone.helper.lib.model.network.ResponseCallback;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.lib.util.Utils;
-import jone.helper.model.customAd.JoneBaiduAd;
 import jone.helper.ui.adapter.NewsAdapter;
 
 public class EggsActivity extends FragmentActivity {
@@ -140,7 +139,6 @@ public class EggsActivity extends FragmentActivity {
             }
 
             layout_ad = (LinearLayout) view.findViewById(R.id.layout_ad);
-            JoneBaiduAd.showBDBannerAd(activity, layout_ad);
 
             newsAdapter.setOnItemClickListener(new NewsAdapter.OnRecyclerViewItemClickListener() {
                 @Override

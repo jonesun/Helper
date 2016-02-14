@@ -108,11 +108,13 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
             mRecyclerView.addOnScrollListener(new RecyclerOnScrollListener(mLayoutManager) {
                 @Override
                 public void onLoadMore() {
-                    if(!isLoading){
-                        isLoadMore = true;
-                        loadDataPresenter.loadMore();
-                    }else {
-                        Log.e(TAG, "onLoadMore>>正在加载中...");
+                    if(adapter.isShowFooter()){
+                        if(!isLoading){
+                            isLoadMore = true;
+                            loadDataPresenter.loadMore();
+                        }else {
+                            Log.e(TAG, "onLoadMore>>正在加载中...");
+                        }
                     }
                 }
             });

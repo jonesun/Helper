@@ -22,6 +22,10 @@ import java.net.URL;
  */
 public class CacheUtils {
     private static final String TAG = CacheUtils.class.getSimpleName();
+
+    private CacheUtils() {
+        throw new AssertionError();
+    }
     /***
      * 保存数据到缓存中
      *

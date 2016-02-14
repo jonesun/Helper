@@ -1,5 +1,6 @@
 package jone.net.volley.customRequest;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -20,25 +21,35 @@ import java.util.Map;
 public class CustomJsonObjectRequest extends Request<JSONObject> {
 
     private Response.Listener<JSONObject> listener;
-    private Map<String, String> params;
+    private Map<String, String> headers, params;
     private boolean shouldCache;
 
-    public CustomJsonObjectRequest(String url, Map<String, String> params,
+    public CustomJsonObjectRequest(String url, Map<String, String> headers, Map<String, String> params,
                                    Response.Listener<JSONObject> responseListener,
                                    Response.ErrorListener errorListener, boolean shouldCache) {
         super(Method.GET, url, errorListener);
         this.listener = responseListener;
+        this.headers = headers;
         this.params = params;
         this.shouldCache = shouldCache;
     }
 
-    public CustomJsonObjectRequest(int method, String url, Map<String, String> params,
+    public CustomJsonObjectRequest(int method, String url, Map<String, String> headers, Map<String, String> params,
                                    Response.Listener<JSONObject> responseListener,
                                    Response.ErrorListener errorListener, boolean shouldCache) {
         super(method, url, errorListener);
         this.listener = responseListener;
+        this.headers = headers;
         this.params = params;
         this.shouldCache = shouldCache;
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        if(headers != null && headers.size() > 0){
+            return headers;
+        }
+        return super.getHeaders();
     }
 
     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {

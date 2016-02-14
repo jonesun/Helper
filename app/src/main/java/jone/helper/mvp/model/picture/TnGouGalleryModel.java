@@ -15,6 +15,7 @@ import java.util.Map;
 
 import core.common.tuple.Tuple;
 import core.common.tuple.Tuple2;
+import core.common.tuple.Tuple3;
 import jone.helper.bean.TnGouGallery;
 import jone.helper.bean.TnGouPicture;
 import jone.helper.lib.util.GsonUtils;
@@ -41,11 +42,11 @@ public class TnGouGalleryModel extends JSONObjectLoadDataModel<TnGouGallery>  {
      * @return
      */
     @Override
-    public Tuple2<String, Map<String, String>> getConfig(int pageIndex) {
+    public Tuple3<String, Map<String, String>, Map<String, String>> getConfig(int pageIndex) {
         Map<String, String> params = new HashMap<>();
         params.put("id", "" + clazzId);
         params.put("page", "" + pageIndex);
-        return Tuple.tuple("http://www.tngou.net/tnfs/api/list?page=" + pageIndex + "&id=" + clazzId, null);
+        return Tuple.tuple("http://www.tngou.net/tnfs/api/list?page=" + pageIndex + "&id=" + clazzId, null, null);
 //        return Tuple.tuple("http://www.tngou.net/tnfs/api/list", params);
     }
 
