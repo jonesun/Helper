@@ -67,6 +67,9 @@ import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.dialog.ChooseThemeDialogFragment;
 import jone.helper.ui.fragments.HelperMainFragment;
 import jone.helper.ui.setting.SettingsActivity;
+import jone.helper.ui.widget.materialshowcaseview.MaterialShowcaseSequence;
+import jone.helper.ui.widget.materialshowcaseview.MaterialShowcaseView;
+import jone.helper.ui.widget.materialshowcaseview.ShowcaseConfig;
 import jone.helper.util.GlideLoader;
 import jone.helper.util.SharedToUtil;
 import jone.helper.util.UmengUtil;
@@ -195,14 +198,13 @@ public class HelperMainActivity extends BaseAppCompatActivity
     @Override
     protected void findViews() {
         fragmentManager = getSupportFragmentManager();
-        initViews();
-
         MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
         UmengUpdateAgent.setDefault();
         UmengUpdateAgent.update(this);
     }
 
+    @Override
     public void initViews() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -238,6 +240,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         initNavHeaderView(navigationView);
         initMenuFragment();
+        presentShowcaseView(toolbar);
     }
 
     private void initNavHeaderView(final NavigationView navigationView){
@@ -290,6 +293,32 @@ public class HelperMainActivity extends BaseAppCompatActivity
             }
         });
 
+    }
+    private static final String SHOWCASE_ID = "show_case_0";
+    private void presentShowcaseView(View view) {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(view)
+                        .setDismissText(" < 拉开左侧抽屉")
+                        .setContentText("图片、便签、手机管理及快递查询等丰富内容")
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(fab)
+                        .setDismissText("欢迎使用")
+                        .setContentText("3D相册、计算器、扫一扫及手电筒等实用小工具")
+                        .setDismissOnTouch(true)
+                        .build()
+        );
+        sequence.start();
     }
 
     private void initIndicator(ArrayList<BingPicture> bingPictureList){

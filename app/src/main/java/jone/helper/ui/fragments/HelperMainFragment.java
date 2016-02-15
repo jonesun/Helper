@@ -1,17 +1,13 @@
 package jone.helper.ui.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -32,13 +28,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import jone.helper.R;
 import jone.helper.bean.DateInfo;
 import jone.helper.bean.HistoryToday;
 import jone.helper.bean.HomeMainCalendarBean;
 import jone.helper.lib.util.GsonUtils;
+import jone.helper.lib.util.SystemUtil;
 import jone.helper.lib.util.Utils;
 import jone.helper.model.AMapLocationTool;
 import jone.helper.model.MemoryStoreProgressTool;
@@ -71,15 +67,15 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     private View layout_history_today;
     private TextSwitcher text_switcher_history_today;
     private TextView txt_calendar, txt_pm25, txt_weather_temperature,
-            txt_weather_weather, txt_weather_index, txt_capacity,
+            txt_weather_weather, txt_weather_index, txt_capacity, txt_memory_progress,
             txt_weather_1, txt_weather_2, txt_weather_3;
     private Button btn_city;
     private RecyclerView recyclerViewCalendar;
     private ArcProgress arc_store, arc_process;
     private ImageView image_weather;
     public static final int resultCode = 10001;
+    private boolean hasGetLocation, doingLocation = false;
 
-    private Dialog loadingDialog;
     private MemoryStoreProgressTool memoryStoreProgressTool;
 
     private WeatherPresenter weatherPresenter;
@@ -127,6 +123,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         arc_store = findView(view, R.id.arc_store);
         arc_process = findView(view, R.id.arc_process);
         txt_capacity = findView(view, R.id.txt_capacity);
+        txt_memory_progress = findView(view, R.id.txt_memory_progress);
 
         txt_weather_index = findView(view, R.id.txt_weather_index);
 
@@ -150,8 +147,6 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         recyclerViewCalendar.setFocusableInTouchMode(false);
 //        JoneBaiduAd.showBDBannerAd(getHostActivity(), layout_ad);
         weatherPresenter = new BaiduWeatherPresenter(this);
-        loadingDialog = new ProgressDialog(getHostActivity());
-        loadingDialog.setTitle("加载天气中...");
         memoryStoreProgressTool = new MemoryStoreProgressTool();
         if (Utils.isNetworkAlive(getHostActivity())) {
             // 定位初始化
@@ -189,9 +184,11 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         arc_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
-                intent.putExtra(JoneAppManagerActivity.KEY_CURRENT_INDEX, 0);
-                startActivity(intent);
+                Intent intent = new Intent(Settings.ACTION_MEMORY_CARD_SETTINGS);
+                startActivityForResult(intent , 0);
+//                Intent intent = new Intent(getHostActivity(), JoneAppManagerActivity.class);
+//                intent.putExtra(JoneAppManagerActivity.KEY_CURRENT_INDEX, 0);
+//                startActivity(intent);
             }
         });
     }
@@ -262,6 +259,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     };
 
     private void getLocation() {
+        doingLocation = true;
         AMapLocationTool.getInstance().startLocation(AMapLocationClientOption.AMapLocationMode.Battery_Saving,
                 new AMapLocationListener() {
                     @Override
@@ -269,27 +267,29 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
                         if (aMapLocation != null) {
                             Log.e("AMapLocationTool", "onLocationChanged>>" + GsonUtils.toJson(aMapLocation));
                             String city = aMapLocation.getCity();
-                            if (!TextUtils.isEmpty(city)) {
+                            if(TextUtils.isEmpty(city)){
+                                city = "北京";
+                            }else {
                                 Log.e(TAG, "city: " + city);
                                 UmengUtil.get_location(getHostActivity(), "baiduLocation", city);
-                                getWeatherByCity(city.replace("市", ""));
-                            } else {
-                                showFail();
+                                hasGetLocation = true;
                             }
+                            getWeatherByCity(city.replace("市", ""));
                         }
                         AMapLocationTool.getInstance().stopLocation();
+                        doingLocation = false;
                     }
                 });
     }
 
     @Override
     public void showLoading() {
-        loadingDialog.show();
+
     }
 
     @Override
     public void hideLoading() {
-        loadingDialog.dismiss();
+
     }
 
     @Override
@@ -370,7 +370,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
 
     private void getWeatherByCity(String city) {
         btn_city.setText(" " + city);
-        if (Utils.isNetworkAlive(getHostActivity())) {
+        if (SystemUtil.hasNetWork(getHostActivity())) {
             if (weatherPresenter != null) {
                 weatherPresenter.getWeather(getHostActivity(), city);
             }
@@ -390,8 +390,16 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
     public void onResume() {
         super.onResume();
         if (memoryStoreProgressTool != null) {
-            memoryStoreProgressTool.showMemoryProgress(getHostActivity(), arc_process);
+            memoryStoreProgressTool.showMemoryProgress(getHostActivity(), arc_process, txt_memory_progress);
             memoryStoreProgressTool.showStoreProgress(getHostActivity(), arc_store, txt_capacity);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!hasGetLocation && !doingLocation && SystemUtil.hasNetWork(getContext())){
+            getLocation();
         }
     }
 

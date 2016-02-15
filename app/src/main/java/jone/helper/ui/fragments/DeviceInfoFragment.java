@@ -1,8 +1,11 @@
 package jone.helper.ui.fragments;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import jone.helper.App;
 import jone.helper.R;
@@ -162,26 +173,39 @@ public class DeviceInfoFragment extends BaseFragment<JoneAppManagerActivity> {
 
     private void initData(String from) {
         data = new ArrayList<>();
-        TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-        String imei = tm.getDeviceId();
-        String tel = tm.getLine1Number();
-        System.out.println("imei: " + imei + ", tel: " + tel); //todo
         String deviceName = SystemUtil.isPad(getActivity()) ? "平板" : "手机";
-        addItemView("本机类型", deviceName);
-        addItemView("设备制造商", Build.MANUFACTURER);
-        addItemView("设备品牌", Build.BRAND);
-        addItemView("产品名称", Build.PRODUCT);
-        addItemView("设备型号", Build.MODEL);
+        addItemView("设备信息", Build.BRAND + " " + Build.PRODUCT + " " + deviceName + " " + getNumCores() + "核");
         String versionName = "unknown";
         if (versionNameMap != null && versionNameMap.containsKey(Build.VERSION.SDK_INT)) {
             versionName = versionNameMap.get(Build.VERSION.SDK_INT);
         }
-        addItemView("系统版本", Build.VERSION.RELEASE + "(" + versionName + ")");
-        addItemView("系统API级别", Build.VERSION.SDK_INT + "");
+        addItemView("系统版本", "android" + Build.VERSION.RELEASE + "(" + versionName + ") " + Build.VERSION.SDK_INT);
 
         DisplayMetrics displayMetrics = SystemUtil.getDisplayMetrics(getActivity());
         addItemView("屏幕分辨率", displayMetrics.widthPixels + " X " + displayMetrics.heightPixels + " " + SystemUtil.getScreenPhysicalSize(getActivity()));
         addItemView("屏幕密度", displayMetrics.densityDpi + "(" + displayMetrics.density + ")");
+
+        addItemView("内存大小", getAvailMemory() + "/" + getTotalMemory());
+        TelephonyManager tm = (TelephonyManager) getContext().getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = tm.getDeviceId();
+        if (!TextUtils.isEmpty(imei)) {
+            addItemView("IMEI", imei);
+        }
+        String imsi = tm.getSubscriberId();
+        if (!TextUtils.isEmpty(imsi)) {
+            addItemView("IMSI", imsi);
+        }
+        String serviceName = tm.getSimOperatorName(); // 运营商
+        if (!TextUtils.isEmpty(serviceName)) {
+            addItemView("运营商", serviceName);
+        }
+        String line1Number = tm.getLine1Number(); // 手机号码
+        if (!TextUtils.isEmpty(line1Number)) {
+            addItemView("手机号码", line1Number);
+        }
+
+        addItemView("设备制造商", Build.MANUFACTURER);
+        addItemView("设备型号", Build.MODEL);
 
         addItemView("设备用户名", Build.USER);
 
@@ -214,12 +238,125 @@ public class DeviceInfoFragment extends BaseFragment<JoneAppManagerActivity> {
 
         addItemView("设备当前的系统开发代号", Build.VERSION.CODENAME);
         addItemView("系统源代码控制值", Build.VERSION.INCREMENTAL);
-        Log.e(TAG, from + " >>KITKAT: " + Build.VERSION_CODES.KITKAT);
+//        Log.e(TAG, from + " >>KITKAT: " + Build.VERSION_CODES.KITKAT);
+
+        // 获取传感器管理器
+        SensorManager sensorManager = (SensorManager) getContext().getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
+        // 获取全部传感器列表
+        List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor item : sensors) {
+            String sensorType = getSensorType(item.getType());
+            if (!TextUtils.isEmpty(sensorType)) {
+                addItemView(sensorType, item.getName());
+            } else {
+                addItemView("传感器名称", item.getName());
+            }
+//            strLog.append(" Sensor Type - " + item.getType() + "\r\n");
+//            strLog.append(" Sensor Name - " + item.getName() + "\r\n");
+//            strLog.append(" Sensor Version - " + item.getVersion() + "\r\n");
+//            strLog.append(" Sensor Vendor - " + item.getVendor() + "\r\n");
+//            strLog.append(" Maximum Range - " + item.getMaximumRange() + "\r\n");
+//            strLog.append(" Minimum Delay - " + item.getMinDelay() + "\r\n");
+//            strLog.append(" Power - " + item.getPower() + "\r\n");
+//            strLog.append(" Resolution - " + item.getResolution() + "\r\n");
+//            strLog.append("\r\n");
+//            iIndex++;
+        }
+
+//        得到鍵盤信息,使用的語言，手機的網絡代碼（mnc）,手機的國家代碼(mcc),手機的模式，手機的方向，觸摸屏的判斷等，通過以下語句獲取：      Configuration config = getResources().getConfiguration();
         recyclerView.setAdapter(new MyAdapter(data));
     }
 
     private void addItemView(String txtName, String buildInfo) {
         data.add(new DeviceInfo(txtName, buildInfo));
+    }
+
+    /***
+     * 当然如何格式化输出可以自由定制,其中,一个Sensor包含了如下字段:
+     * <p/>
+     * name : 传感器名称
+     * vendor : 设备商名称
+     * version : 设备版本
+     * type : 类型
+     * max range : 最大量程
+     * resolution : 分辨率
+     * power : 功耗
+     * min delay : 最小延迟
+     *
+     * @param sensorType
+     * @return
+     */
+    private String getSensorType(int sensorType) {
+        String resultType = null;
+        switch (sensorType) {
+            case Sensor.TYPE_ACCELEROMETER: //加速度传感器，单位是m/s2，测量应用于设备X、Y、Z轴上的加速度
+                resultType = "加速度传感器";
+                break;
+            case Sensor.TYPE_AMBIENT_TEMPERATURE: //温度传感器，单位是℃
+                resultType = "温度传感器";
+                break;
+            case Sensor.TYPE_GAME_ROTATION_VECTOR: //游戏动作传感器，不收电磁干扰影响
+                resultType = "游戏动作传感器";
+                break;
+            case Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR: //地磁旋转矢量传感器，提供手机的旋转矢量，当手机处于休眠状态时，仍可以记录设备的方位
+                resultType = "地磁旋转矢量传感器";
+                break;
+            case Sensor.TYPE_GRAVITY: //重力传感器，单位是m/s2，测量应用于设备X、Y、Z轴上的重力
+                resultType = "重力传感器";
+                break;
+            case Sensor.TYPE_GYROSCOPE: //陀螺仪传感器，单位是rad/s，测量设备x、y、z三轴的角加速度
+                resultType = "陀螺仪传感器";
+                break;
+            case Sensor.TYPE_GYROSCOPE_UNCALIBRATED: //未校准陀螺仪传感器，提供原始的，未校准、补偿的陀螺仪数据，用于后期处理和融合定位数据
+                resultType = "未校准陀螺仪传感器";
+                break;
+            case Sensor.TYPE_HEART_RATE: //心率传感器
+                resultType = "心率传感器";
+                break;
+            case Sensor.TYPE_LIGHT: //光线感应传感器，单位lx，检测周围的光线强度
+                resultType = "光线感应传感器";
+                break;
+            case Sensor.TYPE_LINEAR_ACCELERATION: //线性加速度传感器，单位是m/s2，该传感器是获取加速度传感器去除重力的影响得到的数据
+                resultType = "线性加速度传感器";
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD: //磁力传感器，单位是uT(微特斯拉)，测量设备周围三个物理轴（x，y，z）的磁场
+                resultType = "磁力传感器";
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED: //未校准磁力传感器，提供原始的，未校准的磁场数据
+                resultType = "未校准磁力传感器";
+                break;
+            case Sensor.TYPE_PRESSURE: //压力传感器，单位是hPa(百帕斯卡)，返回当前环境下的压强
+                resultType = "压力传感器";
+                break;
+            case Sensor.TYPE_PROXIMITY: //距离传感器，单位是cm，用来测量某个对象到屏幕的距离
+                resultType = "距离传感器";
+                break;
+            case Sensor.TYPE_RELATIVE_HUMIDITY: //湿度传感器，单位是%，来测量周围环境的相对湿度
+                resultType = "湿度传感器";
+                break;
+            case Sensor.TYPE_ROTATION_VECTOR: //旋转矢量传感器，旋转矢量代表设备的方向
+                resultType = "旋转矢量传感器";
+                break;
+            case Sensor.TYPE_SIGNIFICANT_MOTION: //特殊动作触发传感器
+                resultType = "特殊动作触发传感器";
+                break;
+            case Sensor.TYPE_STEP_COUNTER: //计步传感器
+                resultType = "计步传感器";
+                break;
+            case Sensor.TYPE_STEP_DETECTOR: //步行检测传感器，用户每走一步就触发一次事件
+                resultType = "步行检测传感器";
+                break;
+            case Sensor.TYPE_ORIENTATION: //方向传感器,测量设备围绕三个物理轴（x，y，z）的旋转角度
+                resultType = "方向传感器";
+                break;
+            case Sensor.TYPE_TEMPERATURE: //温度传感器，目前已被TYPE_AMBIENT_TEMPERATURE替代
+                resultType = "温度传感器";
+                break;
+//            default:
+//                resultType = "UNKNOW";
+//                break;
+        }
+        return resultType;
     }
 
     private void initVersionMap() {
@@ -283,5 +420,77 @@ public class DeviceInfoFragment extends BaseFragment<JoneAppManagerActivity> {
                 text = (TextView) itemView.findViewById(R.id.text);
             }
         }
+    }
+
+    /**
+     * Gets the number of cores available in this device, across all processors.
+     * Requires: Ability to peruse the filesystem at "/sys/devices/system/cpu"
+     *
+     * @return The number of cores, or 1 if failed to get result
+     */
+    private int getNumCores() {
+        //Private Class to display only CPU devices in the directory listing
+        class CpuFilter implements FileFilter {
+            @Override
+            public boolean accept(File pathname) {
+                //Check if filename is "cpu", followed by a single digit number
+                if (Pattern.matches("cpu[0-9]", pathname.getName())) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        try {
+            //Get directory containing CPU info
+            File dir = new File("/sys/devices/system/cpu/");
+            //Filter to only list the devices we care about
+            File[] files = dir.listFiles(new CpuFilter());
+            //Return the number of cores (virtual CPU devices)
+            return files.length;
+        } catch (Exception e) {
+            //Default to return 1 core
+            return 1;
+        }
+    }
+
+    /**
+     * 获取手机内存大小
+     *
+     * @return
+     */
+    private String getTotalMemory() {
+        String str1 = "/proc/meminfo";// 系统内存信息文件
+        String str2;
+        String[] arrayOfString;
+        long initial_memory = 0;
+        try {
+            FileReader localFileReader = new FileReader(str1);
+            BufferedReader localBufferedReader = new BufferedReader(localFileReader, 8192);
+            str2 = localBufferedReader.readLine();// 读取meminfo第一行，系统总内存大小
+
+            arrayOfString = str2.split("\\s+");
+            for (String num : arrayOfString) {
+                Log.i(str2, num + "\t");
+            }
+
+            initial_memory = Integer.valueOf(arrayOfString[1]).intValue() * 1024;// 获得系统总内存，单位是KB，乘以1024转换为Byte
+            localBufferedReader.close();
+
+        } catch (IOException e) {
+        }
+        return Formatter.formatFileSize(getContext(), initial_memory);// Byte转换为KB或者MB，内存大小规格化
+    }
+
+    /**
+     * 获取当前可用内存大小
+     *
+     * @return
+     */
+    private String getAvailMemory() {
+        ActivityManager am = (ActivityManager) getContext().getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(mi);
+        return Formatter.formatFileSize(getContext().getApplicationContext(), mi.availMem);
     }
 }

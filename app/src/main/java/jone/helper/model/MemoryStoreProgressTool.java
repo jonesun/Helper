@@ -2,6 +2,7 @@ package jone.helper.model;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.format.Formatter;
 import android.widget.TextView;
 
 import java.util.Timer;
@@ -19,14 +20,14 @@ public class MemoryStoreProgressTool {
     private Timer timerMemory;
     private Timer timerStore;
 
-    public void showMemoryProgress(final Activity activity, final ArcProgress arcProcess){
+    public void showMemoryProgress(final Activity activity, final ArcProgress arcProcess, TextView txt_memory_progress){
         timerMemory = new Timer();
 
         long l = AppUtil.getAvailMemory(activity);
         long y = AppUtil.getTotalMemory(activity);
         final double x = (((y - l) / (double) y) * 100);
         //   arcProcess.setProgress((int) x);
-
+        txt_memory_progress.setText(Formatter.formatFileSize(activity, l) + "/" + Formatter.formatFileSize(activity, y));
         arcProcess.setProgress(0);
         timerMemory.schedule(new TimerTask() {
             @Override

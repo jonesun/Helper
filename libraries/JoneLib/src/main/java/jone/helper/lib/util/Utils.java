@@ -47,21 +47,7 @@ public class Utils {
      * @return false 表示没有网络 true 表示有网络
      */
     public static boolean isNetworkAlive(Context context) {
-        // 获得网络状态管理器
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            // 建立网络数组
-            NetworkInfo[] net_info = connectivityManager.getAllNetworkInfo();
-            if (net_info != null) {
-                for (int i = 0; i < net_info.length; i++) {
-                    // 判断获得的网络状态是否是处于连接状态
-                    if (net_info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return SystemUtil.hasNetWork(context);
     }
 
     public static File getSharedPicFile(Context context) {

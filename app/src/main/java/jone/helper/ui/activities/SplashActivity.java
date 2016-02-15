@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import jone.helper.App;
 import jone.helper.R;
@@ -42,25 +43,30 @@ public class SplashActivity extends AppCompatActivity {
             BingPictureOperator.getInstance().getDailyPictureUrl(new OnBingPictureListener() {
                 @Override
                 public void onSuccess(final BingPicture bingPicture) {
-                    if (bingPicture != null) {
-                        App.getImageLoader().display(SplashActivity.this,
-                                iv_picture, BingPictureOperator.getFullImageUrl(SplashActivity.this, bingPicture.getUrl()),
-                                R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);
-                        iv_picture.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                BingPicDetailActivity.open(SplashActivity.this, bingPicture);
-                                closePage();
+                    try{
+                        if (bingPicture != null) {
+                            App.getImageLoader().display(SplashActivity.this,
+                                    iv_picture, BingPictureOperator.getFullImageUrl(SplashActivity.this, bingPicture.getUrl()),
+                                    R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);
+                            iv_picture.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    BingPicDetailActivity.open(SplashActivity.this, bingPicture);
+                                    closePage();
+                                }
+                            });
+                            List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
+                            if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
+                                tv_title.setText(bingPictureMsgs.get(0).getText());
                             }
-                        });
-                        List<BingPictureMsg> bingPictureMsgs = bingPicture.getMsg();
-                        if (bingPictureMsgs != null && bingPictureMsgs.size() > 0) {
-                            tv_title.setText(bingPictureMsgs.get(0).getText());
+                            tv_copyright.setText(bingPicture.getCopyright());
+                        }else {
+                            closePage();
                         }
-                        tv_copyright.setText(bingPicture.getCopyright());
-                    }else {
-                        closePage();
+                    }catch (Exception e){
+
                     }
+
                 }
 
                 @Override
