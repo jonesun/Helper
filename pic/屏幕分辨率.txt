@@ -1,0 +1,9 @@
+drawable-ldpi (dpi=120, density=0.75)  45 * 45 
+
+drawable-mdpi (dpi=160, density=1) 320 * 480  60 * 60
+
+drawable-hdpi (dpi=240, density=1.5)  480 * 800  90 * 90
+
+drawable-xhdpi (dpi=320, density=2) 720 * 1280  720 * 1184  120 * 120
+
+drawable-xxhdpi (dpi=480, density=3) 1080 * 1920 180 * 180

@@ -2,7 +2,22 @@ Helper
 ----------
 实用工具-帮手，包含当前城市天气、日历、便签、物流查询、手机管理及手电筒、3d相册等功能。简单发布，欢迎试用，后续继续更新.
 
-## AppPreview
+##Download
+
+[v3.1.0 helper.apk](https://github.com/jonesun/Helper/blob/master/apk/helper.apk?raw=true)
+
+**Compile environment**
+
+```
+compileSdkVersion=23
+buildToolsVersion=23.0.2
+
+minSdkVersion=14
+targetSdkVersion=23
+```
+
+
+## App preview
 ![pic_0](https://raw.githubusercontent.com/jonesun/Helper/master/screenshots/0.png)
 ======
 ![pic_1](https://raw.githubusercontent.com/jonesun/Helper/master/screenshots/1.png)
@@ -19,6 +34,12 @@ Helper
 ======
 
 ## Changelog
+* **3.1.0 2016.02.16**
+    * 首页调整加入未来三天天气预报
+    * 新增历史上的今天
+    * 更多设备信息展示
+    * 修复bug
+    
 * **3.0.9 2016.02.01**
     * 图片列表优化显示
     * 新增保存图片到本地
