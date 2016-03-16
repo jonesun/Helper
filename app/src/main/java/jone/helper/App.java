@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.support.annotation.IntDef;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import jone.helper.lib.model.network.NetworkOperator;
 import jone.helper.lib.model.network.okhttp.OkHttpNetworkOperator;
 import jone.helper.lib.model.network.volley.VolleyNetworkOperator;
 import jone.helper.lib.view.CommonView;
+import jone.helper.ui.activities.base.ThemeTool;
 
 /**
  * Created by jone.sun on 2016/1/12.
@@ -36,6 +38,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(ThemeTool.getInstance().isThemeNight(getApplicationContext())){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+        }
         instance = this;
         volleyNetworkOperator = VolleyNetworkOperator.getInstance().init(this);
 //        okHttpNetworkOperator = OkHttpNetworkOperator.getInstance().init(this);

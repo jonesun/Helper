@@ -21,6 +21,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -214,12 +215,14 @@ public class HelperMainActivity extends BaseAppCompatActivity
         }
         final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(
                 R.id.collapsing_toolbar_layout);
-        collapsingToolbar.setTitle(getString(R.string.app_name));
-        collapsingToolbar.setCollapsedTitleTextColor(getResources().getColor(android.R.color.white)); //设置收缩后Toolbar上字体的颜色
-        collapsingToolbar.setExpandedTitleColor(getThemeTool().getColorPrimary(HelperMainActivity.this)); //设置还没收缩时状态下字体颜色
-        collapsingToolbar.setExpandedTitleGravity(Gravity.RIGHT);
+        if(collapsingToolbar != null){
+            collapsingToolbar.setTitle(getString(R.string.app_name));
+            collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(HelperMainActivity.this, android.R.color.white)); //设置收缩后Toolbar上字体的颜色
+            collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(HelperMainActivity.this, android.R.color.transparent)); //设置还没收缩时状态下字体颜色
+//        collapsingToolbar.setExpandedTitleGravity(Gravity.RIGHT);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+        }
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -492,16 +495,16 @@ public class HelperMainActivity extends BaseAppCompatActivity
         List<MenuObject> menuObjects = new ArrayList<>();
 
         MenuObject menu_gallery = new MenuObject(getString(R.string.photos));
-        menu_gallery.setResource(android.R.drawable.ic_menu_gallery);
+        menu_gallery.setResource(R.drawable.ic_menu_gallery);
 
         MenuObject menu_calculator = new MenuObject(getString(R.string.calculator));
-        menu_calculator.setResource(R.mipmap.ic_menu_emoticons);
+        menu_calculator.setResource(R.drawable.ic_menu_calculator);
 
         MenuObject menu_scan = new MenuObject(getString(R.string.scan));
-        menu_scan.setResource(R.mipmap.ic_menu_find);
+        menu_scan.setResource(R.drawable.ic_menu_scan);
 
         MenuObject menu_flashlight = new MenuObject(getString(R.string.flashlight));
-        menu_flashlight.setResource(R.mipmap.ic_menu_paste);
+        menu_flashlight.setResource(R.drawable.ic_menu_flashlight);
 
         menuObjects.add(menu_gallery);
         menuObjects.add(menu_calculator);

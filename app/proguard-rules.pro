@@ -105,3 +105,5 @@ public static final android.os.Parcelable$Creator *;
 -keep class com.amap.api.fence.**{*;}
 -keep class com.autonavi.aps.amapapi.model.**{*;}
 #高德地图 end
+
+-dontwarn java.lang.invoke.*

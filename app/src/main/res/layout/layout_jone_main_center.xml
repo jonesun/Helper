@@ -57,7 +57,8 @@
             android:layout_width="120dp"
             android:layout_height="80dp"
             android:id="@+id/imWeatherIcon"
-            android:src="@drawable/weather_sunny"
+            android:src="@drawable/ic_weather_sunny"
+            android:scaleType="fitCenter"
             android:layout_alignParentRight="true"
             android:visibility="visible"/>
 

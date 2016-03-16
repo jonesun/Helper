@@ -7,16 +7,16 @@
             <!--android:icon="@mipmap/menu_item_home"-->
             <!--android:title="@string/menu_item_home" />-->
         <item android:id="@+id/nav_menu_item_picture"
-            android:icon="@mipmap/menu_item_picture"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_item_picture" />
         <item android:id="@+id/nav_menu_item_note"
-            android:icon="@mipmap/menu_item_note"
+            android:icon="@drawable/ic_menu_send"
             android:title="@string/menu_item_note" />
         <item android:id="@+id/nav_item_app_manager"
-            android:icon="@mipmap/menu_item_app_manager"
+            android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_item_app_manager" />
         <item android:id="@+id/nav_menu_item_logistics"
-            android:icon="@mipmap/menu_item_logistics"
+            android:icon="@drawable/ic_menu_express"
             android:title="@string/menu_item_logistics" />
     </group>
 
@@ -24,12 +24,12 @@
         android:id="@+id/second"
         android:checkableBehavior="none">
         <item android:id="@+id/nav_menu_item_theme"
-            android:icon="@mipmap/menu_item_recommend"
+            android:icon="@drawable/ic_menu_theme"
             android:title="@string/menu_item_theme"/>
         <item
             android:id="@+id/night_model"
             android:title="@string/night_model"
-            android:icon="@mipmap/menu_item_home"
+            android:icon="@drawable/ic_menu_night"
             app:actionLayout="@layout/menu_switch"
             app:showAsAction="always" />
     </group>
@@ -37,10 +37,10 @@
     <item android:title="Other">
         <menu>
             <item android:id="@+id/nav_menu_item_share"
-                android:icon="@android:drawable/ic_menu_share"
+                android:icon="@drawable/ic_menu_share"
                 android:title="@string/menu_item_shared" />
             <item android:id="@+id/nav_menu_item_feedback"
-                android:icon="@android:drawable/ic_menu_edit"
+                android:icon="@drawable/ic_menu_write"
                 android:title="@string/menu_item_feedback" />
         </menu>
     </item>

@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/loading"
                 android:textSize="14sp"
-                android:drawableLeft="@mipmap/city_item_location"
+                android:drawableLeft="@drawable/ic_location"
                 android:paddingLeft="2dp"
                 android:background="@android:color/transparent"/>
         </LinearLayout>

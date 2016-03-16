@@ -11,7 +11,7 @@
         android:layout_height="80dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="14dp"
-        android:src="@drawable/weather_sunny"/>
+        android:src="@drawable/ic_weather_sunny"/>
     <RelativeLayout
         android:id="@+id/layout_weather_txt_info"
         android:layout_height="match_parent"

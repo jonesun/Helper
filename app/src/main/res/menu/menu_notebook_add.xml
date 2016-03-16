@@ -4,7 +4,7 @@
     <item
         android:id="@+id/item_add"
         android:title="新增"
-        android:icon="@mipmap/actionbar_send_icon"
+        android:icon="@drawable/ic_menu_send_white"
         android:orderInCategory="100"
         app:showAsAction="always" />
 </menu>

@@ -75,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:background="@android:color/transparent"
-                        android:drawableLeft="@mipmap/icon_search_location"
+                        android:drawableLeft="@drawable/ic_location"
                         android:padding="8dp"
                         android:textSize="20sp" />
 

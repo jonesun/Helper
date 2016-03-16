@@ -311,7 +311,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             return;
         }
         List<WeatherData> weatherDataList = weather.getWeather_data();
-        txt_pm25.setText(weather.getPm25() + " " + WeatherUtil.getPm25String(weather.getPm25()));
+        txt_pm25.setText(String.format("%s %s", weather.getPm25(), WeatherUtil.getPm25String(weather.getPm25())));
         txt_pm25.setBackgroundResource(R.drawable.bg_weather_pm25);
         int level = 0;
         try {
@@ -376,12 +376,14 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             }
         } else {
             txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
-            txt_weather_index.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
-                }
-            });
+//            txt_weather_index.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+//                }
+//            });
+            //use lambda
+            txt_weather_index.setOnClickListener((view) -> getHostActivity().getThemeTool().refreshTheme(getHostActivity()));
             layout_weather.setVisibility(View.GONE);
         }
     }

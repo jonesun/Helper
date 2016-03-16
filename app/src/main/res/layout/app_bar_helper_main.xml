@@ -7,6 +7,7 @@
     tools:context=".ui.activities.HelperMainActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:fitsSystemWindows="true">
@@ -67,8 +68,8 @@
         app:layout_anchorGravity - 设置FAB相对锚点的位置，值有 bottom、center、right、left、top等-->
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_margin="@dimen/fab_margin" app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom|end"
         android:src="@android:drawable/ic_menu_manage"
         app:backgroundTint="?attr/colorPrimary"
         app:rippleColor="?attr/colorPrimary"

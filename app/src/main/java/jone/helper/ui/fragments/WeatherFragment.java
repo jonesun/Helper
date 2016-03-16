@@ -204,17 +204,20 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
 
     @Override
     public void setWeatherInfo(Weather weather) {
-        weatherDataList = weather.getWeather_data();
-        if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
-            weatherAdapter.setWeather(weather);
-            weatherAdapter.setWeatherDataList(weatherDataList);
-            weatherAdapter.notifyDataSetChanged();
-            UmengUtil.get_weather(getHostActivity(), "url", weatherDataList.get(0).getWeather());
+        if(weather != null){
+            weatherDataList = weather.getWeather_data();
+            if(weatherDataList != null && weatherDataList.size() > 0 && weatherAdapter != null){
+                weatherAdapter.setWeather(weather);
+                weatherAdapter.setWeatherDataList(weatherDataList);
+                weatherAdapter.notifyDataSetChanged();
+                UmengUtil.get_weather(getHostActivity(), "url", weatherDataList.get(0).getWeather());
+            }
+
+            String city = weather.getCurrentCity();
+            if(btn_city != null){
+                btn_city.setText(Html.fromHtml("<u>" + city + "</u>"));
+            }
         }
 
-        String city = weather.getCurrentCity();
-        if(btn_city != null){
-            btn_city.setText(Html.fromHtml("<u>" + city + "</u>"));
-        }
     }
 }

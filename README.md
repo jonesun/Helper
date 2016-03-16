@@ -10,7 +10,7 @@ Helper
 
 ```
 compileSdkVersion=23
-buildToolsVersion=23.0.2
+buildToolsVersion=24.0.0 rc1
 
 minSdkVersion=14
 targetSdkVersion=23

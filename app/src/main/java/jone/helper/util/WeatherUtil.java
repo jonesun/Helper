@@ -219,7 +219,7 @@ public class WeatherUtil {
 //        霾32
         int weatherIcon;
         if(weather == null){
-            weatherIcon = R.drawable.weather_sunny;
+            weatherIcon = R.drawable.ic_weather_sunny;
         }else {
             Calendar calendar = Calendar.getInstance();
             int hour= calendar.get(Calendar.HOUR_OF_DAY);
@@ -227,7 +227,7 @@ public class WeatherUtil {
                 weatherIcon = R.drawable.weather_night;
             }else {
                 if(weather == null || weather.equals("晴")){
-                    weatherIcon = R.drawable.weather_sunny;
+                    weatherIcon = R.drawable.ic_weather_sunny;
                 }else if(weather.equals("多云") || weather.equals("多云转晴")){
                     weatherIcon = R.drawable.weather_cloudy;
                 }else if(weather.equals("阴")){
@@ -260,7 +260,7 @@ public class WeatherUtil {
 //        霾32
         int weatherIcon;
         if(weather == null){
-            weatherIcon = R.drawable.weather_sunny;
+            weatherIcon = R.drawable.ic_weather_sunny;
         }else {
             Calendar calendar = Calendar.getInstance();
             int hour= calendar.get(Calendar.HOUR_OF_DAY);
@@ -268,7 +268,7 @@ public class WeatherUtil {
                 weatherIcon = R.drawable.weather_night;
             }else {
                 if(weather == null || weather.contains("晴")){
-                    weatherIcon = R.drawable.weather_sunny;
+                    weatherIcon = R.drawable.ic_weather_sunny;
                 }else if(weather.contains("多云")){
                     weatherIcon = R.drawable.weather_cloudy;
                 }else if(weather.contains("阴")){

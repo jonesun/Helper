@@ -1,10 +1,13 @@
 package jone.helper.ui.activities.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.WindowManager;
@@ -33,50 +36,51 @@ public class ThemeTool {
 
     public static ThemeTool instance = null;
 
-    public static ThemeTool getInstance(){
-        if(instance == null){
+    public static ThemeTool getInstance() {
+        if (instance == null) {
             instance = new ThemeTool();
         }
         return instance;
     }
 
-    public void setPageTheme(Activity activity, Bundle savedInstanceState){
-        boolean night_theme = isThemeNight(activity);
+    public void setPageTheme(Activity activity, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("themeIndex")) {
                 themeIndex = savedInstanceState.getInt("themeIndex");
             }
-        }else {
+        } else {
             try {
                 themeIndex = Integer.parseInt(PreferenceManager
                         .getDefaultSharedPreferences(activity).getString("theme_setting", "0"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 themeIndex = 0;
             }
         }
-        if(themeIndex < 0 || themeIndex > themeIds.length){
+        if (themeIndex < 0 || themeIndex > themeIds.length) {
             themeIndex = 0;
         }
-        if(night_theme){
-            activity.setTheme(R.style.HelperTheme_night);
-        }else {
-            activity.setTheme(themeIds[themeIndex]);  //设置主题皮肤
-        }
+        activity.setTheme(themeIds[themeIndex]);  //设置主题皮肤
     }
 
-    public boolean isThemeNight(Activity activity){
+    public boolean isThemeNight(Context activity) {
         return PreferenceManager.getDefaultSharedPreferences(activity)
                 .getBoolean("night_theme", false);
     }
 
-    public void setThemeNight(Activity activity, boolean night){
+    public void setThemeNight(AppCompatActivity activity, boolean night) {
         PreferenceManager
                 .getDefaultSharedPreferences(activity).edit()
                 .putBoolean("night_theme", night).apply();
+        if (night) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+        }
+        activity.getDelegate().setLocalNightMode(AppCompatDelegate.getDefaultNightMode());
         activity.recreate();
     }
 
-    public void onTheme(Activity activity, int themeIndex){
+    public void onTheme(Activity activity, int themeIndex) {
         this.themeIndex = themeIndex;
         PreferenceManager
                 .getDefaultSharedPreferences(activity).edit()
@@ -88,11 +92,11 @@ public class ThemeTool {
         outState.putInt("themeIndex", themeIndex);
     }
 
-    public void refreshTheme(Activity activity){
+    public void refreshTheme(Activity activity) {
         try {
             themeIndex = Integer.parseInt(PreferenceManager
                     .getDefaultSharedPreferences(activity).getString("theme_setting", "0"));
-        }catch (Exception e){
+        } catch (Exception e) {
             themeIndex = 0;
         }
         activity.recreate();
@@ -101,11 +105,12 @@ public class ThemeTool {
     public void setStatusBarView(Activity activity) {
         setStatusBarView(activity, getDarkColorPrimary(activity));
     }
+
     /**
      * 设置状态栏的颜色，目前只是在4.4上面有效
      */
     public void setStatusBarView(Activity activity, int color) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
@@ -115,13 +120,13 @@ public class ThemeTool {
         }
     }
 
-    public int getColorPrimary(Activity activity){
-        TypedValue typedValue = new  TypedValue();
+    public int getColorPrimary(Activity activity) {
+        TypedValue typedValue = new TypedValue();
         activity.getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
         return typedValue.data;
     }
 
-    public int getDarkColorPrimary(Activity activity){
+    public int getDarkColorPrimary(Activity activity) {
         TypedValue typedValue = new TypedValue();
         activity.getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
         return typedValue.data;
