@@ -1,4 +1,4 @@
-include ':app', ':libraries:volley',
+include ':app', ':libraries:volley', ':daoexamplegenerator',
         ':libraries:JoneLib'
 include ':libraries:ZxingScan', ':libraries:viewpagerindicator'
 //include ':libraries:Gallery3D',

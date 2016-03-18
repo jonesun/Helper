@@ -34,7 +34,7 @@ import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.mvp.view.weather.WeatherView;
 import jone.helper.ui.activities.EggsActivity;
 import jone.helper.ui.activities.HelperMainActivity;
-import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.activities.WeatherSelectCityActivity;
 import jone.helper.ui.adapter.WeatherAdapter;
 import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.util.FestivalUtil;
@@ -93,7 +93,7 @@ public class WeatherFragment extends BaseFragment<HelperMainActivity> implements
         btn_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
+                startActivityForResult(new Intent(getActivity(), WeatherSelectCityActivity.class), resultCode);
             }
         });
 

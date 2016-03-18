@@ -234,4 +234,5 @@
 
     <string name="title_activity_picture_view_pager_fullscreen">PictureViewPagerFullscreenActivity
     </string>
+    <string name="title_activity_weather_select_city">选择城市</string>
 </resources>

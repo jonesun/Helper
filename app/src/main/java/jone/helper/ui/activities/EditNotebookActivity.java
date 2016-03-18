@@ -15,10 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import jone.helper.R;
-import jone.helper.bean.NotebookData;
-import jone.helper.dao.NotebookDao;
-import jone.helper.lib.util.StringUtils;
+import jone.helper.dao.NotebookBeanDao;
+import jone.helper.bean.Notebook;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.util.KJAnimations;
 
@@ -36,7 +40,7 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
     ImageView mImgThumbtack, mImgMenu,
             mImgGreen, mImgBlue, mImgPurple, mImgYellow, mImgRed;
 
-    private NotebookData notebookData;
+    private Notebook notebookData;
 
     public static final int[] sBackGrounds = { 0xffe5fce8,// 绿色
             0xfffffdd7,// 黄色
@@ -94,11 +98,11 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_save:
-                notebookData.setUpdateDate(StringUtils.getDataTime("yyyy-MM-dd HH:mm:ss"));
                 notebookData.setContent(mEtContent.getText().toString());
-                NotebookDao.getInstance(EditNotebookActivity.this).createOrUpdate(notebookData);
-                Toast.makeText(EditNotebookActivity.this, "保存", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(EditNotebookActivity.this, NotebookActivity.class));
+                NotebookBeanDao.getInstance(EditNotebookActivity.this).insertOrReplace(notebookData);
+                Toast.makeText(EditNotebookActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
         }
@@ -171,15 +175,15 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
 
     public void initData() {
         if(getIntent().hasExtra("notebookData")){
-            notebookData = (NotebookData) getIntent().getSerializableExtra("notebookData");
+            notebookData = (Notebook) getIntent().getSerializableExtra("notebookData");
         }
         if (notebookData == null) {
-            notebookData = new NotebookData();
+            notebookData = new Notebook();
             notebookData.setContent("");
             notebookData.setColor(3);
         }
-        if (StringUtils.isEmpty(notebookData.getDate())) {
-            notebookData.setDate(StringUtils.getDataTime("yyyy/MM/dd"));
+        if (notebookData.getCreateDate() == null || notebookData.getCreateDate() == 0L) {
+            notebookData.setCreateDate(System.currentTimeMillis());
         }
     }
 
@@ -196,7 +200,8 @@ public class EditNotebookActivity extends BaseAppCompatActivity implements View.
         mEtContent.setSingleLine(false);
         mEtContent.setHorizontallyScrolling(false);
         mEtContent.setText(Html.fromHtml(notebookData.getContent()).toString());
-        mTvDate.setText(notebookData.getDate());
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        mTvDate.setText(format.format(new Date(notebookData.getCreateDate())));
 
         mToolbar.setBackgroundColor(sTitleBackGrounds[notebookData.getColor()]);
         getThemeTool().setStatusBarView(this, sTitleBackGrounds[notebookData.getColor()]);

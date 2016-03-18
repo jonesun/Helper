@@ -49,7 +49,7 @@ import jone.helper.mvp.presenter.weather.impl.BaiduWeatherPresenter;
 import jone.helper.mvp.view.weather.WeatherView;
 import jone.helper.ui.activities.HelperMainActivity;
 import jone.helper.ui.activities.JoneAppManagerActivity;
-import jone.helper.ui.activities.SelectCityActivity;
+import jone.helper.ui.activities.WeatherSelectCityActivity;
 import jone.helper.ui.adapter.MainCalendarAdapter;
 import jone.helper.ui.fragments.base.BaseFragment;
 import jone.helper.ui.widget.circleprogress.ArcProgress;
@@ -162,7 +162,7 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
         btn_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getActivity(), SelectCityActivity.class), resultCode);
+                startActivityForResult(new Intent(getActivity(), WeatherSelectCityActivity.class), resultCode);
             }
         });
 

@@ -1,6 +1,7 @@
 package jone.helper;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
@@ -14,10 +15,11 @@ import android.widget.Toast;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import jone.helper.greendao.dao.DaoMaster;
+import jone.helper.greendao.dao.DaoSession;
 import jone.helper.lib.model.imageLoader.GlideImageLoader;
 import jone.helper.lib.model.imageLoader.ImageLoader;
 import jone.helper.lib.model.network.NetworkOperator;
-import jone.helper.lib.model.network.okhttp.OkHttpNetworkOperator;
 import jone.helper.lib.model.network.volley.VolleyNetworkOperator;
 import jone.helper.lib.view.CommonView;
 import jone.helper.ui.activities.base.ThemeTool;
@@ -29,8 +31,9 @@ public class App extends Application {
     private static final String TAG = App.class.getSimpleName();
     private static App instance;
     private static NetworkOperator volleyNetworkOperator;
-//    private static NetworkOperator okHttpNetworkOperator;
+    //    private static NetworkOperator okHttpNetworkOperator;
     private static ImageLoader imageLoader;
+
     public static App getInstance() {
         return instance;
     }
@@ -38,7 +41,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(ThemeTool.getInstance().isThemeNight(getApplicationContext())){
+        if (ThemeTool.getInstance().isThemeNight(getApplicationContext())) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
@@ -64,10 +67,10 @@ public class App extends Application {
         }
     }
 
-    private void initAppInfo(){
+    private void initAppInfo() {
         PackageManager pm = getPackageManager();
         try {
-            PackageInfo pageInfo=pm.getPackageInfo(getPackageName(),0);
+            PackageInfo pageInfo = pm.getPackageInfo(getPackageName(), 0);
             Log.d(TAG, "initAppInfo: versionName:" + pageInfo.versionName
                     + " VersionCode:" + pageInfo.versionCode
                     + " PackageName:" + pageInfo.packageName);
@@ -123,9 +126,43 @@ public class App extends Application {
 
     @IntDef({Toast.LENGTH_SHORT, Toast.LENGTH_LONG})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Duration {}
+    public @interface Duration {
+    }
+
     public static void showToast(String info, @Duration int toastTime) {
         Handler handler = App.getInstance().getHandler();
         handler.sendMessage(handler.obtainMessage(WHAT_SHOW_TOAST, toastTime, 0, info));
+    }
+
+    private static DaoMaster daoMaster;
+    private static DaoSession daoSession;
+    /**
+     * 取得DaoMaster
+     *
+     * @param context
+     * @return
+     */
+    public static DaoMaster getDaoMaster(Context context) {
+        if (daoMaster == null) {
+            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, Constants.DATABASE_NAME, null);
+            daoMaster = new DaoMaster(helper.getWritableDatabase());
+        }
+        return daoMaster;
+    }
+
+    /**
+     * 取得DaoSession
+     *
+     * @param context
+     * @return
+     */
+    public static DaoSession getDaoSession(Context context) {
+        if (daoSession == null) {
+            if (daoMaster == null) {
+                daoMaster = getDaoMaster(context);
+            }
+            daoSession = daoMaster.newSession();
+        }
+        return daoSession;
     }
 }

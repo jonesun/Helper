@@ -70,12 +70,6 @@ public static final android.os.Parcelable$Creator *;
 -keep class jone.helper.** { *;}
 
 -keepattributes Signature
--keep class com.j256.**
--keepclassmembers class com.j256.** { *; }
--keep enum com.j256.**
--keepclassmembers enum com.j256.** { *; }
--keep interface com.j256.**
--keepclassmembers interface com.j256.** { *; }
 -keep class jone.helper.lib.bean.** { *; }
 -keep class jone.helper.model.weather.entity.** { *; }
 -keep class jone.helper.lib.ormlite.entities.** { *; }

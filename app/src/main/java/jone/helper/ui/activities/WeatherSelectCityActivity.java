@@ -1,18 +1,23 @@
 package jone.helper.ui.activities;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,63 +26,77 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 import jone.helper.R;
-import jone.helper.lib.util.Utils;
+import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 
-/**
- * @author jone.sun on 2015/3/26.
- */
-public class SelectCityOldActivity extends ListActivity{
-    private static final String TAG = SelectCityActivity.class.getSimpleName();
-    ArrayAdapter<String> arrayAdapter;
-    private SearchView search_view;
+public class WeatherSelectCityActivity extends BaseAppCompatWithLayoutActivity {
+    private ArrayAdapter<String> arrayAdapter;
+    private ListView listView;
+    private TextView emptyTextView;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Utils.setScreenOrientation(this);
-        setContentView(R.layout.select_city_activity);
-        android.app.ActionBar actionBar = getActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        search_view = (SearchView) findViewById(R.id.search_view);
-        search_view.setIconifiedByDefault(false);
-        search_view.requestFocus();
-        search_view.setFocusable(true);
-        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    protected int getContentView() {
+        return R.layout.activity_weather_select_city;
+    }
 
+    @Override
+    protected void findViews() {
+        setTitle(getString(R.string.title_activity_weather_select_city));
+        emptyTextView = findView(android.R.id.empty);
+        listView = findView(android.R.id.list);
+        listView.setFastScrollEnabled(true);
+        setData();
+        if(arrayAdapter.getCount() == 0)
+        {
+            emptyTextView.setVisibility(View.VISIBLE);
+        }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.putExtra("result", arrayAdapter.getItem(position));
+                WeatherSelectCityActivity.this.setResult(RESULT_OK, intent);
+                WeatherSelectCityActivity.this.finish();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_weather_select_city, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                // perform query here
+
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+//                searchView.clearFocus();
                 if(query.length()!=0){
-                    getListView().setFilterText(query);
+                    listView.setFilterText(query);
                 }else{
-                    getListView().clearTextFilter();
+                    listView.clearTextFilter();
                 }
+                searchView.clearFocus();
                 return false;
+//                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText.length()!=0){
-                    getListView().setFilterText(newText);
+                    listView.setFilterText(newText);
                 }else{
-                    getListView().clearTextFilter();
+                    listView.clearTextFilter();
                 }
                 return false;
             }
-
         });
-        search_view.setSubmitButtonEnabled(true);
-        getListView().setFastScrollEnabled(true);
-        setData();
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Intent intent = new Intent();
-        intent.putExtra("result", arrayAdapter.getItem(position));
-        SelectCityOldActivity.this.setResult(RESULT_OK, intent);
-        SelectCityOldActivity.this.finish();
+//        searchView.expandActionView();
+//        searchView.setSubmitButtonEnabled(true);
+        searchView.requestFocus();
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void setData(){
@@ -120,10 +139,10 @@ public class SelectCityOldActivity extends ListActivity{
             arrayAdapter = new ArrayAdapter<>(this,
                     android.R.layout.simple_list_item_single_choice,
                     list);
-            setListAdapter(arrayAdapter);
-            getListView().setTextFilterEnabled(true);
+            listView.setAdapter(arrayAdapter);
+            listView.setTextFilterEnabled(true);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "", e);
+            Log.e("WeatherSelectCity", "", e);
         }finally {
             if(cursor != null){
                 cursor.close();
@@ -131,16 +150,6 @@ public class SelectCityOldActivity extends ListActivity{
             if(database != null){
                 database.close();
             }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -4,14 +4,19 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import jone.helper.R;
-import jone.helper.bean.NotebookData;
+import jone.helper.bean.Notebook;
 import jone.helper.ui.activities.EditNotebookActivity;
 
 /**
  * Created by jone.sun on 2015/9/29.
  */
-public class NotebookRecyclerViewAdapter extends BaseRecyclerViewAdapter<NotebookRecyclerViewHolder, NotebookData> {
+public class NotebookRecyclerViewAdapter extends BaseRecyclerViewAdapter<NotebookRecyclerViewHolder, Notebook> {
 
     public NotebookRecyclerViewAdapter(Context context) {
         super(context);
@@ -26,8 +31,9 @@ public class NotebookRecyclerViewAdapter extends BaseRecyclerViewAdapter<Noteboo
     @Override
     public void onBindViewHolder(NotebookRecyclerViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        NotebookData notebookData = getItem(position);
-        holder.note_date.setText(notebookData.getDate());
+        Notebook notebookData = getItem(position);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        holder.note_date.setText(format.format(new Date(notebookData.getCreateDate())));
         holder.note_content.setText(notebookData.getContent());
         holder.note_img_thumbtack.setImageResource(EditNotebookActivity.sThumbtackImgs[notebookData.getColor()]);
         holder.note_content.setBackgroundColor(EditNotebookActivity.sBackGrounds[notebookData.getColor()]);

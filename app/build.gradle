@@ -91,7 +91,7 @@ android {
 
     sourceSets {
         main {
-            //java.srcDirs = ['src/main/java']
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
             res.srcDirs = getSrcDirs('src/main/res', 'src/main/res-modules')
         }
     }
@@ -132,6 +132,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'cn.lightsky.infiniteindicator:library:1.1.0'
 //    compile 'com.android.support:support-v4:23.2.1'
+    compile 'de.greenrobot:greendao:2.1.0'
 
 //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1' // or 1.4-beta1

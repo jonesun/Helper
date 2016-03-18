@@ -1,12 +1,16 @@
 package jone.helper.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +21,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import jone.helper.R;
-import jone.helper.bean.NotebookData;
-import jone.helper.dao.NotebookDao;
+import jone.helper.dao.NotebookBeanDao;
+import jone.helper.bean.Notebook;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 import jone.helper.ui.adapter.NotebookRecyclerViewAdapter;
@@ -29,6 +33,10 @@ import jone.helper.ui.adapter.NotebookRecyclerViewAdapter;
 public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyclerViewAdapter.OnItemClickListener {
     private NotebookRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
+
+    public static final int requestCode_add = 0;
+    public static final int requestCode_edit = 1;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_notebook;
@@ -43,30 +51,45 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
     @Override
     protected void initViews() {
         super.initViews();
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        //RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         adapter = new NotebookRecyclerViewAdapter(NotebookActivity.this);
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(mLayoutManager);
-        List<NotebookData> notebookDatas = NotebookDao.getInstance(this).queryList();
-        adapter.setDataList(notebookDatas);
-        if(notebookDatas.size() == 0){
+        List<Notebook> notebookDataList = NotebookBeanDao.getInstance(this).queryList();
+        adapter.setDataList(notebookDataList);
+        if (notebookDataList.size() == 0) {
             setNoData();
         }
     }
 
-    private void setNoData(){
+
+    private void setNoData() {
         ViewStub stub = (ViewStub) findViewById(R.id.vs_no_notebook);
         stub.inflate();
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        NotebookData notebookData = adapter.getItem(position);
+        Notebook notebookData = adapter.getItem(position);
         Intent intent = new Intent(NotebookActivity.this, EditNotebookActivity.class);
         intent.putExtra("notebookData", notebookData);
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent, requestCode_edit);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("ssss", "onActivityResult: " + requestCode);
+        if (resultCode == RESULT_OK) {
+            if (adapter != null) {
+                List<Notebook> notebookDataList = NotebookBeanDao.getInstance(this).queryList();
+                adapter.setDataList(notebookDataList);
+            }
+            Log.e("ssss", "onActivityResult updateView");
+        }
+
     }
 
     @Override
@@ -77,7 +100,7 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
                 .setAction(getString(R.string.delete), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        NotebookDao.getInstance(NotebookActivity.this).delete(adapter.getItem(position));
+                        NotebookBeanDao.getInstance(NotebookActivity.this).delete(adapter.getItem(position));
                         adapter.removeData(position);
                     }
                 });
@@ -119,7 +142,8 @@ public class NotebookActivity extends BaseAppCompatActivity implements AppsRecyc
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_add:
-                startActivity(new Intent(NotebookActivity.this, EditNotebookActivity.class));
+                startActivityForResult(new Intent(NotebookActivity.this,
+                        EditNotebookActivity.class), requestCode_add);
                 break;
         }
         return super.onOptionsItemSelected(item);
