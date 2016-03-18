@@ -38,7 +38,7 @@ public class TnGouPictureAdapter extends LoadDataRecyclerViewAdapter<TnGouPictur
             viewHolder.mTitle.setVisibility(View.GONE);
             viewHolder.mImage.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            viewHolder.mImage.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            viewHolder.mImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
             App.getImageLoader().display(getContext(),
                     viewHolder.mImage, data.getSrc(),
                     R.mipmap.ic_image_loading, R.mipmap.ic_image_loadfail);

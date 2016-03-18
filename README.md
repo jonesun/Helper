@@ -4,7 +4,7 @@ Helper
 
 ##Download
 
-[v3.1.0 helper.apk](https://github.com/jonesun/Helper/blob/master/apk/helper.apk?raw=true)
+[v3.1.1 helper.apk](https://github.com/jonesun/Helper/blob/master/apk/helper.apk?raw=true)
 
 **Compile environment**
 
@@ -34,6 +34,12 @@ targetSdkVersion=23
 ======
 
 ## Changelog
+* **3.1.1 2016.03.18**
+    * 首页局部调整
+    * 网络图片列表优化显示
+    * 便签列表优化显示
+    * 修复bug
+
 * **3.1.0 2016.02.16**
     * 首页调整加入未来三天天气预报
     * 新增历史上的今天

@@ -40,7 +40,7 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
     private TextView txtEmpty;
     private LinearLayout layout_no_network;
     private ProgressBar progress_bar;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
     private LoadDataRecyclerViewAdapter<T> adapter;
     private LoadDataPresenter loadDataPresenter;
     private LoadMoreView loadMoreView;
@@ -105,9 +105,9 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
 
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setAdapter(adapter);
-            mRecyclerView.addOnScrollListener(new RecyclerOnScrollListener(mLayoutManager) {
+            mRecyclerView.addOnScrollListener(new RecyclerOnScrollListener() {
                 @Override
-                public void onLoadMore() {
+                public void onBottom() {
                     if(adapter.isShowFooter()){
                         if(!isLoading){
                             isLoadMore = true;
@@ -154,7 +154,7 @@ public abstract class LoadDataFragment<T> extends Fragment implements LoadDataVi
      * 外部可修改LinearLayoutManager GridLayoutManager
      * @return
      */
-    public LinearLayoutManager initLayoutManager(){
+    public RecyclerView.LayoutManager initLayoutManager(){
         return new LinearLayoutManager(getActivity());
     }
 

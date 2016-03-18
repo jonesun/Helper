@@ -23,6 +23,7 @@ import jone.helper.mvp.presenter.loadData.LoadDataPresenterImpl;
 import jone.helper.mvp.widget.loadData.LoadDataRecyclerViewAdapter;
 import jone.helper.mvp.view.loadData.LoadMoreView;
 import jone.helper.mvp.widget.loadData.LoadDataFragment;
+import jone.helper.mvp.widget.loadData.StaggeredGridLayoutLoadDataFragment;
 import jone.helper.ui.adapter.TnGouPictureAdapter;
 import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 
@@ -52,7 +53,7 @@ public class PictureDetailActivity extends BaseAppCompatWithLayoutActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends LoadDataFragment<TnGouPicture> {
+    public static class PlaceholderFragment extends StaggeredGridLayoutLoadDataFragment<TnGouPicture> {
         private static final String ID = "id";
 
         /**
@@ -68,6 +69,7 @@ public class PictureDetailActivity extends BaseAppCompatWithLayoutActivity {
         }
 
         public PlaceholderFragment() {
+            super(2);
         }
         @Override
         public LoadDataPresenter initLoadDataPresenter() {

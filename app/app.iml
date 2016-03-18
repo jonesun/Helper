@@ -55,13 +55,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/baidu/rs" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/assets" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/aidl" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/jni" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/assets" type="java-test-resource" />
@@ -69,6 +62,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestBaidu/rs" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/assets" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/jni" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/testBaidu/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/release/assets" type="java-resource" />
