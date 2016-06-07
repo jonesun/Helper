@@ -199,7 +199,7 @@ public class HelperMainActivity extends BaseAppCompatActivity
     @Override
     protected void findViews() {
         fragmentManager = getSupportFragmentManager();
-        MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
+        //MobclickAgent.updateOnlineConfig(HelperMainActivity.this);
         UmengUtil.event_open_main(HelperMainActivity.this);
         UmengUpdateAgent.setDefault();
         UmengUpdateAgent.update(this);

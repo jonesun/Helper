@@ -103,6 +103,12 @@ public class RandomUtils {
         return null;
     }
 
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }
+
     public static void main(String[] args) {
         Set<String> set = new HashSet<>();
         for (int i = 0; i < 12; i++) {

@@ -89,7 +89,7 @@ public class PicturesTabActivity extends BaseAppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         public String[] titles = new String[]{
-                "段子", "全部", "性感美女","日韩美女", "丝袜美腿", "美女照片", "美女写真", "清纯美女", "性感车模"
+                "全部", "性感美女","日韩美女", "丝袜美腿", "美女照片", "美女写真", "清纯美女", "性感车模"
         };
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -100,10 +100,7 @@ public class PicturesTabActivity extends BaseAppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position == 0){
-                return new LaiFuDaoPictureFragment();
-            }
-            return TnGouGalleryFragment.newInstance(position - 1, titles[position]);
+            return TnGouGalleryFragment.newInstance(position, titles[position]);
         }
 
         @Override

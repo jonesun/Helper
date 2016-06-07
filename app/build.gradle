@@ -1,36 +1,26 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-    }
-}
-
-// Required because retrolambda is on maven central
-repositories {
-    mavenCentral()
-}
-
 //apply plugin: 'com.android.application' //or apply plugin: 'java'
 apply from: '/application.gradle'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
-    buildToolsVersion '24.0.0 rc1'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    //buildToolsVersion "24.0.0 rc3"
 
     defaultConfig {
         applicationId "jone.helper"
-        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
-        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode Integer.parseInt(project.VERSION_CODE)
         versionName VERSION_NAME
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "UMENG"]
 
-        multiDexEnabled = true
-        multiDexKeepProguard file('multi-dex-keep.txt')
+//        multiDexEnabled = true
+//        multiDexKeepProguard file('multi-dex-keep.txt')
+
+        //使用Jack编译器
+//        jackOptions{
+//            enabled true
+//        }
     }
 
 //    dataBinding {
@@ -83,6 +73,11 @@ android {
                         def fileName = outputFile.name.replace(".apk", "") + "_" + versionName + "_" + versionCode + "_${releaseTime()}.apk"
                         println("fileName: " + fileName)
                         output.outputFile = new File(outputFile.parent, fileName)
+                        if (output.zipAlign != null) {
+                            output.zipAlign.doLast {
+                                output.zipAlign.inputFile.delete()
+                            }
+                        }
                     }
                 }
             }
@@ -96,11 +91,29 @@ android {
         }
     }
 
+//    //使用Java1.8
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+
+
     compileOptions {
 //        encoding "UTF-8"
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    //删除unaligned apk
+//    android.libraryVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            if (output.zipAlign != null) {
+//                output.zipAlign.doLast {
+//                    output.zipAlign.inputFile.delete()
+//                }
+//            }
+//        }
+//    }
 
 }
 
@@ -123,10 +136,10 @@ dependencies {
     compile project(':libraries:viewpagerindicator')
     compile 'com.google.zxing:core:3.0.1'
 //    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.android.support:cardview-v7:23.2.1'
-    compile 'com.android.support:palette-v7:23.2.1'
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
 //    compile 'com.android.support:support-v13:23.2.1'
 //    compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.umeng.analytics:analytics:latest.integration'

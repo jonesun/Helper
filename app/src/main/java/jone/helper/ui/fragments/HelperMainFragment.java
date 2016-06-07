@@ -376,14 +376,14 @@ public class HelperMainFragment extends BaseFragment<HelperMainActivity> impleme
             }
         } else {
             txt_weather_index.setText(Html.fromHtml("网络连接失败<u>重试</u>"));
-//            txt_weather_index.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
-//                }
-//            });
+            txt_weather_index.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getHostActivity().getThemeTool().refreshTheme(getHostActivity());
+                }
+            });
             //use lambda
-            txt_weather_index.setOnClickListener((view) -> getHostActivity().getThemeTool().refreshTheme(getHostActivity()));
+            //txt_weather_index.setOnClickListener((view) -> getHostActivity().getThemeTool().refreshTheme(getHostActivity()));
             layout_weather.setVisibility(View.GONE);
         }
     }

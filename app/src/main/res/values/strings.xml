@@ -34,8 +34,6 @@
 
     <string name="uninstall">卸载</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_news">NewsActivity</string>
     <string name="no_data">无数据</string>
     <string name="no_network">无网络</string>
@@ -223,14 +221,14 @@
 
     <string name="qr_scan_tips">将二维码/条码放入框内，即可自动扫描</string>
 
-    <string name="now_date">%1$d年%2$d月%3$d日 周%4$s\r\n 农历: %5$s</string>
+    <string name="now_date">%1$d年%2$d月%3$d日 周%4$s\r\n农历: %5$s</string>
 
     <string name="today_festival">今天是: <xliff:g id="xxx">%s</xliff:g></string>
     <string name="today_no_festival">今天没有节日</string>
     <string name="title_activity_pictures_tab">图片</string>
 
     <string name="picture_indicator">%1$d/%2$d</string>
-    <string name="history_today">历史上的今天: %1$d年%2$s</string>
+    <string name="history_today">历史上的今天\r\n%1$d年%2$s</string>
 
     <string name="title_activity_picture_view_pager_fullscreen">PictureViewPagerFullscreenActivity
     </string>

@@ -1,5 +1,6 @@
 package jone.helper.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,6 +22,7 @@ import jone.helper.lib.model.imageLoader.ImageLoaderListener;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
 import jone.helper.mvp.model.weather.entity.WeatherIndex;
+import jone.helper.ui.activities.base.ThemeTool;
 import jone.helper.util.WeatherUtil;
 
 /**
@@ -67,15 +69,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 if(calendar.get(Calendar.HOUR_OF_DAY) < 18){
                     pictureUrl = weatherData.getDayPictureUrl();
                 }
-                App.getImageLoader().display(mContext,
-                        item.image_weather_pic, pictureUrl,
-                        R.mipmap.ic_weather_default, R.mipmap.ic_weather_default);
+                item.image_weather_pic.setImageResource(R.mipmap.ic_weather_default);
                 App.getImageLoader().getBitmap(mContext, pictureUrl, new ImageLoaderListener() {
                     @Override
                     public void onDone(Bitmap bitmap) {
+                        item.image_weather_pic.setImageBitmap(bitmap);
                         Palette p = Palette.from(bitmap).generate();
-                        item.txt_weather.setTextColor(p.getDarkVibrantColor(ContextCompat.getColor(mContext, android.R.color.black)));
-                        item.root_view.setBackgroundColor(p.getLightVibrantColor(ContextCompat.getColor(mContext, android.R.color.white)));
+//                        item.txt_weather.setTextColor(p.getDarkVibrantColor(ContextCompat.getColor(mContext, android.R.color.black)));
+                        item.view_flag.setBackgroundColor(p.getLightVibrantColor(ThemeTool.getInstance().getColorPrimary((Activity) mContext)));
                     }
                 });
             }
@@ -123,11 +124,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class VHItem extends RecyclerView.ViewHolder {
         public ViewGroup root_view;
+        public TextView view_flag;
         public TextView txt_weather;
         public ImageView image_weather_pic;
         public VHItem(View v){
             super(v);
             root_view = (ViewGroup) v.findViewById(R.id.root_view);
+            view_flag = (TextView) v.findViewById(R.id.view_flag);
             txt_weather = (TextView) v.findViewById(R.id.txt_weather);
             image_weather_pic = (ImageView) v.findViewById(R.id.image_weather_pic);
         }
