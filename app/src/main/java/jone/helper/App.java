@@ -55,6 +55,7 @@ public class App extends Application {
         //crash 到本地
         enabledStrictMode(); //启用严格模式
 //        LeakCanary.install(this);  //内存泄露检测
+        //change with develop
     }
 
     private void enabledStrictMode() {
