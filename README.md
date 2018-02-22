@@ -4,6 +4,8 @@ Helper
 
 ##Download
 
+![pic_0](https://raw.githubusercontent.com/jonesun/Helper/master/pic/code.png)
+
 [v3.1.1 helper.apk](https://github.com/jonesun/Helper/blob/master/apk/helper.apk?raw=true)
 
 **Compile environment**
