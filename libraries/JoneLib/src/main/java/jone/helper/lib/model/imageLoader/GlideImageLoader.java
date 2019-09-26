@@ -18,9 +18,9 @@ import jone.net.volley.VolleyCommon;
 
 /**
  * 采用Glide库的imageLoader
- * compile 'com.github.bumptech.glide:glide:3.6.1'
- * compile 'com.github.bumptech.glide:volley-integration:1.3.1' //可选
- * compile 'com.github.bumptech.glide:okhttp-integration:1.3.1' //可选
+ * implementation 'com.github.bumptech.glide:glide:3.6.1'
+ * implementation 'com.github.bumptech.glide:volley-integration:1.3.1' //可选
+ * implementation 'com.github.bumptech.glide:okhttp-integration:1.3.1' //可选
  * Created by jone.sun on 2016/1/12.
  */
 public class GlideImageLoader implements ImageLoader {

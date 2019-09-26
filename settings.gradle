@@ -1,3 +1,4 @@
+rootProject.name='Helper'
 include ':app', ':libraries:volley', ':daoexamplegenerator',
         ':libraries:JoneLib'
 include ':libraries:ZxingScan', ':libraries:viewpagerindicator'

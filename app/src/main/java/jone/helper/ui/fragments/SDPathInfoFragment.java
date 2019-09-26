@@ -45,20 +45,20 @@ import jone.helper.ui.fragments.base.BaseFragment;
  * @link {http://liaohuqiu.net/cn/posts/storage-in-android/} Android存储使用参考
  * @link {http://hubingforever.blog.163.com/blog/static/1710405792012816103948907/ } Android中关于外部存储的一些重要函数
  */
-public class SdPathInfoFragment extends BaseFragment<JoneAppManagerActivity> {
-    private static SdPathInfoFragment instance = null;
+public class SDPathInfoFragment extends BaseFragment<JoneAppManagerActivity> {
+    private static SDPathInfoFragment instance = null;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     public List<DeviceInfo> data = new ArrayList<>();
 
-    public static SdPathInfoFragment getInstance() {
+    public static SDPathInfoFragment getInstance() {
         if (instance == null) {
-            instance = new SdPathInfoFragment();
+            instance = new SDPathInfoFragment();
         }
         return instance;
     }
 
-    public SdPathInfoFragment() {
+    public SDPathInfoFragment() {
         // Required empty public constructor
     }
 

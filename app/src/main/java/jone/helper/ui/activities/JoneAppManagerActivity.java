@@ -21,7 +21,7 @@ import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.fragments.AppsFragment;
 import jone.helper.ui.fragments.DeviceInfoFragment;
 import jone.helper.ui.fragments.MemoryCleanFragment;
-import jone.helper.ui.fragments.SdPathInfoFragment;
+import jone.helper.ui.fragments.SDPathInfoFragment;
 
 public class JoneAppManagerActivity extends BaseAppCompatActivity {
 
@@ -152,7 +152,7 @@ public class JoneAppManagerActivity extends BaseAppCompatActivity {
             } else if(position == 2){
                 return MemoryCleanFragment.newInstance();
             }else if(position == 3){
-                return SdPathInfoFragment.getInstance();
+                return SDPathInfoFragment.getInstance();
             }
             return PlaceholderFragment.newInstance(position + 1);
         }

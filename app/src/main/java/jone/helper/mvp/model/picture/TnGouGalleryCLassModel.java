@@ -16,7 +16,7 @@ import core.common.tuple.Tuple;
 import core.common.tuple.Tuple2;
 import core.common.tuple.Tuple3;
 import jone.helper.bean.TnGouGallery;
-import jone.helper.bean.TnGouGalleryClass;
+import jone.helper.bean.TnGouGalleryclass;
 import jone.helper.lib.util.GsonUtils;
 import jone.helper.mvp.model.load.JSONObjectLoadDataModel;
 
@@ -24,7 +24,7 @@ import jone.helper.mvp.model.load.JSONObjectLoadDataModel;
  *
  * Created by jone.sun on 2016/1/12.
  */
-public class TnGouGalleryClassModel extends JSONObjectLoadDataModel<TnGouGalleryClass>  {
+class TnGouGalleryClassModel extends JSONObjectLoadDataModel<TnGouGalleryclass>  {
     private static final String TAG = "TnGouGalleryClassModel";
 
     public TnGouGalleryClassModel(){
@@ -37,13 +37,13 @@ public class TnGouGalleryClassModel extends JSONObjectLoadDataModel<TnGouGallery
     }
 
     @Override
-    public Tuple2<List<TnGouGalleryClass>, Boolean> analysisData(JSONObject data) {
-        List<TnGouGalleryClass> list = new ArrayList<>();
+    public Tuple2<List<TnGouGalleryclass>, Boolean> analysisData(JSONObject data) {
+        List<TnGouGalleryclass> list = new ArrayList<>();
         try {
             if(data != null){
                 if(data.has("tngou")){
                     list = GsonUtils.getGson().fromJson(data.getString("tngou"),
-                            new TypeToken<List<TnGouGalleryClass>>() {}.getType());
+                            new TypeToken<List<TnGouGalleryclass>>() {}.getType());
                 }
             }
         }catch (Exception e){

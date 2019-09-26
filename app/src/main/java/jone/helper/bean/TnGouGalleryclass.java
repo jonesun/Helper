@@ -15,7 +15,7 @@ import java.io.Serializable;
  7	性感车模
  * Created by jone.sun on 2016/1/13.
  */
-public class TnGouGalleryClass implements Serializable{
+public class TnGouGalleryclass implements Serializable{
     private int id; //分类id，需要查询该类下的列表就需要传入才参数
     private String name; //分类名称
     private String title; //分类的标题（网页显示的标题）

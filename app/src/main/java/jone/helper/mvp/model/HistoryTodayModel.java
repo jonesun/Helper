@@ -68,7 +68,7 @@ public class HistoryTodayModel extends JSONObjectLoadDataModel<HistoryToday> {
     public Tuple2<List<HistoryToday>, Boolean> analysisData(JSONObject data) {
         Log.e("sdsd", data + "");
         List<HistoryToday> historyTodayList = new ArrayList<>();
-        if(data.has("error_code")){
+        if(data != null && data.has("error_code")){
             try {
                 if(data.getInt("error_code") == 0);{
                     historyTodayList = GsonUtils.getGson().fromJson(data.getString("result"),

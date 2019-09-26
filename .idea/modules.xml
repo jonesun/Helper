@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Helper.iml" filepath="$PROJECT_DIR$/Helper.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" filepath="$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" filepath="$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/daoexamplegenerator/daoexamplegenerator.iml" filepath="$PROJECT_DIR$/daoexamplegenerator/daoexamplegenerator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/viewpagerindicator/viewpagerindicator.iml" filepath="$PROJECT_DIR$/libraries/viewpagerindicator/viewpagerindicator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/volley/volley.iml" filepath="$PROJECT_DIR$/libraries/volley/volley.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Helper.iml" filepath="$PROJECT_DIR$/Helper.iml" group="Helper" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" filepath="$PROJECT_DIR$/libraries/JoneLib/JoneLib.iml" group="Helper/libraries/JoneLib" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" filepath="$PROJECT_DIR$/libraries/ZxingScan/ZxingScan.iml" group="Helper/libraries/ZxingScan" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Helper/app" />
+      <module fileurl="file://$PROJECT_DIR$/daoexamplegenerator/daoexamplegenerator.iml" filepath="$PROJECT_DIR$/daoexamplegenerator/daoexamplegenerator.iml" group="Helper/daoexamplegenerator" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" group="Helper/libraries" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/viewpagerindicator/viewpagerindicator.iml" filepath="$PROJECT_DIR$/libraries/viewpagerindicator/viewpagerindicator.iml" group="Helper/libraries/viewpagerindicator" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/volley/volley.iml" filepath="$PROJECT_DIR$/libraries/volley/volley.iml" group="Helper/libraries/volley" />
     </modules>
   </component>
 </project>

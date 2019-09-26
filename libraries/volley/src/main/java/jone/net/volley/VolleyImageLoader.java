@@ -11,7 +11,7 @@
 //
 ///**
 // * 采用Volley库的imageLoader
-// * compile 'com.mcxiaoke.volley:library:1.0.19'
+// * implementation 'com.mcxiaoke.volley:library:1.0.19'
 // * Created by jone.sun on 2016/1/12.
 // */
 //public class VolleyImageLoader implements ImageLoader {

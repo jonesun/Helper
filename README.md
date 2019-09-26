@@ -8,7 +8,7 @@ Helper
 
 [v3.1.1 helper.apk](https://github.com/jonesun/Helper/blob/master/apk/helper.apk?raw=true)
 
-**Compile environment**
+**implementation environment**
 
 ```
 compileSdkVersion=23

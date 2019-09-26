@@ -1,5 +1,5 @@
 apply from: '../library.gradle'
 
 dependencies {
-    compile 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
 }
