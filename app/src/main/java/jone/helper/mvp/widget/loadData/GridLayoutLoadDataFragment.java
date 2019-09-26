@@ -1,7 +1,7 @@
 package jone.helper.mvp.widget.loadData;
 
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
  * GridLayout形式的加载数据Fragment

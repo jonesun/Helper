@@ -25,7 +25,7 @@
 package org.simple.imageloader.cache;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 import org.simple.imageloader.request.BitmapRequest;
 

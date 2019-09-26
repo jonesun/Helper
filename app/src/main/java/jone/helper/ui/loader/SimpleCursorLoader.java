@@ -2,7 +2,7 @@ package jone.helper.ui.loader;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 
 /**
  * 不用contentProvider的Loader

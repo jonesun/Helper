@@ -28,5 +28,5 @@ dependencies {
     api 'com.google.code.gson:gson:2.5'
     api 'com.mcxiaoke.volley:library:1.0.19'
 //    implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.0.1'
-    implementation 'com.android.support:appcompat-v7:23.2.1'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
 }

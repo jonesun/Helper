@@ -1,14 +1,13 @@
 package jone.helper.ui.activities;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
 import jone.helper.R;
-import jone.helper.ui.activities.base.BaseAppCompatActivity;
 import jone.helper.ui.adapter.GuideFragmentPagerAdapter;
 
 public class GuideActivity extends AppCompatActivity {

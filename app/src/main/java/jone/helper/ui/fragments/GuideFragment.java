@@ -1,14 +1,12 @@
 package jone.helper.ui.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.Gravity;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import jone.helper.R;

@@ -1,8 +1,8 @@
 package jone.helper.ui.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -15,14 +15,12 @@ import java.util.List;
 import jone.helper.R;
 import jone.helper.bean.PictureBean;
 import jone.helper.bean.TnGouPicture;
-import jone.helper.mvp.model.load.JSONObjectLoadDataModel;
 import jone.helper.mvp.model.load.LoadDataModel;
 import jone.helper.mvp.model.picture.TnGouPictureModel;
 import jone.helper.mvp.presenter.loadData.LoadDataPresenter;
 import jone.helper.mvp.presenter.loadData.LoadDataPresenterImpl;
 import jone.helper.mvp.widget.loadData.LoadDataRecyclerViewAdapter;
 import jone.helper.mvp.view.loadData.LoadMoreView;
-import jone.helper.mvp.widget.loadData.LoadDataFragment;
 import jone.helper.mvp.widget.loadData.StaggeredGridLayoutLoadDataFragment;
 import jone.helper.ui.adapter.TnGouPictureAdapter;
 import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;

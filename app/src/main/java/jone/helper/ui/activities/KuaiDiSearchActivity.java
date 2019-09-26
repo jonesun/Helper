@@ -2,14 +2,13 @@ package jone.helper.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
 import jone.helper.R;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.activities.base.BaseAppCompatWithLayoutActivity;
 import jone.helper.ui.fragments.KuaiDiSearchActivityFragment;
 import jone.helper.zxing.scan.CaptureActivity;
 

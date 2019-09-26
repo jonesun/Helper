@@ -1,8 +1,8 @@
 package jone.helper.ui.widget;
 
-import android.support.annotation.MenuRes;
-import android.support.v4.internal.view.SupportMenuItem;
-import android.support.v7.view.menu.MenuItemImpl;
+import androidx.annotation.MenuRes;
+import androidx.core.internal.view.SupportMenuItem;
+import androidx.appcompat.view.menu.MenuItemImpl;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

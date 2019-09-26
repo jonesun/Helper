@@ -6,7 +6,7 @@
     android:paddingLeft="4dp"
     android:paddingTop="4dp"
     android:paddingRight="4dp">
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -40,9 +40,9 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_weather"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

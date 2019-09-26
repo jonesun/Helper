@@ -2,8 +2,6 @@ package jone.helper.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import org.json.JSONObject;
@@ -14,7 +12,6 @@ import jone.helper.mvp.model.picture.TnGouGalleryModel;
 import jone.helper.mvp.presenter.loadData.LoadDataPresenter;
 import jone.helper.mvp.presenter.loadData.LoadDataPresenterImpl;
 import jone.helper.mvp.view.loadData.LoadMoreView;
-import jone.helper.mvp.widget.loadData.LoadDataFragment;
 import jone.helper.mvp.widget.loadData.LoadDataRecyclerViewAdapter;
 import jone.helper.mvp.widget.loadData.StaggeredGridLayoutLoadDataFragment;
 import jone.helper.ui.activities.PictureDetailActivity;

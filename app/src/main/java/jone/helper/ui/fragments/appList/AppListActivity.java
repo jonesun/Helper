@@ -1,6 +1,6 @@
 package jone.helper.ui.fragments.appList;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by jone.sun on 2015/12/18.

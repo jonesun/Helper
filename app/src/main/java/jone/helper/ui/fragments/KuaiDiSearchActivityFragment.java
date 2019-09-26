@@ -2,7 +2,7 @@ package jone.helper.ui.fragments;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.TextInputLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +11,6 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;

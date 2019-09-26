@@ -1,7 +1,7 @@
 package jone.net.volley.imageCache;
 
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 import android.util.Log;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;

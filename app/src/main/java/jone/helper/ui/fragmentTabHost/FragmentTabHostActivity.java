@@ -1,12 +1,10 @@
 package jone.helper.ui.fragmentTabHost;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentTabHost;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTabHost;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;

@@ -3,7 +3,7 @@ package jone.helper.ui.fragments.appList;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 
 import java.text.Collator;
 import java.util.ArrayList;

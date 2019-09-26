@@ -1,9 +1,8 @@
 package jone.helper.ui.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 
-import java.util.Collections;
 import java.util.List;
 
 public class CustomV4ListAsyncTaskLoader<T> extends AsyncTaskLoader<List<T>> {

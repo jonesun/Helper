@@ -13,19 +13,14 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
-import java.util.Iterator;
-
-import jone.helper.lib.R;
 
 /**
  * Created by Administrator on 2014/9/18.

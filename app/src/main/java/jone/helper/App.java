@@ -7,8 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
-import android.support.annotation.IntDef;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.IntDef;
+import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import android.widget.Toast;
 

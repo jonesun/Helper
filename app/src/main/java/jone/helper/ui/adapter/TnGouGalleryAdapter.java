@@ -1,9 +1,9 @@
 package jone.helper.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import jone.helper.App;
 import jone.helper.R;
 import jone.helper.bean.TnGouGallery;
-import jone.helper.lib.model.imageLoader.ImageLoaderListener;
 import jone.helper.mvp.widget.loadData.LoadDataRecyclerViewAdapter;
 import jone.helper.mvp.view.loadData.LoadMoreView;
 

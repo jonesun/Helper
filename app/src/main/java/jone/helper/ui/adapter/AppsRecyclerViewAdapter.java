@@ -3,16 +3,11 @@ package jone.helper.ui.adapter;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jone.helper.R;
-import jone.helper.bean.News;
 
 /**
  * Created by jone.sun on 2015/9/29.

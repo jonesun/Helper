@@ -3,10 +3,10 @@ package jone.helper.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import jone.helper.R;
 import jone.helper.lib.model.imageLoader.ImageLoaderListener;
 import jone.helper.mvp.model.weather.entity.Weather;
 import jone.helper.mvp.model.weather.entity.WeatherData;
-import jone.helper.mvp.model.weather.entity.WeatherIndex;
 import jone.helper.ui.activities.base.ThemeTool;
 import jone.helper.util.WeatherUtil;
 

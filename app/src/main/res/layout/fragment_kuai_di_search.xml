@@ -15,7 +15,7 @@
             android:id="@+id/spinner_kuaidi_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:singleLine="true"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

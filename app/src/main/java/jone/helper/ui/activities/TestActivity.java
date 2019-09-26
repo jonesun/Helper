@@ -1,17 +1,10 @@
 package jone.helper.ui.activities;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import jone.helper.R;
 import jone.helper.ui.activities.base.BaseAppCompatActivity;
-import jone.helper.ui.adapter.AppsRecyclerViewAdapter;
 
 /**
  * Created by jone.sun on 2015/11/13.

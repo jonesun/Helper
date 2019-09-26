@@ -1,7 +1,7 @@
 package jone.helper.ui.activities;
 
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.view.Menu;

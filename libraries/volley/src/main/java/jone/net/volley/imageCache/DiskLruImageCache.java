@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.support.v4.BuildConfig;
+//import androidx.core.BuildConfig;
 import android.util.Log;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
@@ -77,19 +77,19 @@ public class DiskLruImageCache implements ImageCache {
             if( writeBitmapToFile( data, editor ) ) {               
                 mDiskCache.flush();
                 editor.commit();
-                if (BuildConfig.DEBUG ) {
-                   Log.d( "cache_test_DISK_", "image put on disk cache " + key );
-                }
+//                if (BuildConfig.DEBUG ) {
+//                   Log.d( "cache_test_DISK_", "image put on disk cache " + key );
+//                }
             } else {
                 editor.abort();
-                if ( BuildConfig.DEBUG ) {
-                    Log.d( "cache_test_DISK_", "ERROR on: image put on disk cache " + key );
-                }
+//                if ( BuildConfig.DEBUG ) {
+//                    Log.d( "cache_test_DISK_", "ERROR on: image put on disk cache " + key );
+//                }
             }   
         } catch (IOException e) {
-            if ( BuildConfig.DEBUG ) {
-                Log.d( "cache_test_DISK_", "ERROR on: image put on disk cache " + key );
-            }
+//            if ( BuildConfig.DEBUG ) {
+//                Log.d( "cache_test_DISK_", "ERROR on: image put on disk cache " + key );
+//            }
             try {
                 if ( editor != null ) {
                     editor.abort();
@@ -125,9 +125,9 @@ public class DiskLruImageCache implements ImageCache {
             }
         }
 
-        if ( BuildConfig.DEBUG ) {
-            Log.d( "cache_test_DISK_", bitmap == null ? "" : "image read from disk " + key);
-        }
+//        if ( BuildConfig.DEBUG ) {
+//            Log.d( "cache_test_DISK_", bitmap == null ? "" : "image read from disk " + key);
+//        }
 
         return bitmap;
 
@@ -153,9 +153,9 @@ public class DiskLruImageCache implements ImageCache {
     }
 
     public void clearCache() {
-        if ( BuildConfig.DEBUG ) {
-            Log.d( "cache_test_DISK_", "disk cache CLEARED");
-        }
+//        if ( BuildConfig.DEBUG ) {
+//            Log.d( "cache_test_DISK_", "disk cache CLEARED");
+//        }
         try {
             mDiskCache.delete();
         } catch ( IOException e ) {
